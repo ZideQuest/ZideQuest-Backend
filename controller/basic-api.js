@@ -1,4 +1,3 @@
-import { createError } from "../util/createError.js";
 import { logger } from "../util/logger.js";
 
 export function helloWorld(req, res, next) {
