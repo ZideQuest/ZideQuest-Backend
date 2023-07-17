@@ -11,7 +11,7 @@ export function de(req, res, next) {
 
         // next(createError(404, "bad req"))
         // const x = int(param)/0
-    
+
         logger.info("hi :)");
 
         return res.json({
@@ -19,7 +19,7 @@ export function de(req, res, next) {
             body: body.hi,
             // param1: x,
             param2: param
-            }
+        }
         )
     } catch (error) {
         next(error)
