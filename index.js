@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { errorMiddleware } from './middleware/errorHandler.js'
 import basicRoutes from './routes/basic-api.js'
+import accountRoutes from './routes/account.js'
 import { logger } from './util/logger.js'
 import { connectDb } from './util/connectDb.js'
 
@@ -21,6 +22,8 @@ function main() {
 
     // router
     app.use("/api/basic-api", basicRoutes)
+    app.use("/api/account", accountRoutes)
+
     // error handler
     app.use(errorMiddleware)
 
