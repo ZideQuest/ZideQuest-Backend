@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import { errorMiddleware } from './middleware/errorHandler.js'
 import basicRoutes from './routes/basic-api.js'
 import { logger } from './util/logger.js'
+import { connectDb } from './util/connectDb.js'
 
 function main() {
     // express app
@@ -28,6 +29,7 @@ function main() {
     const PORT = process.env.PORT
     app.listen(PORT, () => {
         logger.info(`server start at http://localhost:${PORT}`)
+        connectDb()
     })
 
 }
