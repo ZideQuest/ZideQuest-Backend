@@ -15,7 +15,8 @@ export function de(req, res, next) {
         return res.json({
             msg: "test post",
             body: body.hi,
-            param: x
+            param1: x,
+            param2: param
             }
         )
     } catch (error) {
