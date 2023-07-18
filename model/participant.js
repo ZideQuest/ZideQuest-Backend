@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const participantSchema = new mongoose.Schema({
-    questId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Quest",
-    },
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "User",
