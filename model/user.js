@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
 
+const activityBox = {
+    count: {
+        type: Number,
+        default: 0
+    },
+    hour: {
+        type: Number,
+        default: 0
+    },
+}
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -24,6 +35,60 @@ const userSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Types.ObjectId,
         ref: "Account"
+    },
+    activityTranscipt: {
+        university: {
+            name: {
+                type: String,
+                default: "กิจกรรมมหาวิทยาลัย"
+            },
+            ...activityBox
+        },
+        empowerment: {
+            name: {
+                type: String,
+                default: "กิจกรรมเพื่อเสริมสร้างสมรรถนะ"
+            },
+            ...activityBox,
+            category: {
+                morality: {
+                    name: {
+                        type: String,
+                        default: "ด้านพัฒนาคุณธรรม จริยธรรม"
+                    },
+                    ...activityBox
+                },
+                thingking: {
+                    name: {
+                        type: String,
+                        default: "ด้านการคิดและการเรียนรู้"
+                    },
+                    ...activityBox
+                },
+                relation: {
+                    name: {
+                        type: String,
+                        default: "ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล"
+                    },
+                    ...activityBox
+
+                },
+                health: {
+                    name: {
+                        type: String,
+                        default: "ด้านพัฒนาสุขภาพ"
+                    },
+                    ...activityBox
+                }
+            }
+        },
+        society: {
+            name: {
+                type: String,
+                default: "กิจกรรมเพื่อสังคม"
+            },
+            ...activityBox
+        },
     }
 }, {
     timestamps: true
