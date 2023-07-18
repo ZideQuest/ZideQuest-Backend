@@ -22,7 +22,7 @@ const questSchema = new mongoose.Schema({
         require: true,
     },
     description: {
-        type: string,
+        type: String,
     },
     image: {
         type: Array,
