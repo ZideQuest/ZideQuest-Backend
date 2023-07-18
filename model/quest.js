@@ -24,9 +24,9 @@ const questSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    image: {
-        type: Array,
-    },
+    imagePath: [{
+        type: String,
+    }],
     tagId: [{
         type: mongoose.Types.ObjectId,
         ref: "Tag"
@@ -36,10 +36,10 @@ const questSchema = new mongoose.Schema({
         default: false
     },
     maxParticipant: {
-        type: Int16Array,
+        type: Number,
     },
     qrCode: {
-        type: Int16Array,
+        type: Number,
     },
     participant: [{
         type: mongoose.Types.ObjectId,
