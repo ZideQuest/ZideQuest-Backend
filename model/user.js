@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
-const activityBox = {
-    count: {
+const activityInfo = {
+    count: { // จำนวนกิจกรรม
         type: Number,
         default: 0
     },
-    hour: {
+    hour: { // จำนวนชั่วโมง
         type: Number,
         default: 0
-    },
+    }
 }
 
 const userSchema = new mongoose.Schema({
@@ -37,61 +37,93 @@ const userSchema = new mongoose.Schema({
         ref: "Account"
     },
     activityTranscipt: {
-        university: {
-            name: {
-                type: String,
-                default: "กิจกรรมมหาวิทยาลัย"
-            },
-            ...activityBox
+        name: {
+            type: String,
+            default: "กิจกรรม"
         },
-        empowerment: {
-            name: {
-                type: String,
-                default: "กิจกรรมเพื่อเสริมสร้างสมรรถนะ"
+        ...activityInfo,
+        category: {
+            university: {
+                name: {
+                    type: String,
+                    default: "กิจกรรมมหาวิทยาลัย"
+                },
+                ...activityInfo
             },
-            ...activityBox,
-            category: {
-                morality: {
-                    name: {
-                        type: String,
-                        default: "ด้านพัฒนาคุณธรรม จริยธรรม"
-                    },
-                    ...activityBox
+            empowerment: {
+                name: {
+                    type: String,
+                    default: "กิจกรรมเพื่อเสริมสร้างสมรรถนะ"
                 },
-                thingking: {
-                    name: {
-                        type: String,
-                        default: "ด้านการคิดและการเรียนรู้"
+                ...activityInfo,
+                category: {
+                    morality: {
+                        name: {
+                            type: String,
+                            default: "ด้านพัฒนาคุณธรรม จริยธรรม"
+                        },
+                        ...activityInfo
                     },
-                    ...activityBox
-                },
-                relation: {
-                    name: {
-                        type: String,
-                        default: "ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล"
+                    thingking: {
+                        name: {
+                            type: String,
+                            default: "ด้านการคิดและการเรียนรู้"
+                        },
+                        ...activityInfo
                     },
-                    ...activityBox
+                    relation: {
+                        name: {
+                            type: String,
+                            default: "ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล"
+                        },
+                        ...activityInfo
 
-                },
-                health: {
-                    name: {
-                        type: String,
-                        default: "ด้านพัฒนาสุขภาพ"
                     },
-                    ...activityBox
+                    health: {
+                        name: {
+                            type: String,
+                            default: "ด้านพัฒนาสุขภาพ"
+                        },
+                        ...activityInfo
+                    }
                 }
-            }
-        },
-        society: {
-            name: {
-                type: String,
-                default: "กิจกรรมเพื่อสังคม"
             },
-            ...activityBox
-        },
+            society: {
+                name: {
+                    type: String,
+                    default: "กิจกรรมเพื่อสังคม"
+                },
+                ...activityInfo
+            },
+        }
     }
 }, {
     timestamps: true
+})
+
+// อัพเดท จำนวนกิจกรรมรวม, ชั่วโมงกิจกรรมรวม 
+userSchema.pre("save", function (next) {
+    try {
+        const activityTranscipt = this.activityTranscipt
+        const { university, society, empowerment } = activityTranscipt.category
+
+        // มีการเพิ่มลด จำนวนกิจกรรม และ ชั่วโมงกิจกรรม ในด้านต่างๆของ กิจกรรมเพื่อเสริมสร้างสมรรถนะ
+        if (this.isModified('activityTranscipt.category.empowerment.category')) {
+            const { morality, thingking, relation, health } = empowerment.category
+            empowerment.count = morality.count + thingking.count + relation.count + health.count
+            empowerment.hour = morality.hour + thingking.hour + relation.hour + health.hour
+        }
+
+        // มีการเพิ่มลด จำนวนกิจกรรม และ ชั่วโมงกิจกรรม ในประเภทต่างๆของกิจกรรม
+        if (this.isModified('activityTranscipt.category')) {
+            activityTranscipt.count = university.count + empowerment.count + society.count
+            activityTranscipt.hour = university.hour + empowerment.hour + society.hour
+        }
+
+        next()
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 const User = mongoose.models.User || mongoose.model("User", userSchema)
