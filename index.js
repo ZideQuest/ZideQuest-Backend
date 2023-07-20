@@ -1,40 +1,33 @@
-import express from 'express'
 import dotenv from 'dotenv'
-import cookieParser from 'cookie-parser'
-import morgan from 'morgan'
-import { errorMiddleware } from './middleware/errorHandler.js'
-import basicRoutes from './routes/basic-api.js'
-import accountRoutes from './routes/account.js'
+import mongoose from 'mongoose'
+
 import { logger } from './util/logger.js'
 import { connectDb } from './util/connectDb.js'
 
-function main() {
-    // express app
-    const app = express()
+import app from './app'
 
-    // dotenv
-    dotenv.config()
+// dotenv.config({ path: './config.env' });
+dotenv.config();
 
-    // middleware configuration
-    app.use(express.json())
-    app.use(cookieParser())
-    app.use(morgan("dev"))
+//define port and start server
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
+  logger.info(`server start at http://localhost:${PORT}`)
+  connectDb()
+});
 
-    // router
-    app.use("/api/basic-api", basicRoutes)
-    app.use("/api/account", accountRoutes)
+process.on('unhandledRejection', (err) => {
+  console.error(err.name, err.message, '💥');
+  console.error('Shutting down...');
+  server.close(() => {
+    process.exit(1);
+  });
+});
 
-    // error handler
-    app.use(errorMiddleware)
-
-
-    // listening 
-    const PORT = process.env.PORT
-    app.listen(PORT, () => {
-        logger.info(`server start at http://localhost:${PORT}`)
-        connectDb()
-    })
-
-}
-
-main()
+process.on('uncaughtException', (err) => {
+  console.error(err.name, err.message, '💥');
+  console.error('Shutting down...');
+  server.close(() => {
+    process.exit(1);
+  });
+});
