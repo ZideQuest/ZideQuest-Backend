@@ -12,7 +12,7 @@ const locationSchema = new mongoose.Schema({
     location: {
         type: {
             type: String,
-            require: true,
+            default: "Point",
             enum: ["Point"], 
         },
         coordinate: {
@@ -31,5 +31,5 @@ const locationSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Location = mongoose.models.Location || mongoose.model("Location", tagSchema)
+const Location = mongoose.models.Location || mongoose.model("Location", locationSchema)
 export default Location
