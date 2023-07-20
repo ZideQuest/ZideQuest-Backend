@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
 const accountSchema = new mongoose.Schema({
-    profilePicture: {
-        type: String,
-    },
     username: {
         type: String,
         require: true
@@ -15,11 +12,15 @@ const accountSchema = new mongoose.Schema({
     role: {
         type: String,
         require: true,
-        default: "user"
+        default: "user",
+        enum: ["user", "admin"]
+    },
+    profilePicture: {
+        type: String,
     },
 }, {
     timestamps: true
 })
 
-const Account = mongoose.model("Account", accountSchema)
+const Account = mongoose.models.Account || mongoose.model("Account", accountSchema)
 export default Account
