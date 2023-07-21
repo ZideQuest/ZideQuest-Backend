@@ -59,7 +59,6 @@ function createApp() {
     }
 
     // routes
-    app.use("/api/basic-api", basicRoutes);
     app.use("/api/account", accountRoutes);
     app.use("/api/user", userRoutes);
 
