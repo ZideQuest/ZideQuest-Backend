@@ -14,23 +14,23 @@ const activityInfo = {
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        require: true
+        required: true
     },
     lastName: {
         type: String,
-        require: true
+        required: true
     },
     nisitId: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        require: true
+        required: true
     },
     faculty: {
         type: String,
-        require: true
+        required: true
     },
     accountId: {
         type: mongoose.Types.ObjectId,
