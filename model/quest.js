@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const questSchema = new mongoose.Schema({
     questName: {
         type: String,
-        require: true,
+        required: true,
     },
     adminId: {
         type: mongoose.Types.ObjectId,
@@ -15,11 +15,11 @@ const questSchema = new mongoose.Schema({
     },
     timeStart: {
         type: Date,
-        require: true,
+        required: true,
     },
     timeEnd: {
         type: Date,
-        require: true,
+        required: true,
     },
     description: {
         type: String,
@@ -42,8 +42,14 @@ const questSchema = new mongoose.Schema({
         type: Number,
     },
     participant: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Participant",
+        userId: {
+            type: mongoose.Types.ObjectId,
+            ref: "User"
+        },
+        status: {
+            type: Boolean,
+            default: false
+        }
     }]
 }, {
     timestamps: true
