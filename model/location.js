@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const locationSchema = new mongoose.Schema({
     locationName: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true,
         maxlength: [50,'Your location name must be less than 50 characters'],
@@ -17,13 +17,13 @@ const locationSchema = new mongoose.Schema({
         },
         coordinate: {
             type: [Number],
-            require: true,
+            required: true,
             unique: true,
         }
     },
     locationPicturePath: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true,
     },
