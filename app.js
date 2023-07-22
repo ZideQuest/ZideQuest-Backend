@@ -10,7 +10,6 @@ import xXssProtection from 'x-xss-protection';
 import cookieParser from "cookie-parser";
 
 // Routes Import
-import basicRoutes from './routes/basic-api.js'
 import accountRoutes from './routes/account.js'
 import userRoutes from './routes/user.js'
 import { errorMiddleware } from './middleware/errorHandler.js'
