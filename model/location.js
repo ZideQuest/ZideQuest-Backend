@@ -6,24 +6,19 @@ const locationSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
-        maxlength: [50,'Your location name must be less than 50 characters'],
-        minlength: [2,'Your location name must be longer than 2 characters'],
+        maxlength: [50, 'Your location name must be less than 50 characters'],
+        minlength: [2, 'Your location name must be longer than 2 characters'],
     },
-    location: {
-        type: {
-            type: String,
-            default: "Point",
-            enum: ["Point"], 
-        },
-        coordinate: {
-            type: [Number],
-            required: true,
-            unique: true,
-        }
+    latitude: {
+        type: Number,
+        required: true
+    },
+    longigude: {
+        type: Number,
+        required: true
     },
     locationPicturePath: {
         type: String,
-        required: true,
         unique: true,
         trim: true,
     },
