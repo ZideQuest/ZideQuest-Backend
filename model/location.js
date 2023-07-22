@@ -13,7 +13,7 @@ const locationSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    longigude: {
+    longitude: {
         type: Number,
         required: true
     },
