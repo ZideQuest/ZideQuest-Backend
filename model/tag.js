@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const tagSchema = new mongoose.Schema({
     tagName: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         trim: true,
         maxlength: [30,'Your tag name must be less than 30 characters'],
