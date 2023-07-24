@@ -58,6 +58,9 @@ export const updateLocationById = async (req, res, next) => {
     const newData = req.body;
 
     try {
+        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
+            next(createError(400, "no permission"));
+        }
         const location = await Location.findByIdAndUpdate(
             id,
             newData,
@@ -73,9 +76,6 @@ export const updateLocationById = async (req, res, next) => {
         // const newOrganize = organizeName;
         // var { organizeName } = await Admin.findById(location.adminId);
         
-        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
-            next(createError(400, "unautherized"));
-        }
         return res.json({
             locaiton: location,
             status: "success"
@@ -89,10 +89,17 @@ export const deleteLocaitonById = async (req, res, next) => {
 	const { id } = req.params;
 
     try {
+        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
+            next(createError(400, "no permission"));
+        }
+
         const location = await Location.findByIdAndDelete({_id: id});
+
         if (!location) {
+
             return next(createError(400, "location not found"));
         }
+        
         return res.json({status: "success"});
     } catch (error) {
         next(error);
