@@ -22,6 +22,10 @@ const locationSchema = new mongoose.Schema({
         unique: true,
         trim: true,
     },
+    adminId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Admin",
+    }
 }, {
     timestamps: true
 })
