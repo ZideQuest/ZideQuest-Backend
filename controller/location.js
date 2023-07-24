@@ -1,5 +1,5 @@
 import Location from "../model/location.js"
-import Admin from "../model/creator.js"
+import Admin from "../model/admin.js"
 import { createError } from "../util/createError.js"
 
 export const createLocation = async (req, res, next) => {
@@ -55,11 +55,14 @@ export const getLocationById = async (req, res, next) => {
 export const updateLocationById = async (req, res, next) => {
     const { id } = req.params;
     const creatorId = req.user.id;
+    const creatorRole = req.user.role;
     const newData = req.body;
 
     try {
-        if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
-            next(createError(400, "no permission"));
+        if (creatorRole == "creator") {
+            if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
+                return next(createError(400, "no permission"));
+            }
         }
         const location = await Location.findByIdAndUpdate(
             id,
@@ -86,18 +89,20 @@ export const updateLocationById = async (req, res, next) => {
 }
 
 export const deleteLocaitonById = async (req, res, next) => {
-    const creatorId = req.user.id;
 	const { id } = req.params;
+    const creatorId = req.user.id;
+    const creatorRole = req.user.role;
 
     try {
-        if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
-            next(createError(400, "no permission"));
+        if (creatorRole == "creator") {
+            if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
+                return next(createError(400, "no permission"));
+            }
         }
 
         const location = await Location.findByIdAndDelete({_id: id});
 
         if (!location) {
-
             return next(createError(400, "location not found"));
         }
 
