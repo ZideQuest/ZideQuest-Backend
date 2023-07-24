@@ -9,7 +9,7 @@ export const createAdmin = async (req, res, next) => {
         const account = await Account.createAccount(username, password, "admin")
         try {
             const admin = await Admin.create({
-
+                role: "admin",
                 ...adminInfo,
                 accountId: account._id
             })

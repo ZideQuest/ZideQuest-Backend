@@ -45,7 +45,7 @@ export const getCreatorById = async (req, res, next) => {
 export const deleteCreatorById = async (req, res, next) => {
     try {
         const creator = await Admin.findByIdAndDelete(req.params.id)
-        if (!craetor) return next(createError(400, "Creator not found"))
+        if (!creator) return next(createError(400, "Creator not found"))
 
         const account = await Account.findByIdAndDelete(creator.accountId)
         return res.json({
