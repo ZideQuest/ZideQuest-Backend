@@ -13,6 +13,7 @@ import cookieParser from "cookie-parser";
 import accountRoutes from './routes/account.js'
 import userRoutes from './routes/user.js'
 import authRoutes from './routes/auth.js'
+import locationRoutes from './routes/location.js'
 import { errorMiddleware } from './middleware/errorHandler.js'
 
 
@@ -62,6 +63,7 @@ function createApp() {
     app.use("/api/account", accountRoutes);
     app.use("/api/user", userRoutes);
     app.use("/api/auth", authRoutes);
+    app.use("/api/location", locationRoutes);
 
     // Error handler
     app.use(errorMiddleware);
