@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import Location from "../model/location.js"
+import Admin from "../model/admin.js"
 import { createError } from "../util/createError.js"
 
 export const createLocation = async (req, res, next) => {
@@ -54,6 +54,7 @@ export const getLocationById = async (req, res, next) => {
 
 export const updateLocationById = async (req, res, next) => {
     const { id } = req.params;
+    const adminId = req.user.id;
     const newData = req.body;
 
     try {
@@ -66,6 +67,14 @@ export const updateLocationById = async (req, res, next) => {
         );
         if (!location) {
             return next(createError(400, "location not found"));
+        }
+
+        // var { organizeName } = await Admin.findById(adminId);
+        // const newOrganize = organizeName;
+        // var { organizeName } = await Admin.findById(location.adminId);
+        
+        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
+            next(createError(400, "unautherized"));
         }
         return res.json({
             locaiton: location,
