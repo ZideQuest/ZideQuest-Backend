@@ -3,19 +3,66 @@ import Admin from "../model/admin.js"
 
 export const createAdmin = async (req, res, next) => {
     try {
-        const { username, password, ...userInfo } = req.body
-        const account = await Account.createAccount(username, password, "admin")
+        const { adminname, password, ...adminInfo } = req.body
+        const account = await Account.createAccount(adminname, password, "admin")
         try {
-            const user = await Admin.create({
+            const admin = await Admin.create({
                 
-                ...userInfo,
+                ...adminInfo,
                 accountId: account._id
             })
-            return res.json(user)
+            return res.json(admin)
         } catch (error) {
             await Account.findByIdAndDelete(account._id)
             next(error)
         }
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getAdmin = async (req, res, next) => {
+    try {
+        const admins = await Admin.find({})
+        return res.json(admins)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getAdminById = async (req, res, next) => {
+    try {
+        const admin = await Admin.findById(req.params.id)
+        if (!admin) return next(createError(400, "Admin not found"))
+
+        return res.json(admin)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deleteAdminById = async (req, res, next) => {
+    try {
+        const admin = await Admin.findByIdAndDelete(req.params.id)
+        if (!admin) return next(createError(400, "Admin not found"))
+
+        const account = await Account.findByIdAndDelete(admin.accountId)
+        return res.json({ msg: `Delete Admin successfully`,
+                        accountId: admin.accountId,
+                        organizeName: admin.organizeName })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const updateAdminById = async (req, res, next) => {
+    try {
+        const admin = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        if (!admin) return next(createError(400, "Admin not found"))
+        
+        return res.json({ msg: `Update Admin successfully`,
+                        accountId: admin.accountId,
+                        organizeName: admin.organizeName })
     } catch (error) {
         next(error)
     }
