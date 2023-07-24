@@ -24,6 +24,19 @@ const questSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    status: {
+        type: Boolean,
+        default: false
+    },
+    activityHour: {
+        category: {
+            type: String,
+            enum: ["1", "2.1", "2.2", "2.3", "2.4", "3"]
+        },
+        hour: {
+            type: Number
+        }
+    },
     imagePath: [{
         type: String,
     }],
