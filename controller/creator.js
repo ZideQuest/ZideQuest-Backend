@@ -1,13 +1,14 @@
 import Account from "../model/account.js"
+import { createError } from "../util/createError.js"
 import Admin from "../model/admin.js"
 
 export const createCreator = async (req, res, next) => {
     try {
-        const { username, password,  ...creatorInfo } = req.body
+        const { username, password, ...creatorInfo } = req.body
         const account = await Account.createAccount(username, password, "creator")
         try {
             const creator = await Admin.create({
-                
+
                 ...creatorInfo,
                 accountId: account._id
             })
@@ -23,7 +24,7 @@ export const createCreator = async (req, res, next) => {
 
 export const getCreator = async (req, res, next) => {
     try {
-        const creators = await Admin.find({role: "creator"})
+        const creators = await Admin.find({ role: "creator" })
         return res.json(creators)
     } catch (error) {
         next(error)
@@ -47,9 +48,11 @@ export const deleteCreatorById = async (req, res, next) => {
         if (!craetor) return next(createError(400, "Creator not found"))
 
         const account = await Account.findByIdAndDelete(creator.accountId)
-        return res.json({ msg: `Delete Admin successfully`,
-                        accountId: creator.accountId,
-                        organizeName: creator.organizeName })
+        return res.json({
+            msg: `Delete Admin successfully`,
+            accountId: creator.accountId,
+            organizeName: creator.organizeName
+        })
     } catch (error) {
         next(error)
     }
@@ -59,10 +62,12 @@ export const updateCreatorById = async (req, res, next) => {
     try {
         const creator = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true })
         if (!creator) return next(createError(400, "Creator not found"))
-        
-        return res.json({ msg: `Update Admin successfully`,
-                        accountId: creator.accountId,
-                        organizeName: creator.organizeName })
+
+        return res.json({
+            msg: `Update Admin successfully`,
+            accountId: creator.accountId,
+            organizeName: creator.organizeName
+        })
     } catch (error) {
         next(error)
     }
