@@ -22,7 +22,7 @@ const locationSchema = new mongoose.Schema({
         unique: true,
         trim: true,
     },
-    adminId: {
+    creatorId: {
         type: mongoose.Types.ObjectId,
         ref: "Admin",
     }

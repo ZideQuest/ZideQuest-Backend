@@ -18,7 +18,7 @@ export const createLocation = async (req, res, next) => {
                 latitude,
                 longitude,
                 locationPicturePath,
-                adminId: id
+                creatorId: id
             });
             return res.json(newLocation);
         } catch (error) {
@@ -54,12 +54,15 @@ export const getLocationById = async (req, res, next) => {
 
 export const updateLocationById = async (req, res, next) => {
     const { id } = req.params;
-    const adminId = req.user.id;
+    const creatorId = req.user.id;
+    const creatorRole = req.user.role;
     const newData = req.body;
 
     try {
-        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
-            next(createError(400, "no permission"));
+        if (creatorRole == "creator") {
+            if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
+                return next(createError(400, "no permission"));
+            }
         }
         const location = await Location.findByIdAndUpdate(
             id,
@@ -72,9 +75,9 @@ export const updateLocationById = async (req, res, next) => {
             return next(createError(400, "location not found"));
         }
 
-        // var { organizeName } = await Admin.findById(adminId);
+        // var { organizeName } = await Admin.findById(creatorId);
         // const newOrganize = organizeName;
-        // var { organizeName } = await Admin.findById(location.adminId);
+        // var { organizeName } = await Admin.findById(location.creatorId);
         
         return res.json({
             locaiton: location,
@@ -86,18 +89,20 @@ export const updateLocationById = async (req, res, next) => {
 }
 
 export const deleteLocaitonById = async (req, res, next) => {
-    const adminId = req.user.id;
 	const { id } = req.params;
+    const creatorId = req.user.id;
+    const creatorRole = req.user.role;
 
     try {
-        if (await Admin.findById(adminId).organizeName !== await Admin.findById(location.adminId).organizeName) {
-            next(createError(400, "no permission"));
+        if (creatorRole == "creator") {
+            if (await Admin.findById(creatorId).organizeName !== await Admin.findById(location.creatorId).organizeName) {
+                return next(createError(400, "no permission"));
+            }
         }
 
         const location = await Location.findByIdAndDelete({_id: id});
 
         if (!location) {
-
             return next(createError(400, "location not found"));
         }
 
