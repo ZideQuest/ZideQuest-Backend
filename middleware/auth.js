@@ -38,7 +38,7 @@ export const verifyCreator = (req, res, next) => {
 
         // Verify token
         const { id, role } = verifyToken(token)
-        if (role !== "creator" || role !== "admin") {
+        if (role === "user") {
             return next(createError(401, "Permission Denied"))
         }
         // keep id and role in request for the next handler function
