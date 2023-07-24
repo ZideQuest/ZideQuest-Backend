@@ -5,7 +5,7 @@ const questSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    adminId: {
+    creatorId: {
         type: mongoose.Types.ObjectId,
         ref: "Admin",
     },
@@ -68,5 +68,5 @@ const questSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Quest = mongoose.model("quest", questSchema)
+const Quest = mongoose.models.Quest || mongoose.model("quest", questSchema)
 export default Quest
