@@ -46,17 +46,33 @@ export const getLocationById = async (req, res, next) => {
         return res.json(locations);
     } catch (error) {
         next(error);
-    }    return
+    }
 }
 
-export const updateLocationById = (req, res, next) => {
-    const { id, role } = req.user 
+export const updateLocationById = async (req, res, next) => {
 
-    return
+    try {
+        const locations = await Location.findOneAndUpdate(
+            {
+                _id: locationId
+            }, 
+            {
+
+            }
+        );
+        return res.json(locations);
+    } catch (error) {
+        next(error);
+    }
 }
 
-export const deleteLocaitonById = (req, res, next) => {
-    const { id, role } = req.user 
+export const deleteLocaitonById = async (req, res, next) => {
+	const { id } = req.params;
 
-    return
+    try {
+        const locations = await Location.findByIdAndDelete({_id: id});
+        return res.json(locations);
+    } catch (error) {
+        next(error);
+    }
 }
