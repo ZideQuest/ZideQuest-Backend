@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getLocationById, createLocation, updateLocationById, deleteLocaitonById } from "../controller/location.js";
+import { createLocation, getAllLocation, getLocationById, updateLocationById, deleteLocaitonById } from "../controller/location.js";
 import { verifyAdmin } from "../middleware/auth.js";
 
 const router = Router();
