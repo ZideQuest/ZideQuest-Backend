@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Location from "../model/locaiton.js"
+import Location from "../model/location.js"
 import { createError } from "../util/createError.js"
 
 export const createLocation = async (req, res, next) => {
