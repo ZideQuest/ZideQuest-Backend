@@ -42,18 +42,18 @@ export const getLocationById = async (req, res, next) => {
 	const { id } = req.params;
 
     try {
-        const locations = await Location.find({_id: id});
+        const location = await Location.findById({_id: id});
         if (!location) {
             return next(createError(400, "location not found"));
         }
-        return res.json(locations);
+        return res.json(location);
     } catch (error) {
         next(error);
     }
 }
 
 export const updateLocationById = async (req, res, next) => {
-    const id = req.params;
+    const { id } = req.params;
     const newData = req.body;
 
     try {
@@ -80,7 +80,7 @@ export const deleteLocaitonById = async (req, res, next) => {
 	const { id } = req.params;
 
     try {
-        const Location = await Location.findByIdAndDelete({_id: id});
+        const location = await Location.findByIdAndDelete({_id: id});
         if (!location) {
             return next(createError(400, "location not found"));
         }
