@@ -3,8 +3,8 @@ import Admin from "../model/admin.js"
 
 export const createAdmin = async (req, res, next) => {
     try {
-        const { adminname, password, ...adminInfo } = req.body
-        const account = await Account.createAccount(adminname, password, "admin")
+        const { username, password, role, ...adminInfo } = req.body
+        const account = await Account.createAccount(username, password, role)
         try {
             const admin = await Admin.create({
                 
