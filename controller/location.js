@@ -86,6 +86,7 @@ export const updateLocationById = async (req, res, next) => {
 }
 
 export const deleteLocaitonById = async (req, res, next) => {
+    const adminId = req.user.id;
 	const { id } = req.params;
 
     try {
@@ -99,7 +100,7 @@ export const deleteLocaitonById = async (req, res, next) => {
 
             return next(createError(400, "location not found"));
         }
-        
+
         return res.json({status: "success"});
     } catch (error) {
         next(error);
