@@ -4,12 +4,9 @@ import { createError } from "../util/createError.js"
 
 export const createLocation = async (req, res, next) => {
     try {
-        const { locationName, latitude, longitude } = req.body;
-        // const { id } = req.user;
-        // if (!(locationName && latitude && longitude && id)) {
-        //     throw new Error("All field is required");
-        // }
-        if (!(locationName && latitude && longitude)) {
+        const { locationName, latitude, longitude, locationPicturePath } = req.body;
+        const { id } = req.user;
+        if (!(locationName && latitude && longitude && locationPicturePath && id)) {
             throw new Error("All field is required");
         }
         try {
@@ -17,7 +14,8 @@ export const createLocation = async (req, res, next) => {
                 locationName,
                 latitude,
                 longitude,
-                // adminId: id
+                locationPicturePath,
+                adminId: id
             });
             return res.json(newLocation);
         } catch (error) {
