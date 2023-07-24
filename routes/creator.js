@@ -1,4 +1,4 @@
-import { Router } from "express";;
+import { Router } from "express";
 import { createCreator, getCreator, getCreatorById, deleteCreatorById, updateCreatorById } from "../controller/creator.js";
 
 const router = Router()
