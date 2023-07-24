@@ -38,10 +38,15 @@ export const getAllLocation = async (req, res, next) => {
     }
 }
 
-export const getLocationById = (req, res, next) => {
+export const getLocationById = async (req, res, next) => {
 	const { id } = req.params;
-	
-    return
+
+    try {
+        const locations = await Location.find({_id: id});
+        return res.json(locations);
+    } catch (error) {
+        next(error);
+    }    return
 }
 
 export const updateLocationById = (req, res, next) => {
