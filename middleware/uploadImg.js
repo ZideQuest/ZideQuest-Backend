@@ -4,7 +4,7 @@ import path, { dirname, extname } from 'path'
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url) // current file
-const __dirname = fileURLToPath(import.meta.url) // current dir
+const __dirname = dirname(__filename) // current dir
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
