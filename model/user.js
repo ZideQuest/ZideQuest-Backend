@@ -11,6 +11,26 @@ const activityInfo = {
     }
 }
 
+const achievement = {
+    hr1: {
+        type: Number,
+        Max: 1
+    },
+    hr10: {
+        type: Number,
+        Max: 10
+    },
+    hr100: {
+        type: Number,
+        Max: 100
+    },
+    allLocation: {
+        // idk how many location pins are there
+        type: Number,
+        Max: 50
+    }
+}
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -36,6 +56,27 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Account"
     },
+    exp: {
+        type: Number,
+        default: 0
+    },
+    level: {
+        // baseXp = 856
+        // lets say xpNeededforNextLevel = floor(baseXp * (level ^ 1.45))
+        // actualQuestTime = (questEndTime - startTime) / (1000 * 60 * 60) <- ms to hr
+        // xpGiven = floor(actualQuestTime * 1237.6) <- doesn't need creator's input anymnore
+        // lv1 - lv10 need 79 hrs
+        type: Number,
+        default: 1
+    },
+    onGoingQuest: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Quest"
+    }],
+    endedQuest: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Quest"
+    }],
     activityTranscipt: {
         name: {
             type: String,
