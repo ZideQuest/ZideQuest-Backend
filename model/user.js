@@ -69,11 +69,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
-    onGoingQuest: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Quest"
-    }],
-    endedQuest: [{
+    joinedQuest: [{
         type: mongoose.Types.ObjectId,
         ref: "Quest"
     }],
