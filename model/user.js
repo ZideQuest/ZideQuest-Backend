@@ -13,21 +13,49 @@ const activityInfo = {
 
 const achievement = {
     hr1: {
-        type: Number,
-        Max: 1
+        progress: {
+            type: Number,
+            Max: 1,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
     },
     hr10: {
-        type: Number,
-        Max: 10
+        progress: {
+            type: Number,
+            Max: 10,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
     },
     hr100: {
-        type: Number,
-        Max: 100
+        progress: {
+            type: Number,
+            Max: 100,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
     },
     allLocation: {
         // idk how many location pins are there
-        type: Number,
-        Max: 50
+        progress: {
+            type: Number,
+            Max: 50,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
     }
 }
 
