@@ -2,6 +2,7 @@ import Quest from '../model/quest.js'
 import Admin from '../model/admin.js'
 import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
+import User from '../model/user.js'
 
 export const createQuest = async (req, res, next) => {
     try {
@@ -95,6 +96,54 @@ export const deleteQuestById = async (req, res, next) => {
     }
 };
 
+
+export const joinOrLeaveQuest = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let quest = await Quest.findById(id);
+        if (!quest) return next(createError(400, "Quest not found"));
+
+
+        // leave quest
+        const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
+        if (alreadyJoin) {
+            quest = await Quest.findByIdAndUpdate(
+                id,
+                { $pull: { participant: { userId: req.user.id } } },
+                { new: true }
+            )
+            return res.json(quest);
+
+        }
+
+        // join quest
+        quest = await Quest.findByIdAndUpdate(
+            id,
+            { $push: { participant: { userId: req.user.id, status: false } } },
+            { new: true }
+        );
+
+        return res.json(quest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getQuestParticipantsById = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const quest = await Quest.findById(id).select('participant').populate({
+            path: 'participant.userId',
+            select: 'firstName lastName'
+        })
+        if (!quest) {
+            return next(createError(400, "Quest not found"))
+        }
+        return res.json(quest)
+    } catch (error) {
+        next(error)
+    }
+}
 
 
 
