@@ -141,6 +141,10 @@ const userSchema = new mongoose.Schema({
 // อัพเดท จำนวนกิจกรรมรวม, ชั่วโมงกิจกรรมรวม 
 userSchema.pre("save", function (next) {
     try {
+        if (this.isModified('exp')) {
+            this.level = Math.floor(Math.pow(1237.6/856*this.exp, 1/1.45));
+        }
+
         const activityTranscipt = this.activityTranscipt
         const { university, society, empowerment } = activityTranscipt.category
 
