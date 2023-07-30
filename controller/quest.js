@@ -145,6 +145,70 @@ export const getQuestParticipantsById = async (req, res, next) => {
     }
 }
 
+export const questComplete = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const quest = await Quest.findById(id);
+
+        if (!quest) { return next(createError(400, "Quest not found")); }
+
+        if (req.user.role === "creator") {
+            const currentOrganizeName = (await Admin.findById(req.user.id)).organizeName;
+            const creatorOrganizeName = (await Admin.findById(quest.creatorId)).organizeName;
+            if (currentOrganizeName !== creatorOrganizeName) {
+                return next(createError(401, "You are not allowed to complete this quest"));
+            }
+        }
+
+        quest.questStatus = true
+        await quest.save()
+
+        // ถ้าเควสมี ชั่วโมงกิจกรรม
+        if (quest.activityHour) {
+            const { category, hour } = quest.activityHour
+            // กิจกรรมมหาวิทยาลัย
+            if (category === "1") {
+                for (const participant of quest.participant) {
+                    const { userId } = participant
+                    const user = await User.findById(userId)
+                    user.activityTranscript.category.university.hour += hour
+                    user.activityTranscript.category.university.count += 1
+                    await user.save()
+                }
+            }
+            // กิจกรรมเพื่อเสริมสร้างสมรรถนะ
+            else if (category === "2.1" || category === "2.2" || category === "2.3" || category === "2.4") {
+                let index;
+                if (category === "2.1") index = "morality"
+                else if (category === "2.2") index = "thingking"
+                else if (category === "2.3") index = "relation"
+                else if (category === "2.4") index = "health"
+                for (const participant of quest.participant) {
+                    const { userId } = participant
+                    const user = await User.findById(userId)
+                    user.activityTranscript.category.empowerment.category[index].hour += hour
+                    user.activityTranscript.category.empowerment.category[index].count += 1
+                    await user.save()
+                }
+            }
+            // กิจกรรมเพื่อเสริมสร้างสมรรถนะ
+            else {
+                for (const participant of quest.participant) {
+                    const { userId } = participant
+                    const user = await User.findById(userId)
+                    user.activityTranscript.category.society.hour += hour
+                    user.activityTranscript.category.society.count += 1
+                    await user.save()
+
+                }
+            }
+            return res.json({ msg: `quest: ${quest.questName} complete successfully` });
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 
 
