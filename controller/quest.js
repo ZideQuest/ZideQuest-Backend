@@ -2,6 +2,7 @@ import Quest from '../model/quest.js'
 import Admin from '../model/admin.js'
 import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
+import { cloudinaryUploadImg } from '../util/cloudinary.js'
 import User from '../model/user.js'
 
 export const createQuest = async (req, res, next) => {
@@ -12,11 +13,19 @@ export const createQuest = async (req, res, next) => {
         const location = await Location.findById(locationId)
         if (!location) { return next(createError(400, "Location not found")) }
 
+        // if quest has a picture
+        let imagePath = "";
+        if (req.file?.img) {
+            const newPath = await cloudinaryUploadImg(req.file.img)
+            imagePath = newPath.url
+        }
+
         // create quest
         const quest = await Quest.create({
             ...req.body,
             creatorId: id,
             locationId: locationId,
+            imagePath
         }
         )
         return res.json(quest)
