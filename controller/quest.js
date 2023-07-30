@@ -149,9 +149,9 @@ export const questComplete = async (req, res, next) => {
     try {
         const { id } = req.params;
         const quest = await Quest.findById(id);
-
         if (!quest) { return next(createError(400, "Quest not found")); }
 
+        // validate creator or admin
         if (req.user.role === "creator") {
             const currentOrganizeName = (await Admin.findById(req.user.id)).organizeName;
             const creatorOrganizeName = (await Admin.findById(quest.creatorId)).organizeName;
@@ -160,8 +160,10 @@ export const questComplete = async (req, res, next) => {
             }
         }
 
+        // set quest complete
         quest.questStatus = true
         await quest.save()
+
 
         // ถ้าเควสมี ชั่วโมงกิจกรรม
         if (quest.activityHour) {
@@ -171,8 +173,8 @@ export const questComplete = async (req, res, next) => {
                 for (const participant of quest.participant) {
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscript.category.university.hour += hour
-                    user.activityTranscript.category.university.count += 1
+                    user.activityTranscipt.category.university.hour += hour
+                    user.activityTranscipt.category.university.count += 1
                     await user.save()
                 }
             }
@@ -183,11 +185,13 @@ export const questComplete = async (req, res, next) => {
                 else if (category === "2.2") index = "thingking"
                 else if (category === "2.3") index = "relation"
                 else if (category === "2.4") index = "health"
+
                 for (const participant of quest.participant) {
+                    // console.log(participant)
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscript.category.empowerment.category[index].hour += hour
-                    user.activityTranscript.category.empowerment.category[index].count += 1
+                    user.activityTranscipt.category.empowerment.category[index].hour += hour
+                    user.activityTranscipt.category.empowerment.category[index].count += 1
                     await user.save()
                 }
             }
@@ -196,14 +200,14 @@ export const questComplete = async (req, res, next) => {
                 for (const participant of quest.participant) {
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscript.category.society.hour += hour
-                    user.activityTranscript.category.society.count += 1
+                    user.activityTranscipt.category.society.hour += hour
+                    user.activityTranscipt.category.society.count += 1
                     await user.save()
 
                 }
             }
-            return res.json({ msg: `quest: ${quest.questName} complete successfully` });
         }
+        return res.json({ msg: `quest: ${quest.questName} complete successfully` });
     } catch (error) {
         next(error);
     }
