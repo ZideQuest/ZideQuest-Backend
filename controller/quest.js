@@ -182,8 +182,8 @@ export const questComplete = async (req, res, next) => {
                 for (const participant of quest.participant) {
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscipt.category.university.hour += hour
-                    user.activityTranscipt.category.university.count += 1
+                    user.activityTranscript.category.university.hour += hour
+                    user.activityTranscript.category.university.count += 1
                     await user.save()
                 }
             }
@@ -199,8 +199,8 @@ export const questComplete = async (req, res, next) => {
                     // console.log(participant)
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscipt.category.empowerment.category[index].hour += hour
-                    user.activityTranscipt.category.empowerment.category[index].count += 1
+                    user.activityTranscript.category.empowerment.category[index].hour += hour
+                    user.activityTranscript.category.empowerment.category[index].count += 1
                     await user.save()
                 }
             }
@@ -209,8 +209,8 @@ export const questComplete = async (req, res, next) => {
                 for (const participant of quest.participant) {
                     const { userId } = participant
                     const user = await User.findById(userId)
-                    user.activityTranscipt.category.society.hour += hour
-                    user.activityTranscipt.category.society.count += 1
+                    user.activityTranscript.category.society.hour += hour
+                    user.activityTranscript.category.society.count += 1
                     await user.save()
 
                 }
