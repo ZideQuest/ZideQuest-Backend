@@ -173,20 +173,20 @@ userSchema.pre("save", function (next) {
             this.level = Math.floor(Math.pow(1237.6 / 856 * this.exp, 1 / 1.45));
         }
 
-        const activityTranscipt = this.activityTranscipt
-        const { university, society, empowerment } = activityTranscipt.category
+        const activityTranscript = this.activityTranscript
+        const { university, society, empowerment } = activityTranscript.category
 
         // มีการเพิ่มลด จำนวนกิจกรรม และ ชั่วโมงกิจกรรม ในด้านต่างๆของ กิจกรรมเพื่อเสริมสร้างสมรรถนะ
-        if (this.isModified('activityTranscipt.category.empowerment.category')) {
+        if (this.isModified('activityTranscript.category.empowerment.category')) {
             const { morality, thingking, relation, health } = empowerment.category
             empowerment.count = morality.count + thingking.count + relation.count + health.count
             empowerment.hour = morality.hour + thingking.hour + relation.hour + health.hour
         }
 
         // มีการเพิ่มลด จำนวนกิจกรรม และ ชั่วโมงกิจกรรม ในประเภทต่างๆของกิจกรรม
-        if (this.isModified('activityTranscipt.category')) {
-            activityTranscipt.count = university.count + empowerment.count + society.count
-            activityTranscipt.hour = university.hour + empowerment.hour + society.hour
+        if (this.isModified('activityTranscript.category')) {
+            activityTranscript.count = university.count + empowerment.count + society.count
+            activityTranscript.hour = university.hour + empowerment.hour + society.hour
         }
 
         next()
