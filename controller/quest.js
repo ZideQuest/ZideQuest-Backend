@@ -116,23 +116,33 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         // leave quest
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
         if (alreadyJoin) {
+            // pull user from quest.participants
             quest = await Quest.findByIdAndUpdate(
                 id,
                 { $pull: { participant: { userId: req.user.id } } },
                 { new: true }
             )
-            return res.json(quest);
-
+            // pull quest from user.joinedQuest
+            const user = await User.findByIdAndUpdate(req.user.id,
+                { $pull: { joinedQuest: id } },
+                { new: true }
+            )
+            return res.json({ user, quest });
         }
 
         // join quest
+        // push user to quest.participants
         quest = await Quest.findByIdAndUpdate(
             id,
             { $push: { participant: { userId: req.user.id, status: false } } },
             { new: true }
         );
-
-        return res.json(quest);
+        // push quest to user.joinedQuest
+        const user = await User.findByIdAndUpdate(req.user.id,
+            { $push: { joinedQuest: id } },
+            { new: true }
+        )
+        return res.json({ user, quest });
     } catch (error) {
         next(error);
     }
@@ -173,17 +183,27 @@ export const questComplete = async (req, res, next) => {
         quest.questStatus = true
         await quest.save()
 
+        const actualQuestTime = (quest.timeEnd - quest.timeStart) / (1000 * 60 * 60)
+        const xpGiven = floor(actualQuestTime * 1237.6)
 
+        // ถ้าเควสไม่มีชั่วโมงกิจกรรม
+        if (!quest.activityHour) {
+            for (const participant of quest.participant) {
+                const user = await User.findById(participant.userId)
+                user.exp += xpGiven
+                await user.save()
+            }
+        }
         // ถ้าเควสมี ชั่วโมงกิจกรรม
-        if (quest.activityHour) {
+        else {
             const { category, hour } = quest.activityHour
             // กิจกรรมมหาวิทยาลัย
             if (category === "1") {
                 for (const participant of quest.participant) {
-                    const { userId } = participant
-                    const user = await User.findById(userId)
+                    const user = await User.findById(participant.userId)
                     user.activityTranscript.category.university.hour += hour
                     user.activityTranscript.category.university.count += 1
+                    user.exp += xpGiven
                     await user.save()
                 }
             }
@@ -196,23 +216,21 @@ export const questComplete = async (req, res, next) => {
                 else if (category === "2.4") index = "health"
 
                 for (const participant of quest.participant) {
-                    // console.log(participant)
-                    const { userId } = participant
-                    const user = await User.findById(userId)
-                    user.activityTranscript.category.empowerment.category[index].hour += hour
-                    user.activityTranscript.category.empowerment.category[index].count += 1
+                    const user = await User.findById(participant.userId)
+                    user.activityTranscript.category.empowerment.category["index"].hour += hour
+                    user.activityTranscript.category.empowerment.category["index"].count += 1
+                    user.exp += xpGiven
                     await user.save()
                 }
             }
             // กิจกรรมเพื่อเสริมสร้างสมรรถนะ
             else {
                 for (const participant of quest.participant) {
-                    const { userId } = participant
-                    const user = await User.findById(userId)
-                    user.activityTranscript.category.society.hour += hour
-                    user.activityTranscript.category.society.count += 1
+                    const user = await User.findById(participant.userId)
+                    user.activityTranscript.category.university.hour += hour
+                    user.activityTranscript.category.university.count += 1
+                    user.exp += xpGiven
                     await user.save()
-
                 }
             }
         }
@@ -221,8 +239,3 @@ export const questComplete = async (req, res, next) => {
         next(error);
     }
 }
-
-
-
-
-
