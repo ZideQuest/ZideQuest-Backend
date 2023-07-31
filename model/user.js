@@ -170,7 +170,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", function (next) {
     try {
         if (this.isModified('exp')) {
-            this.level = Math.floor(Math.pow(1237.6 / 856 * this.exp, 1 / 1.45));
+            this.level = Math.floor(Math.pow(this.exp / 856, 1 / 1.45));
         }
 
         const activityTranscript = this.activityTranscript
