@@ -1,17 +1,25 @@
 import Location from "../model/location.js"
 import Admin from "../model/admin.js"
 import { createError } from "../util/createError.js"
+import { cloudinaryUploadImg } from '../util/cloudinary.js'
 
 export const createLocation = async (req, res, next) => {
     try {
         // require 4 parameters from body and another 1 from auth
-        const { locationName, latitude, longitude, locationPicturePath } = req.body;
+        const { locationName, latitude, longitude } = req.body;
         const { id } = req.user;
 
         // validate
-        if (!(locationName && latitude && longitude && locationPicturePath && id)) {
+        if (!(locationName && latitude && longitude && id)) {
             throw new Error("All fields are required");
         }
+
+        let locationPicturePath = ""
+        if (req.file?.path) {
+            var newPath = await cloudinaryUploadImg(req.file.path)
+            locationPicturePath = newPath.url
+        }
+
         try {
             const newLocation = await Location.create({
                 locationName,
@@ -39,10 +47,10 @@ export const getAllLocation = async (req, res, next) => {
 }
 
 export const getLocationById = async (req, res, next) => {
-	const { id } = req.params;
+    const { id } = req.params;
 
     try {
-        const location = await Location.findById({_id: id});
+        const location = await Location.findById({ _id: id });
         if (!location) {
             return next(createError(400, "location not found"));
         }
@@ -78,7 +86,7 @@ export const updateLocationById = async (req, res, next) => {
         // var { organizeName } = await Admin.findById(creatorId);
         // const newOrganize = organizeName;
         // var { organizeName } = await Admin.findById(location.creatorId);
-        
+
         return res.json({
             locaiton: location,
             status: "success"
@@ -89,7 +97,7 @@ export const updateLocationById = async (req, res, next) => {
 }
 
 export const deleteLocaitonById = async (req, res, next) => {
-	const { id } = req.params;
+    const { id } = req.params;
     const creatorId = req.user.id;
     const creatorRole = req.user.role;
 
@@ -100,13 +108,13 @@ export const deleteLocaitonById = async (req, res, next) => {
             }
         }
 
-        const location = await Location.findByIdAndDelete({_id: id});
+        const location = await Location.findByIdAndDelete({ _id: id });
 
         if (!location) {
             return next(createError(400, "location not found"));
         }
 
-        return res.json({status: "success"});
+        return res.json({ status: "success" });
     } catch (error) {
         next(error);
     }
