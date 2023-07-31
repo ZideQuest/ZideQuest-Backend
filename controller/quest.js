@@ -184,7 +184,7 @@ export const questComplete = async (req, res, next) => {
         await quest.save()
 
         const actualQuestTime = (quest.timeEnd - quest.timeStart) / (1000 * 60 * 60)
-        const xpGiven = floor(actualQuestTime * 1237.6)
+        const xpGiven = Math.floor(actualQuestTime * 1237.6)
 
         // ถ้าเควสไม่มีชั่วโมงกิจกรรม
         if (!quest.activityHour) {
