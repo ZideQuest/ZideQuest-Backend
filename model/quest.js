@@ -44,13 +44,6 @@ const questSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Tag"
     }],
-    questStatus: {
-        type: Boolean,
-        default: false
-    },
-    maxParticipant: {
-        type: Number,
-    },
     qrCode: {
         type: Number,
     },
@@ -63,10 +56,26 @@ const questSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         }
-    }]
+    }],
+    countParticipant: {
+        type: Number,
+        default: 0
+    },
+    maxParticipant: {
+        type: Number,
+        default: 1
+    }
 }, {
     timestamps: true
 })
 
-const Quest = mongoose.models.Quest || mongoose.model("quest", questSchema)
+questSchema.pre("save", function (next) {
+    if (this.isModified('participant')) {
+        this.countParticipant = participant
+    }
+    next()
+})
+
+
+const Quest = mongoose.models.Quest || mongoose.model("Quest", questSchema)
 export default Quest

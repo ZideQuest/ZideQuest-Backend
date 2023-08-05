@@ -65,3 +65,31 @@ export const updateUserById = async (req, res, next) => {
     }
 }
 
+export const getUserQuest = async (req, res, next) => {
+    try {
+        const { joinedQuest } = await User.findById(req.params.id).select('joinedQuest').populate('joinedQuest')
+        const currentQuest = []
+        const successQuest = []
+
+        // seperate a type of quest
+        for (const quest of joinedQuest) {
+            const { _id, name, countParticipant, maxParticipant } = quest
+            if (quest.status !== true)
+                currentQuest.push({ _id, name, countParticipant, maxParticipant })
+            else
+                successQuest.push({ _id, name, countParticipant, maxParticipant })
+        }
+        return res.json({ currentQuest, successQuest })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getUserActivity = async (req, res, next) => {
+    try {
+        const { activityTranscript } = await User.findById(req.params.id).select('activityTranscript')
+        return res.json(activityTranscript)
+    } catch (error) {
+        next(error)
+    }
+}
