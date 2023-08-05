@@ -84,16 +84,14 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Account"
     },
+    profilePicturePath: {
+        type: String,
+    },
     exp: {
         type: Number,
         default: 0
     },
     level: {
-        // baseXp = 856
-        // lets say xpNeededforNextLevel = floor(baseXp * (level ^ 1.45))
-        // actualQuestTime = (questEndTime - startTime) / (1000 * 60 * 60) <- ms to hr
-        // xpGiven = floor(actualQuestTime * 1237.6) <- doesn't need creator's input anymnore
-        // lv1 - lv10 need 79 hrs
         type: Number,
         default: 1
     },
