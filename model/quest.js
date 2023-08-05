@@ -64,6 +64,10 @@ const questSchema = new mongoose.Schema({
     maxParticipant: {
         type: Number,
         default: 1
+    },
+    autoComplete: {
+        type: Boolean,
+        required: true,
     }
 }, {
     timestamps: true
