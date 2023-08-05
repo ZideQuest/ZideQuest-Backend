@@ -242,7 +242,7 @@ export const questComplete = async (req, res, next) => {
 
 export const recommendQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({ questStatus: false }).limit(4)
+        const quests = await Quest.find({ status: false }).limit(4)
         return res.json(quests)
     } catch (error) {
         next(error)
