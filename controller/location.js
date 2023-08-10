@@ -1,4 +1,5 @@
 import Location from "../model/location.js"
+import Quest from "../model/quest.js"
 import Admin from "../model/admin.js"
 import { createError } from "../util/createError.js"
 import { cloudinaryUploadImg } from '../util/cloudinary.js'
@@ -51,10 +52,12 @@ export const getLocationById = async (req, res, next) => {
 
     try {
         const location = await Location.findById({ _id: id });
-        if (!location) {
-            return next(createError(400, "location not found"));
-        }
-        return res.json(location);
+        if (!location) { return next(createError(400, "location not found")); }
+        const quests = await Quest.find({ locationId: id })
+        return res.json({
+            location,
+            quests
+        });
     } catch (error) {
         next(error);
     }
