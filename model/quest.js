@@ -37,9 +37,9 @@ const questSchema = new mongoose.Schema({
             type: Number
         }
     },
-    imagePath: [{
+    picturePath: {
         type: String,
-    }],
+    },
     tagId: [{
         type: mongoose.Types.ObjectId,
         ref: "Tag"

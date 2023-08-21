@@ -15,10 +15,7 @@ const accountSchema = new mongoose.Schema({
         required: true,
         default: "user",
         enum: ["user", "creator", "admin"]
-    },
-    profilePicture: {
-        type: String,
-    },
+    }
 }, {
     timestamps: true
 })

@@ -17,7 +17,7 @@ const locationSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    locationPicturePath: {
+    picturePath: {
         type: String,
         unique: true,
         trim: true,
