@@ -11,6 +11,54 @@ const activityInfo = {
     }
 }
 
+const achievement = {
+    hr1: {
+        progress: {
+            type: Number,
+            Max: 1,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
+    },
+    hr10: {
+        progress: {
+            type: Number,
+            Max: 10,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
+    },
+    hr100: {
+        progress: {
+            type: Number,
+            Max: 100,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
+    },
+    allLocation: {
+        // idk how many location pins are there
+        progress: {
+            type: Number,
+            Max: 50,
+            default: 0
+        },
+        isAchieved: {
+            type: Boolean,
+            default: false
+        }
+    }
+}
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -36,7 +84,24 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Account"
     },
-    activityTranscipt: {
+    exp: {
+        type: Number,
+        default: 0
+    },
+    level: {
+        // baseXp = 856
+        // lets say xpNeededforNextLevel = floor(baseXp * (level ^ 1.45))
+        // actualQuestTime = (questEndTime - startTime) / (1000 * 60 * 60) <- ms to hr
+        // xpGiven = floor(actualQuestTime * 1237.6) <- doesn't need creator's input anymnore
+        // lv1 - lv10 need 79 hrs
+        type: Number,
+        default: 1
+    },
+    joinedQuest: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Quest"
+    }],
+    activityTranscript: {
         name: {
             type: String,
             default: "กิจกรรม"
@@ -104,6 +169,10 @@ const userSchema = new mongoose.Schema({
 // อัพเดท จำนวนกิจกรรมรวม, ชั่วโมงกิจกรรมรวม 
 userSchema.pre("save", function (next) {
     try {
+        if (this.isModified('exp')) {
+            this.level = Math.floor(Math.pow(1237.6 / 856 * this.exp, 1 / 1.45));
+        }
+
         const activityTranscipt = this.activityTranscipt
         const { university, society, empowerment } = activityTranscipt.category
 
