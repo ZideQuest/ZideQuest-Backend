@@ -1,7 +1,7 @@
 import Quest from '../model/quest.js'
 import { createError } from "../util/createError.js"
 
-export const getSearchByQuestname = async (req, res, next) => {
+export const getSearch = async (req, res, next) => {
     try {
         const { questName, timeStart, timeEnd, tagId } = req.query;
 

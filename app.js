@@ -17,6 +17,7 @@ import questRoutes from './routes/quest.js'
 import locationRoutes from './routes/location.js'
 import adminRoutes from './routes/admin.js'
 import creatorRoutes from './routes/creator.js'
+import searchRoutes from './routes/search.js'
 import { errorMiddleware } from './middleware/errorHandler.js'
 
 
@@ -70,6 +71,7 @@ function createApp() {
     app.use("/api/location", locationRoutes);
     app.use("/api/admin", adminRoutes);
     app.use("/api/creator", creatorRoutes);
+    app.use("/api/search", searchRoutes);
 
     // Error handler
     app.use(errorMiddleware);
