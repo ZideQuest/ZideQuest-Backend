@@ -4,6 +4,14 @@ import { verifyAdmin, verifyCreator } from "../middleware/auth.js";
 import { upload } from "../middleware/uploadImg.js";
 const router = Router();
 
+/**
+ * @swagger
+ * /location:
+ *   get:
+ *     summary: account
+ *     description: testing an API.
+*/
+
 router.post("/", verifyCreator, upload.single('img'), createLocation);
 router.get("/", getAllLocation);
 router.get("/:id", getLocationById);
