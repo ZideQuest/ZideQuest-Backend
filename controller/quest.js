@@ -44,11 +44,27 @@ export const getQuest = async (req, res, next) => {
 export const getQuestById = async (req, res, next) => {
     try {
         const { id } = req.params
-        const quest = await Quest.findById(id)
+        const quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) {
             return next(createError(400, "Quest not found"))
         }
-        return res.json(quest)
+        const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
+
+        const questDetail = {
+            questName: quest.questName,
+            creatorName: quest.creatorId.organizeName,
+            creatorPic: quest.creatorId?.picturePath,
+            locationName: quest.locationId.locationName,
+            picturePath: quest.picturePath,
+            timeStart: quest.timeStart,
+            timeEnd: quest.timeEnd,
+            description: quest.description,
+            status: quest.status,
+            tag: tagNames,
+            countParticipant: quest.countParticipant,
+            maxParticipant: quest.maxParticipant,
+        }
+        return res.json(questDetail)
     } catch (error) {
         next(error)
     }

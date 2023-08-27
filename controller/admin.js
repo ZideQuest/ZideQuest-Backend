@@ -43,8 +43,8 @@ export const getAdmin = async (req, res, next) => {
 export const getAdminById = async (req, res, next) => {
     try {
         const admin = await Admin.findById(req.params.id)
-        if (admin.role != "admin") return next(createError(400, "Admin not found"))
         if (!admin) return next(createError(400, "Admin not found"))
+        if (admin.role != "admin") return next(createError(400, "Admin not found"))
 
         return res.json(admin)
     } catch (error) {
