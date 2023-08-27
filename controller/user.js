@@ -8,10 +8,18 @@ export const createUser = async (req, res, next) => {
         const { username, password, ...userInfo } = req.body
         const account = await Account.createAccount(username, password, "user")
         try {
+            let picturePath = ""
+            if (req.file?.path) {
+                let newPath = await cloudinaryUploadImg(req.file.path)
+                picturePath = newPath.url
+            }
+
             const user = await User.create({
                 ...userInfo,
-                accountId: account._id
+                accountId: account._id,
+                picturePath
             })
+
             return res.json(user)
         } catch (error) {
             await Account.findByIdAndDelete(account._id)

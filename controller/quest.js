@@ -14,10 +14,10 @@ export const createQuest = async (req, res, next) => {
         if (!location) { return next(createError(400, "Location not found")) }
 
         // if quest has a picture
-        let imagePath = "";
+        let picturePath = "";
         if (req.file?.img) {
             const newPath = await cloudinaryUploadImg(req.file.img)
-            imagePath = newPath.url
+            picturePath = newPath.url
         }
 
         // create quest
@@ -25,7 +25,7 @@ export const createQuest = async (req, res, next) => {
             ...req.body,
             creatorId: id,
             locationId: locationId,
-            imagePath
+            picturePath
         }
         )
         return res.json(quest)

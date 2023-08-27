@@ -8,11 +8,19 @@ export const createAdmin = async (req, res, next) => {
         const { username, password, ...adminInfo } = req.body
         const account = await Account.createAccount(username, password, "admin")
         try {
+            let picturePath = ""
+            if (req.file?.path) {
+                let newPath = await cloudinaryUploadImg(req.file.path)
+                picturePath = newPath.url
+            }
+
             const admin = await Admin.create({
                 role: "admin",
                 ...adminInfo,
-                accountId: account._id
+                accountId: account._id,
+                picturePath
             })
+
             return res.json(admin)
         } catch (error) {
             await Account.findByIdAndDelete(account._id)
