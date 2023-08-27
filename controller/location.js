@@ -33,9 +33,7 @@ export const createLocation = async (req, res, next) => {
             next(error);
         }
     } catch (error) {
-        console.log(error)
         next(error);
-
     }
 }
 
