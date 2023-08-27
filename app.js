@@ -1,5 +1,5 @@
 // Package Import
-import express from 'express'
+import express from 'express';
 import morgan from 'morgan';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit'
@@ -8,6 +8,8 @@ import hpp from 'hpp'
 import compression from 'compression';
 import xXssProtection from 'x-xss-protection';
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-jsdoc ";
+import swaggerJsdoc from "swagger-jsdoc ";
 
 // Routes Import
 import accountRoutes from './routes/account.js'
@@ -77,6 +79,48 @@ function createApp() {
 
     // Error handler
     app.use(errorMiddleware);
+
+    // Swagger
+    const express = require("express"),
+    bodyParser = require("body-parser"),
+    swaggerJsdoc = require("swagger-jsdoc"),
+    swaggerUi = require("swagger-ui-express");
+
+    const options = {
+        definition: {
+          openapi: "3.1.0",
+          info: {
+            title: "Zide Quest",
+            version: "0.1.0",
+            description:
+              "KU Zide Quest",
+            license: {
+              name: "MIT",
+              url: "https://spdx.org/licenses/MIT.html",
+            },
+            contact: {
+              name: "Puppie",
+              url: "https",
+              email: "phakpoom.ac@gmail.com",
+            },
+          },
+          servers: [
+            {
+            //   url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/",
+            url: "http://localhost:3000"
+            },
+          ],
+        },
+        apis: ["./routes/*.js"],
+      };
+      
+      const specs = swaggerJsdoc(options);
+      app.use(
+        "/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(specs, { explorer: true })
+      );
+
     return app
 }
 
