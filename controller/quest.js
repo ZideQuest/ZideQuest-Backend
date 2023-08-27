@@ -12,11 +12,10 @@ export const createQuest = async (req, res, next) => {
         const { locationId } = req.params
         const location = await Location.findById(locationId)
         if (!location) { return next(createError(400, "Location not found")) }
-
         // if quest has a picture
         let picturePath = "";
-        if (req.file?.img) {
-            const newPath = await cloudinaryUploadImg(req.file.img)
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
             picturePath = newPath.url
         }
 
