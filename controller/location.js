@@ -9,16 +9,15 @@ export const createLocation = async (req, res, next) => {
         // require 4 parameters from body and another 1 from auth
         const { locationName, latitude, longitude } = req.body;
         const { id } = req.user;
-
         // validate
         if (!(locationName && latitude && longitude && id)) {
             throw new Error("All fields are required");
         }
 
-        let locationPicturePath = ""
+        let picturePath = ""
         if (req.file?.path) {
-            var newPath = await cloudinaryUploadImg(req.file.path)
-            locationPicturePath = newPath.url
+            let newPath = await cloudinaryUploadImg(req.file.path)
+            picturePath = newPath.url
         }
 
         try {
@@ -26,7 +25,7 @@ export const createLocation = async (req, res, next) => {
                 locationName,
                 latitude,
                 longitude,
-                locationPicturePath,
+                picturePath,
                 creatorId: id
             });
             return res.json(newLocation);

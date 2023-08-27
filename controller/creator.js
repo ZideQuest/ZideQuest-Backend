@@ -7,10 +7,15 @@ export const createCreator = async (req, res, next) => {
         const { username, password, ...creatorInfo } = req.body
         const account = await Account.createAccount(username, password, "creator")
         try {
+            let picturePath = ""
+            if (req.file?.path) {
+                let newPath = await cloudinaryUploadImg(req.file.path)
+                picturePath = newPath.url
+            }
             const creator = await Admin.create({
-
                 ...creatorInfo,
-                accountId: account._id
+                accountId: account._id,
+                picturePath
             })
             return res.json(creator)
         } catch (error) {
