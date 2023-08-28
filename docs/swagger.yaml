@@ -68,8 +68,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/quest/64be41057152ad9f4e4f1d9x:
+    /user/quest/{id}:
         get:
+            parameters:
+            -   in: path
+                name: id
+                required: true
+                schema:
+                    type: string
             tags:
                 - user
             summary: get users quest
@@ -78,8 +84,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/activity/64c761e593a46d0244989a22:
+    /user/activity/{id}:
         get:
+            parameters:
+            -   in: path
+                name: id
+                required: true
+                schema:
+                    type: string
             tags:
                 - user
             summary: get users activity
@@ -88,8 +100,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/64c758d342ceb1dfe3545653:
+    /user/{id}:
         delete:
+            parameters:
+            -   in: path
+                name: id
+                required: true
+                schema:
+                    type: string
             tags:
                 - user
             summary: delete user
@@ -98,7 +116,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/64ba9869f3f43c071ca8e34f:
         put:
             tags:
                 - user
@@ -284,7 +301,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /location/:
+    /location:
         post:
             tags:
                 - location
@@ -323,8 +340,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /location/64be174a50f51dada1276bd2:
+    /location/{id}:
         get:
+            parameters:
+            -   in: path
+                name: id
+                required: true
+                schema:
+                    type: string
             tags:
                 - location
             summary: getLocationById
@@ -333,8 +356,13 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /location/64bdefb5ce0d5789a968ebf1:
         put:
+            parameters:
+            -   in: path
+                name: id
+                required: true
+                schema:
+                    type: string
             tags:
                 - location
             summary: updateLocationById
