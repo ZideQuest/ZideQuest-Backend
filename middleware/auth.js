@@ -18,7 +18,6 @@ export const verifyUser = (req, res, next) => {
 
         // keep id and role in request for the next handler function
         req.user = { id, role }
-
         next()
     } catch (error) {
         next(error)
