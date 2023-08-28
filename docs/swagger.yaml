@@ -491,7 +491,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /admin/{id}:
         delete:
             parameters:
                 - in: path
@@ -510,6 +509,12 @@ paths:
                     content:
                         application/json: {}
         put:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - admin
             summary: updateAdminID
