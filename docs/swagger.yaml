@@ -225,7 +225,6 @@ paths:
                   required: true
                   schema:
                       type: string
-
             tags:
                 - quest
             summary: get quest by location ID
@@ -234,8 +233,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/64be8c7c139837808e0dd848:
+    /quest/{id}:
         delete:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - quest
             summary: delete quest
@@ -262,8 +267,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/join-leave/64c764ec93a46d0244989a35:
+    /quest/join-leave/{id}:
         put:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - quest
             summary: join+leave Quest
@@ -290,8 +301,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/complete/64c764ec93a46d0244989a35:
+    /quest/complete/{id}:
         post:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - quest
             summary: quest complete
@@ -446,8 +463,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /admin/64eb4eceeb2e7496d7acacc8:
+    /admin/{id}:
         get:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - admin
             summary: getAdminID
@@ -456,8 +479,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /admin/64be23df5816763750320644:
+    /admin/{id}:
         delete:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - admin
             summary: deleteAdminID
@@ -512,8 +541,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /creator/64be30a52723ef2909309f1d:
+    /creator/{id}:
         get:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - creator
             summary: get Creator by id
@@ -574,8 +609,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /tag/64be20c64f677fe36cf111fd:
+    /tag/{id}:
         delete:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - tag
             summary: delete tag
@@ -584,8 +625,13 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /tag/64be20564f677fe36cf111f8:
         put:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - tag
             summary: update tag
