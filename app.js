@@ -8,7 +8,7 @@ import hpp from 'hpp'
 import compression from 'compression';
 import xXssProtection from 'x-xss-protection';
 import cookieParser from "cookie-parser";
-
+import cors from 'cors'
 // Routes Import
 import accountRoutes from './routes/account.js'
 import userRoutes from './routes/user.js'
@@ -56,6 +56,7 @@ function createApp() {
     app.use(ExpressMongoSanitize());    // data sanitiztion against NoSQL query injection
     app.use(xXssProtection());          // data sanitiztion against XSS
     app.use(compression());             // compress requests
+    app.use(cors());             // compress requests
 
     const swaggerDocument = YAML.load('./docs/swagger.yaml');
 
