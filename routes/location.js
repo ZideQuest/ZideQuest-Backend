@@ -7,7 +7,7 @@ const router = Router();
 router.post("/", verifyCreator, upload.single('img'), createLocation);
 router.get("/", getAllLocation);
 router.get("/:id", getLocationById);
-router.put("/:id", verifyCreator, updateLocationById);
+router.put("/:id", verifyCreator, upload.single('img'), updateLocationById);
 router.delete("/:id", verifyCreator, deleteLocaitonById);
 
 export default router;

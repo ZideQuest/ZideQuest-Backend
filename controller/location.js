@@ -85,9 +85,12 @@ export const updateLocationById = async (req, res, next) => {
             return next(createError(400, "location not found"));
         }
 
-        // var { organizeName } = await Admin.findById(creatorId);
-        // const newOrganize = organizeName;
-        // var { organizeName } = await Admin.findById(location.creatorId);
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
+            const picturePath = newPath.url
+            location.picturePath = picturePath
+            await location.save()
+        }
 
         return res.json({
             locaiton: location,

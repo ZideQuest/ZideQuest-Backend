@@ -68,6 +68,13 @@ export const updateCreatorById = async (req, res, next) => {
         const creator = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true })
         if (!creator) return next(createError(400, "Creator not found"))
 
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
+            const picturePath = newPath.url
+            creator.picturePath = picturePath
+            await creator.save()
+        }
+
         return res.json({
             msg: `Update Admin successfully`,
             accountId: creator.accountId,

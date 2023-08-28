@@ -8,6 +8,6 @@ router.post("/", upload.single('img'), createAdmin)
 router.get("/", getAdmin)
 router.get("/:id", getAdminById)
 router.delete("/:id", deleteAdminById)
-router.put("/:id", updateAdminById)
+router.put("/:id", upload.single('img'), updateAdminById)
 
 export default router

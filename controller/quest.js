@@ -87,8 +87,14 @@ export const updateQuestById = async (req, res, next) => {
                 return next(createError(401, "You are not allowed to delete this quest"));
             }
         }
-
         const updatedQuest = await Quest.findByIdAndUpdate(id, req.body, { new: true })
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
+            const picturePath = newPath.url
+            updatedQuest.picturePath = picturePath
+            await updatedQuest.save()
+        }
+
         return res.json(updatedQuest)
     } catch (error) {
         next(error)

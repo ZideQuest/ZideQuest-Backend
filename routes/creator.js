@@ -8,6 +8,6 @@ router.post("/", upload.single('img'), createCreator)
 router.get("/", getCreator)
 router.get("/:id", getCreatorById)
 router.delete("/:id", deleteCreatorById)
-router.put("/:id", updateCreatorById)
+router.put("/:id", upload.single('img'), updateCreatorById)
 
 export default router
