@@ -114,8 +114,14 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/location/64eb6259fee9a0450ce1f475:
+    /quest/location/{id}:
         post:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - quest
             summary: create quest
@@ -172,8 +178,20 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/participants/64eb53b1eb2e7496d7acacd7:
+    /quest/participants/{id}:
         get:
+            parameters:
+                -   in: path
+                    name: id
+                    required: true
+                    schema:
+                      type: string
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             tags:
                 - quest
             summary: get quest participants
@@ -182,8 +200,15 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/find/64eb53b1eb2e7496d7acacd7:
+    /quest/find/{id}:
         get:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+
             tags:
                 - quest
             summary: get quest by location ID
