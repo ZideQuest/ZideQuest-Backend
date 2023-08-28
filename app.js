@@ -10,6 +10,8 @@ import xXssProtection from 'x-xss-protection';
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import swaggerDocument from "./docs/location.json"
+import YAML from "yamljs";
 
 // Routes Import
 import accountRoutes from './routes/account.js'
@@ -67,6 +69,7 @@ function createApp() {
     }
 
     // Swagger
+    // const specs = YAML.parse("./docs/location.yaml")
     const options = {
         definition: {
             openapi: "3.1.0",
@@ -83,20 +86,28 @@ function createApp() {
             },
             servers: [
                 {
-                    // url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/",
-                    url: "http://localhost:3000/api"
+                    // url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api",
+                    url: "http://localhost:3000"
                 },
             ],
+            // api: ["./docs/location.yaml"]
         },
-        apis: ["./routes/*.js"],
         };
-        
-    const specs = swaggerJsdoc(options);
+
+
+
+    // const specs = swaggerJsdoc(options);
     app.use(
     "/api-docs",
     swaggerUi.serve,
-    swaggerUi.setup(specs)
+    swaggerUi.setup(options)
     );
+
+    app.use('/api-docs', function(req, res, next){
+        swaggerDocument.host = req.get('host');
+        req.swaggerDoc = swaggerDocument;
+        next();
+    }, swaggerUi.serveFiles(swaggerDocument, options), swaggerUi.setup());
 
     // routes
     app.use("/api/account", accountRoutes);

@@ -1,0 +1,72 @@
+paths:
+  /api/creators:
+    post:
+      summary: Create a new creator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                ... (other creatorInfo properties)
+      responses:
+        '200':
+          description: Creator created successfully
+    get:
+      summary: Get all creators
+      responses:
+        '200':
+          description: List of creators
+  /api/creators/{id}:
+    get:
+      summary: Get a creator by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Creator found
+        '400':
+          description: Creator not found
+    put:
+      summary: Update a creator by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ... (properties to update)
+      responses:
+        '200':
+          description: Creator updated successfully
+        '400':
+          description: Creator not found
+    delete:
+      summary: Delete a creator by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Creator and associated account deleted successfully
+        '400':
+          description: Creator not found
