@@ -189,30 +189,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/complete/{id}:
-        post:
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            tags:
-                - quest
-            summary: quest complete
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            example: ""
-            security:
-                - bearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
     /quest/find/:
         get:
             tags:
@@ -290,7 +266,7 @@ paths:
                     content:
                         application/json: {}
     /quest/join-leave/{id}:
-        put:
+        patch:
             parameters:
                 - in: path
                   name: id
@@ -313,6 +289,30 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
+    /quest/complete/{id}:
+            patch:
+                parameters:
+                    - in: path
+                      name: id
+                      required: true
+                      schema:
+                          type: string
+                tags:
+                    - quest
+                summary: quest complete
+                requestBody:
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example: ""
+                security:
+                    - bearerAuth: []
+                responses:
+                    "200":
+                        description: Successful response
+                        content:
+                            application/json: {}
     /quest/{id}:
         delete:
             parameters:
