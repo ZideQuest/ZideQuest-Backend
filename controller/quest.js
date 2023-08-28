@@ -48,7 +48,16 @@ export const getQuestById = async (req, res, next) => {
         if (!quest) {
             return next(createError(400, "Quest not found"))
         }
+
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
+        const userId = req.user?.id
+
+        let isJoin = false
+        quest.participant.forEach((user) => {
+            if (user.userId == userId) {
+                isJoin = true
+            }
+        })
 
         const questDetail = {
             questName: quest.questName,
@@ -63,6 +72,7 @@ export const getQuestById = async (req, res, next) => {
             tag: tagNames,
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
+            isJoin
         }
         return res.json(questDetail)
     } catch (error) {

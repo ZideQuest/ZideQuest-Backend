@@ -6,7 +6,7 @@ import { upload } from "../middleware/uploadImg.js";
 const router = Router()
 
 router.get("/find", getQuest)
-router.get("/find/:id", getQuestById)
+router.get("/find/:id", verifyUser, getQuestById)
 router.get("/participants/:id", getQuestParticipantsById)
 router.get("/recommend", recommendQuest)
 
