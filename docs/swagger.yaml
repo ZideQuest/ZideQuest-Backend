@@ -111,6 +111,8 @@ paths:
             tags:
                 - user
             summary: delete user
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -126,6 +128,8 @@ paths:
                         schema:
                             type: object
                             example: ""
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -262,6 +266,8 @@ paths:
                         schema:
                             type: object
                             example: ""
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -338,6 +344,8 @@ paths:
                             example:
                                 username: zidequest
                                 password: "123"
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -421,6 +429,8 @@ paths:
                                 createdAt: "2023-07-24T03:27:49.815Z"
                                 updatedAt: "2023-07-24T03:27:49.815Z"
                                 __v: 0
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -430,6 +440,8 @@ paths:
             tags:
                 - location
             summary: deleteLocationById
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -490,6 +502,8 @@ paths:
             tags:
                 - admin
             summary: deleteAdminID
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -561,6 +575,8 @@ paths:
             tags:
                 - creator
             summary: delete Creator
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -595,6 +611,8 @@ paths:
                         schema:
                             type: string
                             example: '"{\r\n    \"tagName\": \"testnisit\"\r\n}"'
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -620,6 +638,8 @@ paths:
             tags:
                 - tag
             summary: delete tag
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
@@ -641,6 +661,8 @@ paths:
                         schema:
                             type: string
                             example: '"{\r\n    \"tagName\": \"betternisit\"\r\n}"'
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
