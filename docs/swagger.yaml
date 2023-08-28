@@ -100,6 +100,23 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
+        put:
+            tags:
+                - user
+            summary: update user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
     /user/{id}:
         delete:
             parameters:
@@ -111,23 +128,6 @@ paths:
             tags:
                 - user
             summary: delete user
-            security:
-                - bearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
-        put:
-            tags:
-                - user
-            summary: update user
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            example: ""
             security:
                 - bearerAuth: []
             responses:
@@ -189,6 +189,30 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
+    /quest/complete/{id}:
+        post:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            tags:
+                - quest
+            summary: quest complete
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
     /quest/find/:
         get:
             tags:
@@ -237,19 +261,11 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/{id}:
-        delete:
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
+    /quest/recommend:
+        get:
             tags:
                 - quest
-            summary: delete quest
-            security:
-                - bearerAuth: []
+            summary: recomendQuest
             responses:
                 "200":
                     description: Successful response
@@ -297,18 +313,8 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/recommend:
-        get:
-            tags:
-                - quest
-            summary: recomendQuest
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
-    /quest/complete/{id}:
-        post:
+    /quest/{id}:
+        delete:
             parameters:
                 - in: path
                   name: id
@@ -317,13 +323,7 @@ paths:
                       type: string
             tags:
                 - quest
-            summary: quest complete
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            example: ""
+            summary: delete quest
             security:
                 - bearerAuth: []
             responses:
@@ -491,23 +491,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-        delete:
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            tags:
-                - admin
-            summary: deleteAdminID
-            security:
-                - bearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
         put:
             parameters:
                 - in: path
@@ -525,6 +508,23 @@ paths:
                             type: object
                             example:
                                 organizeName: yeet
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        delete:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            tags:
+                - admin
+            summary: deleteAdminID
             security:
                 - bearerAuth: []
             responses:
@@ -576,17 +576,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-        delete:
-            tags:
-                - creator
-            summary: delete Creator
-            security:
-                - bearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
         put:
             tags:
                 - creator
@@ -598,6 +587,17 @@ paths:
                             type: object
                             example:
                                 organizeName: yeet
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        delete:
+            tags:
+                - creator
+            summary: delete Creator
             security:
                 - bearerAuth: []
             responses:
@@ -633,23 +633,6 @@ paths:
                     content:
                         application/json: {}
     /tag/{id}:
-        delete:
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            tags:
-                - tag
-            summary: delete tag
-            security:
-                - bearerAuth: []
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json: {}
         put:
             parameters:
                 - in: path
@@ -666,6 +649,23 @@ paths:
                         schema:
                             type: string
                             example: '"{\r\n    \"tagName\": \"betternisit\"\r\n}"'
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        delete:
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            tags:
+                - tag
+            summary: delete tag
             security:
                 - bearerAuth: []
             responses:
