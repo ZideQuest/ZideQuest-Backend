@@ -11,7 +11,7 @@ router.get("/activity/:id", getUserActivity)
 
 router.post("/", upload.single('igmg'), createUser)
 router.delete("/:id", deleteUserById)
-router.put("/:id", updateUserById)
+router.put("/:id", upload.single("img"), updateUserById)
 
 
 

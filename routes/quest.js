@@ -13,7 +13,7 @@ router.get("/recommend", recommendQuest)
 router.post("/location/:locationId", verifyCreator, upload.single('img'), createQuest)
 router.post("/complete/:id", verifyCreator, questComplete)
 
-router.put("/find/:id", verifyCreator, updateQuestById)
+router.put("/find/:id", verifyCreator, upload.single('img'), updateQuestById)
 router.put("/join-leave/:id", verifyUser, joinOrLeaveQuest)
 
 router.delete("/:id", verifyCreator, deleteQuestById)

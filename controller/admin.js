@@ -75,6 +75,12 @@ export const updateAdminById = async (req, res, next) => {
         if (admin.role != "admin") return next(createError(400, "Admin not found"))
         if (!admin) return next(createError(400, "Admin not found"))
 
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
+            const picturePath = newPath.url
+            admin.picturePath = picturePath
+            await admin.save()
+        }
         return res.json({
             msg: `Update Admin successfully`,
             accountId: admin.accountId,

@@ -66,7 +66,12 @@ export const updateUserById = async (req, res, next) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
         if (!user) return next(createError(400, "User not found"))
-
+        if (req.file?.path) {
+            const newPath = await cloudinaryUploadImg(req.file.path)
+            const picturePath = newPath.url
+            user.picturePath = picturePath
+            await user.save()
+        }
         return res.json({ msg: `Update User: ${user.nisitId} successfully` })
     } catch (error) {
         next(error)
