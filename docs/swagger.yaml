@@ -1,0 +1,548 @@
+openapi: 3.0.0
+info:
+    title: ZideQuest Copy
+    version: 1.0.0
+servers:
+    - url: http://localhost:3000/api
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+tags:
+    - name: user
+    - name: quest
+    - name: auth
+    - name: location
+    - name: admin
+    - name: creator
+    - name: tag
+paths:
+    /user:
+        post:
+            tags:
+                - user
+            summary: create user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                username: kit
+                                password: "123123"
+                                firstName: Suphakit
+                                lastName: Songsuwong
+                                nisitId: "6510503808"
+                                email: suphakit.song@ku.th
+                                faculty: E
+                                activityTranscript:
+                                    category:
+                                        university:
+                                            count: 2
+                                            hour: 4
+                                        empowerment:
+                                            category:
+                                                morality:
+                                                    count: 1
+                                                    hour: 2
+                                                relation:
+                                                    count: 2
+                                                    hour: 4
+                                        society:
+                                            count: 1
+                                            hour: 2
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /user/find:
+        get:
+            tags:
+                - user
+            summary: get users
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /user/quest/64be41057152ad9f4e4f1d9x:
+        get:
+            tags:
+                - user
+            summary: get users quest
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /user/activity/64c761e593a46d0244989a22:
+        get:
+            tags:
+                - user
+            summary: get users activity
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /user/64c758d342ceb1dfe3545653:
+        delete:
+            tags:
+                - user
+            summary: delete user
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /user/64ba9869f3f43c071ca8e34f:
+        put:
+            tags:
+                - user
+            summary: update user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/location/64eb6259fee9a0450ce1f475:
+        post:
+            tags:
+                - quest
+            summary: create quest
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                img:
+                                    type: string
+                                    format: binary
+                                questName:
+                                    type: string
+                                    example: กระโดต่อย
+                                timeStart:
+                                    type: string
+                                    example: "2023-07-24T00:19:54.519Z"
+                                timeEnd:
+                                    type: string
+                                    example: "2023-07-24T03:22:54.519Z"
+                                description:
+                                    type: string
+                                    example: อร่อยจัง
+                                activityHour[category]:
+                                    type: integer
+                                    example: "3"
+                                maxParticipant:
+                                    type: integer
+                                    example: "30"
+                                autoComplete:
+                                    type: boolean
+                                    example: "true"
+                                activityHour[hour]:
+                                    type: integer
+                                    example: "3"
+                                tagId[]:
+                                    type: string
+                                    example: 64eb6555ef69bb10f6f24395
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/find/:
+        get:
+            tags:
+                - quest
+            summary: get quest
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/participants/64eb53b1eb2e7496d7acacd7:
+        get:
+            tags:
+                - quest
+            summary: get quest participants
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/find/64eb53b1eb2e7496d7acacd7:
+        get:
+            tags:
+                - quest
+            summary: get quest by location ID
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/64be8c7c139837808e0dd848:
+        delete:
+            tags:
+                - quest
+            summary: delete quest
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest:
+        put:
+            tags:
+                - quest
+            summary: update quest
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/join-leave/64c764ec93a46d0244989a35:
+        put:
+            tags:
+                - quest
+            summary: join+leave Quest
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/recommend:
+        get:
+            tags:
+                - quest
+            summary: recomendQuest
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /quest/complete/64c764ec93a46d0244989a35:
+        post:
+            tags:
+                - quest
+            summary: quest complete
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example: ""
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /auth/login:
+        post:
+            tags:
+                - auth
+            summary: login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                username: zidequest
+                                password: "123"
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /location/:
+        post:
+            tags:
+                - location
+            summary: createLocation
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                locationName:
+                                    type: string
+                                    example: LH3
+                                latitude:
+                                    type: number
+                                    example: "5.129443"
+                                longitude:
+                                    type: number
+                                    example: "2.124124"
+                                img:
+                                    type: string
+                                    format: binary
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        get:
+            tags:
+                - location
+            summary: getAllLocation
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /location/64be174a50f51dada1276bd2:
+        get:
+            tags:
+                - location
+            summary: getLocationById
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /location/64bdefb5ce0d5789a968ebf1:
+        put:
+            tags:
+                - location
+            summary: updateLocationById
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                _id: 64bdefb5ce0d5789a968ebf1
+                                locationName: KUSDERFTGYHUJIKOL
+                                latitude: 1.134253
+                                longitude: 8.63495
+                                createdAt: "2023-07-24T03:27:49.815Z"
+                                updatedAt: "2023-07-24T03:27:49.815Z"
+                                __v: 0
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        delete:
+            tags:
+                - location
+            summary: deleteLocationById
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /admin:
+        post:
+            tags:
+                - admin
+            summary: createAdmin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                username: zidequest
+                                password: "123"
+                                organizeName: zide
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        get:
+            tags:
+                - admin
+            summary: getAdmin
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /admin/64eb4eceeb2e7496d7acacc8:
+        get:
+            tags:
+                - admin
+            summary: getAdminID
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /admin/64be23df5816763750320644:
+        delete:
+            tags:
+                - admin
+            summary: deleteAdminID
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        put:
+            tags:
+                - admin
+            summary: updateAdminID
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                organizeName: yeet
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /creator:
+        post:
+            tags:
+                - creator
+            summary: create Creator
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                username: bas
+                                password: "123123"
+                                organizeName: basketballku
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        get:
+            tags:
+                - creator
+            summary: get Creator
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /creator/64be30a52723ef2909309f1d:
+        get:
+            tags:
+                - creator
+            summary: get Creator by id
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        delete:
+            tags:
+                - creator
+            summary: delete Creator
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        put:
+            tags:
+                - creator
+            summary: update Creator
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            example:
+                                organizeName: yeet
+            security:
+                - bearerAuth: []
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /tag:
+        post:
+            tags:
+                - tag
+            summary: create tag
+            requestBody:
+                content:
+                    "*/*":
+                        schema:
+                            type: string
+                            example: '"{\r\n    \"tagName\": \"testnisit\"\r\n}"'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+        get:
+            tags:
+                - tag
+            summary: get tag
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /tag/64be20c64f677fe36cf111fd:
+        delete:
+            tags:
+                - tag
+            summary: delete tag
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+    /tag/64be20564f677fe36cf111f8:
+        put:
+            tags:
+                - tag
+            summary: update tag
+            requestBody:
+                content:
+                    "*/*":
+                        schema:
+                            type: string
+                            example: '"{\r\n    \"tagName\": \"betternisit\"\r\n}"'
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}

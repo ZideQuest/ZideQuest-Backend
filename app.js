@@ -20,6 +20,8 @@ import creatorRoutes from './routes/creator.js'
 import tagRoutes from './routes/tag.js'
 import searchRoutes from './routes/search.js'
 import { errorMiddleware } from './middleware/errorHandler.js'
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs'
 
 
 function createApp() {
@@ -54,6 +56,10 @@ function createApp() {
     app.use(ExpressMongoSanitize());    // data sanitiztion against NoSQL query injection
     app.use(xXssProtection());          // data sanitiztion against XSS
     app.use(compression());             // compress requests
+
+    const swaggerDocument = YAML.load('./docs/swagger.yaml');
+
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     // just logging testing middleware
     if (process.env.NODE_ENV === "development") {
