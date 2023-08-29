@@ -279,7 +279,9 @@ paths:
                       type: string
             tags:
                 - quest
-            summary: get quest by location ID
+            summary: get quest by quest ID
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
