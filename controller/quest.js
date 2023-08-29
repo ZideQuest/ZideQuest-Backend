@@ -150,14 +150,18 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             // pull user from quest.participants
             quest = await Quest.findByIdAndUpdate(
                 id,
-                { $pull: { participant: { userId: req.user.id } } },
+                {
+                    $pull: { participant: { userId: req.user.id } }
+                },
                 { new: true }
             )
+            await quest.save()
             // pull quest from user.joinedQuest
             const user = await User.findByIdAndUpdate(req.user.id,
                 { $pull: { joinedQuest: id } },
                 { new: true }
             )
+
             return res.json({ user, quest });
         }
 
