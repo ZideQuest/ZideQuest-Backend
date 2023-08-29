@@ -5,8 +5,8 @@ export const createTag = async (req, res, next) => {
     try {
         const { tagName } = req.body
         const newtag = await Tag.create({
-        tagName: tagName
-        })
+            tagName: tagName
+        }).select('tagName').select('_id')
         return res.json(newtag)
     } catch (error) {
         next(error)
@@ -15,7 +15,7 @@ export const createTag = async (req, res, next) => {
 
 export const getTag = async (req, res, next) => {
     try {
-        const tag = await Tag.find({})
+        const tag = await Tag.find({}).select('tagName').select('_id')
         return res.json(tag)
     } catch (error) {
         next(error)
@@ -24,7 +24,7 @@ export const getTag = async (req, res, next) => {
 
 export const getTagById = async (req, res, next) => {
     try {
-        const tag = await Tag.findById(req.params.id)
+        const tag = await Tag.findById(req.params.id).select('tagName').select('_id')
         if (!tag) return next(createError(400, "Tag not found"))
 
         return res.json(tag)
@@ -37,7 +37,7 @@ export const deleteTagById = async (req, res, next) => {
     try {
         const tag = await Tag.findByIdAndDelete(req.params.id)
         if (!tag) return next(createError(400, "Tag not found"))
-        
+
         return res.json({ msg: `Delete Tag: ${tag.tagName} successfully` })
     } catch (error) {
         next(error)

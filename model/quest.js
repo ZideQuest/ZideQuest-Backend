@@ -73,9 +73,13 @@ const questSchema = new mongoose.Schema({
     timestamps: true
 })
 
-questSchema.pre("save", function (next) {
-    if (this.isModified('participant')) {
-        this.countParticipant = participant
+questSchema.pre("findOneAndUpdate", async function (next) {
+    const docToUpdate = await this.model.findOne(this.getQuery());
+    if (docToUpdate) {
+        // Apply your logic here to modify the document before saving
+        docToUpdate.countParticipant = docToUpdate.participant.length;
+
+        await docToUpdate.save(); // Trigger the 'save' middleware
     }
     next()
 })
