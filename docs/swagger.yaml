@@ -18,6 +18,7 @@ tags:
     - name: admin
     - name: creator
     - name: tag
+    - name: search
 paths:
     /user:
         post:
@@ -675,3 +676,23 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
+    /search:
+        get:
+            parameters:
+                - in: query
+                  name: questName
+                - in: query
+                  name: timeStart
+                - in: query
+                  name: timeEnd
+                - in: query
+                  name: tagId
+            tags:
+                - search
+            summanry: search/filter quest
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json: {}
+                
