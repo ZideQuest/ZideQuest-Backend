@@ -73,17 +73,5 @@ const questSchema = new mongoose.Schema({
     timestamps: true
 })
 
-questSchema.pre("findOneAndUpdate", async function (next) {
-    const docToUpdate = await this.model.findOne(this.getQuery());
-    if (docToUpdate) {
-        // Apply your logic here to modify the document before saving
-        docToUpdate.countParticipant = docToUpdate.participant.length;
-
-        await docToUpdate.save(); // Trigger the 'save' middleware
-    }
-    next()
-})
-
-
 const Quest = mongoose.models.Quest || mongoose.model("Quest", questSchema)
 export default Quest
