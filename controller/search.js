@@ -1,4 +1,5 @@
 import Quest from '../model/quest.js'
+import Location from '../model/location.js'
 import { createError } from "../util/createError.js"
 
 export const getSearch = async (req, res, next) => {
@@ -23,9 +24,10 @@ export const getSearch = async (req, res, next) => {
             query.tagId = tagId;
         }
 
-        const quests = await Quest.find(query);
-
-        return res.json(quests);
+        const quests = await Quest.find(query).populate('locationId');
+        
+        const locations = quests.map(quest => quest.locationId);
+        return res.json({quests, locations});
     } catch (error) {
         next(error)
     }
