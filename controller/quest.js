@@ -142,7 +142,7 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         const { id } = req.params;
         let quest = await Quest.findById(id);
         if (!quest) return next(createError(400, "Quest not found"));
-
+        const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
 
         // leave quest
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
@@ -155,32 +155,46 @@ export const joinOrLeaveQuest = async (req, res, next) => {
                 },
                 { new: true }
             )
-            quest.countParticipant = quest.participant.length
             await quest.save()
             // pull quest from user.joinedQuest
-            const user = await User.findByIdAndUpdate(req.user.id,
+            await User.findByIdAndUpdate(req.user.id,
                 { $pull: { joinedQuest: id } },
                 { new: true }
             )
-
-            return res.json({ user, quest });
         }
 
         // join quest
-        // push user to quest.participants
-        quest = await Quest.findByIdAndUpdate(
-            id,
-            { $push: { participant: { userId: req.user.id, status: false } } },
-            { new: true }
-        );
+        else {
+            // push user to quest.participants
+            quest = await Quest.findByIdAndUpdate(
+                id,
+                { $push: { participant: { userId: req.user.id, status: false } } },
+                { new: true }
+            );
+            await quest.save()
+            // push quest to user.joinedQuest
+            await User.findByIdAndUpdate(req.user.id,
+                { $push: { joinedQuest: id } },
+                { new: true }
+            )
+        }
         quest.countParticipant = quest.participant.length
-        await quest.save()
-        // push quest to user.joinedQuest
-        const user = await User.findByIdAndUpdate(req.user.id,
-            { $push: { joinedQuest: id } },
-            { new: true }
-        )
-        return res.json({ user, quest });
+        const questDetail = {
+            questName: quest.questName,
+            creatorName: quest.creatorId.organizeName,
+            creatorPic: quest.creatorId?.picturePath,
+            locationName: quest.locationId.locationName,
+            picturePath: quest.picturePath,
+            timeStart: quest.timeStart,
+            timeEnd: quest.timeEnd,
+            description: quest.description,
+            status: quest.status,
+            tag: tagNames,
+            countParticipant: quest.countParticipant,
+            maxParticipant: quest.maxParticipant,
+            isjoin: !alreadyJoin
+        }
+        return res.json({ questDetail });
     } catch (error) {
         next(error);
     }
