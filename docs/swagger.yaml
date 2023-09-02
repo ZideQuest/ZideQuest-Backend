@@ -201,12 +201,6 @@ paths:
             tags:
                 - quest
             summary: join+leave Quest
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            example: ""
             security:
                 - bearerAuth: []
             responses:
