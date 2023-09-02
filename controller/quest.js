@@ -140,7 +140,7 @@ export const deleteQuestById = async (req, res, next) => {
 export const joinOrLeaveQuest = async (req, res, next) => {
     try {
         const { id } = req.params;
-        let quest = await Quest.findById(id);
+        const quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) return next(createError(400, "Quest not found"));
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
 
