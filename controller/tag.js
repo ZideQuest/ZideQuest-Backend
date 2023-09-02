@@ -6,7 +6,7 @@ export const createTag = async (req, res, next) => {
         const { tagName } = req.body
         const newtag = await Tag.create({
             tagName: tagName
-        }).select('tagName').select('_id')
+        })
         return res.json(newtag)
     } catch (error) {
         next(error)
