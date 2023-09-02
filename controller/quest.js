@@ -179,16 +179,17 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             )
         }
         quest.countParticipant = quest.participant.length
+        const creator = await Admin.findById(quest.creatorId.toString())
         const questDetail = {
             questName: quest.questName,
-            creatorName: quest.creatorId.organizeName,
-            creatorPic: quest.creatorId?.picturePath,
+            creatorName: creator.organizeName,
+            creatorPic: creator.picturePath,
             locationName: quest.locationId.locationName,
             picturePath: quest.picturePath,
             timeStart: quest.timeStart,
             timeEnd: quest.timeEnd,
-            description: quest.description,
             status: quest.status,
+            description: quest.description,
             tag: tagNames,
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
