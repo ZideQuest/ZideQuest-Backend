@@ -12,7 +12,7 @@ const privateKey = process.env.PRIVATE_KEY
 
 export const generateToken = (id, role) => {
     try {
-        const token = jwt.sign({ id, role }, privateKey, { algorithm: "RS256", expiresIn: "1hr" })
+        const token = jwt.sign({ id, role }, privateKey, { algorithm: "RS256", expiresIn: "7d" })
         return token
     } catch (error) {
         throw error
