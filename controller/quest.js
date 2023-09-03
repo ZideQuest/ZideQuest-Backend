@@ -294,8 +294,18 @@ export const questComplete = async (req, res, next) => {
 
 export const recommendQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({ status: false }).limit(4)
-        return res.json(quests)
+        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').select("questName").select('creatorId')
+        const responseQuest = quests.map((item) => {
+            return {
+                questName: item.questName,
+                creator: {
+                    creatorName: item.creatorId.organizeName,
+                    creatorPic: item.creatorId.picturePath,
+
+                }
+            }
+        })
+        return res.json(responseQuest)
     } catch (error) {
         next(error)
     }
