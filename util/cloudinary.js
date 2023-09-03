@@ -8,7 +8,6 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 });
 
-
 export const cloudinaryUploadImg = async (file) => {
     try {
         return new Promise((resolve) => {
