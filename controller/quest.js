@@ -155,7 +155,6 @@ export const joinOrLeaveQuest = async (req, res, next) => {
                 },
                 { new: true }
             )
-            await quest.save()
             // pull quest from user.joinedQuest
             await User.findByIdAndUpdate(req.user.id,
                 { $pull: { joinedQuest: id } },
@@ -171,7 +170,6 @@ export const joinOrLeaveQuest = async (req, res, next) => {
                 { $push: { participant: { userId: req.user.id, status: false } } },
                 { new: true }
             );
-            await quest.save()
             // push quest to user.joinedQuest
             await User.findByIdAndUpdate(req.user.id,
                 { $push: { joinedQuest: id } },
@@ -179,6 +177,7 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             )
         }
         quest.countParticipant = quest.participant.length
+        await quest.save()
         const creator = await Admin.findById(quest.creatorId.toString())
         const questDetail = {
             questName: quest.questName,
