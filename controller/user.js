@@ -87,11 +87,11 @@ export const getUserQuest = async (req, res, next) => {
 
         // seperate a type of quest
         for (const quest of joinedQuest) {
-            const { _id, name, countParticipant, maxParticipant } = quest
+            const { _id, questName, countParticipant, maxParticipant } = quest
             if (quest.status !== true)
-                currentQuest.push({ _id, name, countParticipant, maxParticipant })
+                currentQuest.push({ _id, questName, countParticipant, maxParticipant })
             else
-                successQuest.push({ _id, name, countParticipant, maxParticipant })
+                successQuest.push({ _id, questName, countParticipant, maxParticipant })
         }
         return res.json({ currentQuest, successQuest })
     } catch (error) {
