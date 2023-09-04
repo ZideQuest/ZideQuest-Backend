@@ -113,7 +113,12 @@ export const getUserInfo = async (req, res, next) => {
     try {
         const { id, role } = req.user
         if (role == 'user') {
-            const user = await User.findById(id).populate('joinedQuest')
+            const user = await User.findById(id).populate({
+                path: 'joinedQuest',
+                populate: {
+                    path: 'locationId'
+                }
+            })
             return res.json(user)
         }
         const user = await Admin.findById(id)
