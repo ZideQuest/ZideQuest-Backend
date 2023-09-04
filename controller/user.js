@@ -1,6 +1,6 @@
 import Account from "../model/account.js"
 import User from "../model/user.js"
-
+import Location from "../model/location.js"
 
 import { createError } from "../util/createError.js"
 export const createUser = async (req, res, next) => {
@@ -87,11 +87,11 @@ export const getUserQuest = async (req, res, next) => {
 
         // seperate a type of quest
         for (const quest of joinedQuest) {
-            const { _id, questName, countParticipant, maxParticipant } = quest
+            const location = await Location.findById(quest.locationId)
             if (quest.status !== true)
-                currentQuest.push({ _id, questName, countParticipant, maxParticipant })
+                currentQuest.push({ quest, location })
             else
-                successQuest.push({ _id, questName, countParticipant, maxParticipant })
+                successQuest.push({ quest, location })
         }
         return res.json({ currentQuest, successQuest })
     } catch (error) {
