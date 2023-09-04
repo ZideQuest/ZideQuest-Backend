@@ -1,5 +1,6 @@
 import Account from "../model/account.js"
 import User from "../model/user.js"
+import Admin from "../model/admin.js"
 import Location from "../model/location.js"
 
 import { createError } from "../util/createError.js"
@@ -107,3 +108,17 @@ export const getUserActivity = async (req, res, next) => {
         next(error)
     }
 }
+
+export const getUserInfo = async (req, res, next) => {
+    try {
+        const { id, role } = req.user
+        if (role == 'user') {
+            const user = await User.findById(id).populate('joinedQuest')
+            return res.json(user)
+        }
+        const user = await Admin.findById(id)
+        return res.json(user)
+    } catch (error) {
+        next(error)
+    }
+} 
