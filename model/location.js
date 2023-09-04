@@ -23,6 +23,9 @@ const locationSchema = new mongoose.Schema({
     creatorId: {
         type: mongoose.Types.ObjectId,
         ref: "Admin",
+    },
+    description: {
+        type: String
     }
 }, {
     timestamps: true
