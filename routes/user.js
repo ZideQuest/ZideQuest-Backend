@@ -1,6 +1,7 @@
 import { Router } from "express";;
 import { createUser, deleteUserById, getUser, getUserActivity, getUserById, getUserQuest, updateUserById } from "../controller/user.js";
 import { upload } from "../middleware/uploadImg.js";
+import { verifyUser } from "../middleware/auth.js";
 
 const router = Router()
 
