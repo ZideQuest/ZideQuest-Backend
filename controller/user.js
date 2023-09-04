@@ -101,7 +101,7 @@ export const getUserQuest = async (req, res, next) => {
 
 export const getUserActivity = async (req, res, next) => {
     try {
-        const { activityTranscript } = await User.findById(req.params.id).select('activityTranscript')
+        const { activityTranscript } = await User.findById(req.user.id).select('activityTranscript')
         return res.json(activityTranscript)
     } catch (error) {
         next(error)

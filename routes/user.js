@@ -8,7 +8,7 @@ const router = Router()
 router.get("/find", getUser)
 router.get("/find/:id", getUserById)
 router.get("/quest", verifyUser, getUserQuest)
-router.get("/activity/:id", getUserActivity)
+router.get("/activity", verifyUser, getUserActivity)
 
 router.post("/", upload.single('igmg'), createUser)
 router.delete("/:id", deleteUserById)
