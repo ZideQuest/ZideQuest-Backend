@@ -80,7 +80,8 @@ export const updateUserById = async (req, res, next) => {
 
 export const getUserQuest = async (req, res, next) => {
     try {
-        const { joinedQuest } = await User.findById(req.params.id).select('joinedQuest').populate('joinedQuest')
+
+        const { joinedQuest } = await User.findById(req.user).select('joinedQuest').populate('joinedQuest')
         const currentQuest = []
         const successQuest = []
 

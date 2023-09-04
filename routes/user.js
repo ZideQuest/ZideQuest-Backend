@@ -6,7 +6,7 @@ const router = Router()
 
 router.get("/find", getUser)
 router.get("/find/:id", getUserById)
-router.get("/quest/:id", getUserQuest)
+router.get("/quest", verifyUser, getUserQuest)
 router.get("/activity/:id", getUserActivity)
 
 router.post("/", upload.single('igmg'), createUser)
