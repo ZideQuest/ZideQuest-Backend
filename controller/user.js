@@ -82,13 +82,20 @@ export const updateUserById = async (req, res, next) => {
 export const getUserQuest = async (req, res, next) => {
     try {
 
-        const { joinedQuest } = await User.findById(req.user.id).select('joinedQuest').populate('joinedQuest')
+        const { joinedQuest } = await User.findById(req.user.id).select('joinedQuest').populate(
+            {
+                path: 'joinedQuest',
+                populate: {
+                    path: 'locationId'
+                }
+            }
+        )
         const currentQuest = []
         const successQuest = []
 
         // seperate a type of quest
         for (const quest of joinedQuest) {
-            const location = await Location.findById(quest.locationId).populate('locationId')
+            const location = await Location.findById(quest.locationId)
             if (quest.status !== true)
                 currentQuest.push({ quest, location })
             else
