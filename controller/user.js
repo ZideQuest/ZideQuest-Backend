@@ -88,7 +88,7 @@ export const getUserQuest = async (req, res, next) => {
 
         // seperate a type of quest
         for (const quest of joinedQuest) {
-            const location = await Location.findById(quest.locationId)
+            const location = await Location.findById(quest.locationId).populate('locationId')
             if (quest.status !== true)
                 currentQuest.push({ quest, location })
             else
