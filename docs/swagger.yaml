@@ -20,7 +20,7 @@ tags:
     - name: tag
     - name: search
 paths:
-    /auth/login:
+    /v1/auth/login:
         post:
             tags:
                 - auth
@@ -40,7 +40,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user:
+    /v1/users:
         post:
             tags:
                 - user
@@ -79,7 +79,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/find:
+    /v1/users:
         get:
             tags:
                 - user
@@ -89,7 +89,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/quest:
+    /v1/users/quests:
         get:
             tags:
                 - user
@@ -101,7 +101,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/activity:
+    /v1/users/activity:
         get:
             tags:
                 - user
@@ -113,7 +113,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /user/info:
+    /v1/users/info:
         get:
             tags:
                 - user
@@ -125,7 +125,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}                        
-    /user/{id}:
+    /v1/users/{id}:
         put:
             tags:
                 - user
@@ -160,7 +160,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/location/{id}:
+    /v1/quests/locations/{id}:
         post:
             parameters:
                 - in: path
@@ -214,7 +214,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/join-leave/{id}:
+    /v1/quests/{id}/join-leave:
         patch:
             parameters:
                 - in: path
@@ -232,7 +232,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/complete/{id}:
+    /v1/quests/{id}/complete:
             patch:
                 parameters:
                     - in: path
@@ -250,7 +250,7 @@ paths:
                         description: Successful response
                         content:
                             application/json: {}
-    /quest/find/:
+    /v1/quests:
         get:
             tags:
                 - quest
@@ -260,7 +260,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/participants/{id}:
+    /v1/quests/{id}/participants:
         get:
             parameters:
                 -   in: path
@@ -282,7 +282,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/find/{id}:
+    /v1/quests/{id}/find:
         get:
             parameters:
                 - in: path
@@ -300,7 +300,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/recommend:
+    /v1/quests/recommend:
         get:
             tags:
                 - quest
@@ -310,7 +310,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest:
+    /v1/quests:
         put:
             tags:
                 - quest
@@ -328,7 +328,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /quest/{id}:
+    /v1/quests/{id}:
         delete:
             parameters:
                 - in: path
@@ -346,7 +346,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /location:
+    /v1/locations:
         post:
             tags:
                 - location
@@ -385,7 +385,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /location/{id}:
+    /v1/locations/{id}:
         get:
             parameters:
             -   in: path
@@ -442,7 +442,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /admin:
+    /v1/admins:
         post:
             tags:
                 - admin
@@ -470,7 +470,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /admin/{id}:
+    /v1/admins/{id}:
         get:
             parameters:
                 - in: path
@@ -527,7 +527,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /creator:
+    /v1/creators:
         post:
             tags:
                 - creator
@@ -555,7 +555,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /creator/{id}:
+    /v1/creators/{id}:
         get:
             parameters:
                 - in: path
@@ -600,7 +600,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /tag:
+    /v1/tags:
         post:
             tags:
                 - tag
@@ -627,7 +627,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /tag/{id}:
+    /v1/tags/{id}:
         put:
             parameters:
                 - in: path
@@ -668,7 +668,7 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /search:
+    /v1/search:
         get:
             parameters:
                 - in: query
