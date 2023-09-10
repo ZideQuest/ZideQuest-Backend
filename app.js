@@ -60,7 +60,7 @@ function createApp() {
 
     const swaggerDocument = YAML.load('./docs/swagger.yaml');
 
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use('/api-docs/v1', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     // just logging testing middleware
     if (process.env.NODE_ENV === "development") {
@@ -72,15 +72,15 @@ function createApp() {
     }
 
     // routes
-    app.use("/api/account", accountRoutes);
-    app.use("/api/user", userRoutes);
-    app.use("/api/auth", authRoutes);
-    app.use("/api/quest", questRoutes);
-    app.use("/api/location", locationRoutes);
-    app.use("/api/admin", adminRoutes);
-    app.use("/api/creator", creatorRoutes);
-    app.use("/api/tag", tagRoutes);
-    app.use("/api/search", searchRoutes);
+    app.use("/api/v1/accounts", accountRoutes);
+    app.use("/api/v1/users", userRoutes);
+    app.use("/api/v1/auth", authRoutes);
+    app.use("/api/v1/quests", questRoutes);
+    app.use("/api/v1/locations", locationRoutes);
+    app.use("/api/v1/admins", adminRoutes);
+    app.use("/api/v1/creators", creatorRoutes);
+    app.use("/api/v1/tags", tagRoutes);
+    app.use("/api/v1/search", searchRoutes);
 
     // Error handler
     app.use(errorMiddleware);

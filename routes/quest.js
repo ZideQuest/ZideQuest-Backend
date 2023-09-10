@@ -5,17 +5,17 @@ import { upload } from "../middleware/uploadImg.js";
 
 const router = Router()
 
-router.get("/find", getQuest)
-router.get("/find/:id", verifyUser, getQuestById)
-router.get("/participants/:id", getQuestParticipantsById)
+router.get("/", getQuest)
+router.get("/:id/find", verifyUser, getQuestById)
+router.get("/:id/participants", getQuestParticipantsById)
 router.get("/recommend", recommendQuest)
 
-router.post("/location/:locationId", verifyCreator, upload.single('img'), createQuest)
+router.post("/locations/:locationId", verifyCreator, upload.single('img'), createQuest)
 
-router.put("/find/:id", verifyCreator, upload.single('img'), updateQuestById)
+router.put("/:id", verifyCreator, upload.single('img'), updateQuestById)
 
-router.patch("/complete/:id", verifyCreator, questComplete)
-router.patch("/join-leave/:id", verifyUser, joinOrLeaveQuest)
+router.patch("/:id/complete", verifyCreator, questComplete)
+router.patch("/:id/join-leave", verifyUser, joinOrLeaveQuest)
 
 router.delete("/:id", verifyCreator, deleteQuestById)
 

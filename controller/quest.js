@@ -205,14 +205,14 @@ export const getQuestParticipantsById = async (req, res, next) => {
         const { id } = req.params
         const quest = await Quest.findById(id).select('participant').populate({
             path: 'participant.userId',
-            select: 'firstName lastName',
+            select: 'firstName lastName picturePath',
         })
         if (!quest) {
             return next(createError(400, "Quest not found"))
         }
 
         const participant = quest.participant.map((item) => {
-            return ({ user: item.userId, status: item.status })
+            return ({ user: item.userId, status: item.status, pic: item.picturePath })
         })
 
         const response = {

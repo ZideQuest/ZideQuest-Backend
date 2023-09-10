@@ -5,13 +5,13 @@ import { verifyUser } from "../middleware/auth.js";
 
 const router = Router()
 
-router.get("/find", getUser)
-router.get("/find/:id", getUserById)
-router.get("/quest", verifyUser, getUserQuest)
+router.get("/", getUser)
+router.get("/:id/find", getUserById)
+router.get("/quests", verifyUser, getUserQuest)
 router.get("/activity", verifyUser, getUserActivity)
 router.get("/info", verifyUser, getUserInfo)
 
-router.post("/", upload.single('igmg'), createUser)
+router.post("/", upload.single('img'), createUser)
 router.delete("/:id", deleteUserById)
 router.put("/:id", upload.single("img"), updateUserById)
 
