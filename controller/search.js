@@ -7,7 +7,6 @@ export const getSearch = async (req, res, next) => {
         const { Name, timeStart, timeEnd, tagId} = req.query;
 
         const query = {};
-        console.log(Name)
         if (Name) {
             query.$or = [
                 { questName: { $regex: Name, $options: "i" } },
