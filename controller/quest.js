@@ -243,9 +243,6 @@ export const questComplete = async (req, res, next) => {
         if (quest.status == true) {
             return next(createError(301, "This quest is already complete"))
         }
-        // set quest complete
-        quest.status = true
-        await quest.save()
 
         const actualQuestTime = (quest.timeEnd - quest.timeStart) / (1000 * 60 * 60)
         const xpGiven = Math.floor(actualQuestTime * 1237.6)
@@ -261,12 +258,12 @@ export const questComplete = async (req, res, next) => {
         }
         // ถ้าเควสมี ชั่วโมงกิจกรรม
         else {
-            console.log("what")
             const { category, hour } = quest.activityHour
             // กิจกรรมมหาวิทยาลัย
             if (category === "1") {
                 for (const participant of quest.participant) {
                     const user = await User.findById(participant.userId)
+                    console.log(user.activityTranscript)
                     user.activityTranscript.category.university.hour += hour
                     user.activityTranscript.category.university.count += 1
                     user.exp += xpGiven
@@ -292,7 +289,7 @@ export const questComplete = async (req, res, next) => {
             // กิจกรรมเพื่อเสริมสร้างสมรรถนะ
             else {
                 for (const participant of quest.participant) {
-                    const user = await User.findById(participant.userId)
+                    const user = await User.findById(participant.userId.toString())
                     user.activityTranscript.category.university.hour += hour
                     user.activityTranscript.category.university.count += 1
                     user.exp += xpGiven
@@ -300,6 +297,9 @@ export const questComplete = async (req, res, next) => {
                 }
             }
         }
+        // set quest complete
+        quest.status = true
+        await quest.save()
         return res.json({ msg: `quest: ${quest.questName} complete successfully` });
     } catch (error) {
         // console.log(error)
