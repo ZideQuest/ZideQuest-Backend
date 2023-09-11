@@ -4,12 +4,15 @@ import { createError } from "../util/createError.js"
 
 export const getSearch = async (req, res, next) => {
     try {
-        const { questName, timeStart, timeEnd, tagId } = req.query;
+        const { Name, timeStart, timeEnd, tagId} = req.query;
 
         const query = {};
-
-        if (questName) {
-            query.questName = { $regex: questName, $options: "i" };
+        console.log(Name)
+        if (Name) {
+            query.$or = [
+                { questName: { $regex: Name, $options: "i" } },
+                { locationName: { $regex: Name, $options: "i" } }
+            ];
         }
 
         if (timeStart) {
@@ -22,11 +25,13 @@ export const getSearch = async (req, res, next) => {
 
         if (tagId) {
             query.tagId = tagId;
-        }
+        }        
 
         const quests = await Quest.find(query).populate('locationId');
-        
-        const locations = quests.map(quest => quest.locationId);
+        let locations = await Location.find(query);
+        const locationFromQuest = quests.map(quest => quest.locationId);
+        locations = locations.concat(locationFromQuest);
+        locations = locations.filter((item, index, arr) => arr.indexOf(item) === index);
         return res.json({quests, locations});
     } catch (error) {
         next(error)
