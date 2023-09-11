@@ -240,6 +240,7 @@ export const questComplete = async (req, res, next) => {
             }
         }
 
+
         // set quest complete
         quest.status = true
         await quest.save()
@@ -248,7 +249,8 @@ export const questComplete = async (req, res, next) => {
         const xpGiven = Math.floor(actualQuestTime * 1237.6)
 
         // ถ้าเควสไม่มีชั่วโมงกิจกรรม
-        if (!quest.activityHour) {
+        // console.log(quest)
+        if (!quest.activityHour?.hour) {
             for (const participant of quest.participant) {
                 const user = await User.findById(participant.userId)
                 user.exp += xpGiven
@@ -257,6 +259,7 @@ export const questComplete = async (req, res, next) => {
         }
         // ถ้าเควสมี ชั่วโมงกิจกรรม
         else {
+            console.log("what")
             const { category, hour } = quest.activityHour
             // กิจกรรมมหาวิทยาลัย
             if (category === "1") {
@@ -278,8 +281,8 @@ export const questComplete = async (req, res, next) => {
 
                 for (const participant of quest.participant) {
                     const user = await User.findById(participant.userId)
-                    user.activityTranscript.category.empowerment.category["index"].hour += hour
-                    user.activityTranscript.category.empowerment.category["index"].count += 1
+                    user.activityTranscript.category.empowerment.category[index].hour += hour
+                    user.activityTranscript.category.empowerment.category[index].count += 1
                     user.exp += xpGiven
                     await user.save()
                 }
@@ -297,6 +300,7 @@ export const questComplete = async (req, res, next) => {
         }
         return res.json({ msg: `quest: ${quest.questName} complete successfully` });
     } catch (error) {
+        // console.log(error)
         next(error);
     }
 }
