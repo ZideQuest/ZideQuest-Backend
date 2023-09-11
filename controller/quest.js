@@ -289,7 +289,7 @@ export const questComplete = async (req, res, next) => {
             // กิจกรรมเพื่อเสริมสร้างสมรรถนะ
             else {
                 for (const participant of quest.participant) {
-                    const user = await User.findById(participant.userId.toString())
+                    const user = await User.findById(participant.userId)
                     user.activityTranscript.category.university.hour += hour
                     user.activityTranscript.category.university.count += 1
                     user.exp += xpGiven
