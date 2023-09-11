@@ -240,7 +240,9 @@ export const questComplete = async (req, res, next) => {
             }
         }
 
-
+        if (quest.status == true) {
+            return next(createError(301, "This quest is already complete"))
+        }
         // set quest complete
         quest.status = true
         await quest.save()
