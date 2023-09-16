@@ -3,6 +3,7 @@ import { logger } from './util/logger.js'
 import { connectDb } from './util/connectDb.js'
 import createApp from './app.js'
 
+
 function main() {
     // dotenv
     dotenv.config();
