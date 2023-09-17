@@ -94,7 +94,7 @@ export const updateLocationById = async (req, res, next) => {
         }
 
         return res.json({
-            locaiton: location,
+            location: location,
             status: "success"
         });
     } catch (error) {
