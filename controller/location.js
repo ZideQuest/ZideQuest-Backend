@@ -53,7 +53,7 @@ export const getLocationById = async (req, res, next) => {
     try {
         const location = await Location.findById({ _id: id });
         if (!location) { return next(createError(400, "location not found")); }
-        const quests = await Quest.find({ locationId: id })
+        const quests = await Quest.find({ locationId: id }).sort([["status", -1]])
         return res.json({
             location,
             quests
