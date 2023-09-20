@@ -1,5 +1,5 @@
 import { Router } from "express";;
-import { createQuest, deleteQuestById, getAllMyCreateQuest, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById } from "../controller/quest.js";
+import { createQuest, deleteQuestById, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById } from "../controller/quest.js";
 import { verifyCreator, verifyUser } from "../middleware/auth.js";
 import { upload } from "../middleware/uploadImg.js";
 
