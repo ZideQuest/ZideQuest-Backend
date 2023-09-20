@@ -317,3 +317,23 @@ export const recommendQuest = async (req, res, next) => {
         next(error)
     }
 }
+
+export const getCreatorQuests = async (req, res, next) => {
+    try {
+        const { id } = req.user
+        const quests = await Quest.find({ creatorId: id }).sort("timeStart")
+        return res.json(quests)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getUncompleteCreatorQuest = async (req, res, next) => {
+    try {
+        const { id } = req.user
+        const quests = await Quest.find({ creatorId: id, status: false }).sort("timeStart")
+        return res.json(quests)
+    } catch (error) {
+        next(error)
+    }
+}

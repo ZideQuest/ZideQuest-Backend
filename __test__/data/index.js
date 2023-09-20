@@ -50,11 +50,37 @@ export const locationInfo = {
     "longitude": 2.124124,
 }
 
-export const questInfo = {
+export const quest1Info = {
     questName: "sleep marathon",
     timeStart: "2023-07-24T00:19:54.519Z",
     timeEnd: "2023-07-24T03:19:54.519Z",
     description: "boring",
+    activityHour: {
+        category: 3,
+        hour: 3
+    },
+    maxParticipant: 30,
+    autoComplete: true,
+}
+
+export const quest2Info = {
+    questName: "running",
+    timeStart: "2023-05-24T00:19:54.519Z",
+    timeEnd: "2023-05-24T03:19:54.519Z",
+    description: "for fun",
+    activityHour: {
+        category: 3,
+        hour: 3
+    },
+    maxParticipant: 30,
+    autoComplete: true,
+}
+
+export const quest3Info = {
+    questName: "jumping",
+    timeStart: "2023-06-24T00:19:54.519Z",
+    timeEnd: "2023-06-24T03:19:54.519Z",
+    description: "for fun",
     activityHour: {
         category: 3,
         hour: 3
