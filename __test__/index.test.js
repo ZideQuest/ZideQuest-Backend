@@ -3,7 +3,7 @@ import * as pactum from 'pactum'
 import { connectDb } from "../util/connectDb"
 import dotenv from 'dotenv'
 import { logger } from "../util/logger"
-import { adminInfo, locationInfo, questInfo, userInfo } from "./data"
+import { adminInfo, locationInfo, quest1Info, quest2Info, quest3Info, userInfo } from "./data"
 
 
 describe('Test', () => {
@@ -86,7 +86,7 @@ describe('Test', () => {
                 .stores('adminAt', 'token')
         });
         it('should login (user)', async () => {
-            return await pactum
+            await pactum
                 .spec()
                 .post('/auth/login')
                 .withBody({
@@ -147,7 +147,7 @@ describe('Test', () => {
             await pactum
                 .spec()
                 .post('/quests/locations/$S{locationId}')
-                .withBody(questInfo)
+                .withBody(quest1Info)
                 .expectStatus(401)
         })
         it('create quest', async () => {
@@ -155,9 +155,9 @@ describe('Test', () => {
                 .spec()
                 .post('/quests/locations/$S{locationId}')
                 .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
-                .withBody(questInfo)
-                .stores('questId', '_id')
-                .expectJsonMatch('questName', questInfo.questName)
+                .withBody(quest1Info)
+                .stores('quest1Id', '_id')
+                .expectJsonMatch('questName', quest1Info.questName)
                 .expectStatus(200)
         })
         it('should get single quest', async () => {
@@ -165,7 +165,7 @@ describe('Test', () => {
                 .spec()
                 .get('/quests')
                 .expectStatus(200)
-                .expectBodyContains('$S{questId}')
+                .expectBodyContains('$S{quest1Id}')
         })
 
         it('should ', async () => {
@@ -173,23 +173,106 @@ describe('Test', () => {
                 .spec()
                 .get('/quests')
                 .expectStatus(200)
-                .expectBodyContains('$S{questId}')
+                .expectBodyContains('$S{quest1Id}')
         })
-        describe('Join Quest', () => {
-            it('user join quest', async () => {
+        describe("Get Creator Quest", () => {
+            it('should error creator quest', async () => {
+                return await pactum
+                    .spec()
+                    .get('/quests/creator-all')
+                    .expectStatus(401)
+            })
+            it('should get creator quest', async () => {
+                const { body } = await pactum
+                    .spec()
+                    .get('/quests/creator-all')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+                    .expectBodyContains('$S{quest1Id}')
+                // console.log(body)
+            })
+
+
+            it('create quest 2', async () => {
                 await pactum
                     .spec()
-                    .patch('/quests/$S{questId}/join-leave')
+                    .post('/quests/locations/$S{locationId}')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .withBody(quest2Info)
+                    .stores('quest2Id', '_id')
+                    .expectJsonMatch('questName', quest2Info.questName)
+                    .expectStatus(200)
+            })
+            it('create quest 3', async () => {
+                await pactum
+                    .spec()
+                    .post('/quests/locations/$S{locationId}')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .withBody(quest3Info)
+                    .stores('quest3Id', '_id')
+                    .expectJsonMatch('questName', quest3Info.questName)
+                    .expectStatus(200)
+            })
+
+            it('should get creator all quest ', async () => {
+                const { body } = await pactum
+                    .spec()
+                    .get('/quests/creator-all')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+                    .expectBodyContains('$S{quest1Id}')
+                    .expectBodyContains('$S{quest2Id}')
+                    .expectBodyContains('$S{quest3Id}')
+            })
+            it('should complete quest', async () => {
+                await pactum
+                    .spec()
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+                    .patch('/quests/$S{quest2Id}/complete')
+            })
+
+            it('should get creator all quest ', async () => {
+                const { body } = await pactum
+                    .spec()
+                    .get('/quests/creator-all')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+                    .expectBodyContains('$S{quest1Id}')
+                    .expectBodyContains('$S{quest2Id}')
+                    .expectBodyContains('$S{quest3Id}')
+                expect(body.length).toBe(3)
+
+            })
+
+            it('should get creator uncomplete quest ', async () => {
+                const { body } = await pactum
+                    .spec()
+                    .get('/quests/creator-uncomplete')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+                    .expectBodyContains('$S{quest1Id}')
+                    .expectBodyContains('$S{quest3Id}')
+                expect(body.length).toBe(2)
+            })
+        })
+
+        describe('Join Quest', () => {
+            it('user join quest', async () => {
+                const { body } = await pactum
+                    .spec()
+                    .patch('/quests/$S{quest1Id}/join-leave')
                     .withHeaders({ Authorization: 'Bearer $S{userAt}' })
                     .expectStatus(200)
             })
             it('quest should has user ', async () => {
-                await pactum
+                const { body } = await pactum
                     .spec()
-                    .get('/quests/$S{questId}/participants')
+                    .get('/quests/$S{quest1Id}/participants')
                     .expectStatus(200)
-                    .expectBodyContains('$S{questId}')
+                    .expectBodyContains('$S{userId}')
             })
+
         })
 
     })
