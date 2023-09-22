@@ -254,7 +254,6 @@ describe('Test', () => {
                     .expectBodyContains('$S{quest1Id}')
                     .expectBodyContains('$S{quest3Id}')
                 expect(body.length).toBe(2)
-                console.log(body)
             })
         })
 
