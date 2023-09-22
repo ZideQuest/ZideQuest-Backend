@@ -34,7 +34,7 @@ export const createQuest = async (req, res, next) => {
 }
 export const getQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({})
+        const quests = await Quest.find({}).populate('tagId')
         return res.json(quests)
     } catch (error) {
         next(error)
@@ -206,7 +206,7 @@ export const getQuestParticipantsById = async (req, res, next) => {
         const quest = await Quest.findById(id).select('participant').populate({
             path: 'participant.userId',
             select: 'firstName lastName picturePath',
-        })
+        }).populate('tagId')
         if (!quest) {
             return next(createError(400, "Quest not found"))
         }
@@ -309,7 +309,7 @@ export const questComplete = async (req, res, next) => {
 
 export const recommendQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').populate('locationId')
+        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').populate('locationId').populate('tagId')
 
         return res.json(quests)
 
@@ -321,7 +321,7 @@ export const recommendQuest = async (req, res, next) => {
 export const getCreatorQuests = async (req, res, next) => {
     try {
         const { id } = req.user
-        const quests = await Quest.find({ creatorId: id }).sort("timeStart")
+        const quests = await Quest.find({ creatorId: id }).sort("timeStart").populate("locationId").populate('tagId')
         return res.json(quests)
     } catch (error) {
         next(error)
@@ -331,7 +331,7 @@ export const getCreatorQuests = async (req, res, next) => {
 export const getUncompleteCreatorQuest = async (req, res, next) => {
     try {
         const { id } = req.user
-        const quests = await Quest.find({ creatorId: id, status: false }).sort("timeStart")
+        const quests = await Quest.find({ creatorId: id, status: false }).sort("timeStart").populate("locationId").populate('tagId')
         return res.json(quests)
     } catch (error) {
         next(error)

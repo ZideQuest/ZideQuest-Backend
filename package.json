@@ -7,7 +7,7 @@
   "scripts": {
     "pretest": "docker compose rm test-db -s -f -v && docker compose up test-db -d ",
     "dev": "nodemon index.js",
-    "test": "jest --forceExit __test__/index.test.js"
+    "test": "jest --detectOpenHandles __test__"
   },
   "repository": {
     "type": "git",
