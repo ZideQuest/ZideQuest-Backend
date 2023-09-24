@@ -363,8 +363,9 @@ export const userAttend = async (req, res, next) => {
         let quest = await Quest.findByIdAndUpdate(
             id,
             {
-                $pull: { participant: { userId: req.user.id, status: true } }
+                $set: { 'participant.$[elem].status': true }
             },
+            { arrayFilters: [{ 'elem.userId': req.user.id, }], new: true },
             { new: true }
         ).populate("creatorId").populate("locationId").populate("tagId")
 
