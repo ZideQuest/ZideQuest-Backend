@@ -1,5 +1,5 @@
 import { Router } from "express";;
-import { createQuest, deleteQuestById, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById } from "../controller/quest.js";
+import { createQuest, deleteQuestById, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById, getQuestQr } from "../controller/quest.js";
 import { verifyCreator, verifyUser } from "../middleware/auth.js";
 import { upload } from "../middleware/uploadImg.js";
 
@@ -11,6 +11,8 @@ router.get("/:id/participants", getQuestParticipantsById)
 router.get("/recommend", recommendQuest)
 router.get("/creator-all", verifyCreator, getCreatorQuests)
 router.get("/creator-uncomplete", verifyCreator, getUncompleteCreatorQuest)
+router.get("/:id/qr", verifyCreator, getQuestQr)
+
 router.post("/locations/:locationId", verifyCreator, upload.single('img'), createQuest)
 
 router.put("/:id", verifyCreator, upload.single('img'), updateQuestById)
