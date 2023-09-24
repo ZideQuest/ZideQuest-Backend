@@ -353,3 +353,12 @@ export const getQuestQr = async (req, res, next) => {
         next(error);
     }
 }
+
+export const userAttend = async (res, res, next) => {
+    try{
+        return;
+    }
+    catch (error) {
+        next(error);
+    }
+}
