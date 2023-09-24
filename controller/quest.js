@@ -4,6 +4,7 @@ import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
 import { cloudinaryUploadImg } from '../util/cloudinary.js'
 import User from '../model/user.js'
+import { toDataURL } from 'qrcode'
 
 export const createQuest = async (req, res, next) => {
     try {
@@ -335,5 +336,42 @@ export const getUncompleteCreatorQuest = async (req, res, next) => {
         return res.json(quests)
     } catch (error) {
         next(error)
+    }
+}
+
+export const getQuestQr = async (req, res, next) => {
+    try{
+        const { id } = await req.params
+        const qrCodeDataUrl = await toDataURL(`/v1/quests/${id}/attend`);
+        const qrPath = await cloudinaryUploadImg(qrCodeDataUrl);
+        const quest = await Quest.findById(id);
+
+        return res.json({
+            questName: quest.questName,
+            picturePath: qrPath
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+export const userAttend = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+
+        let quest = await Quest.findByIdAndUpdate(
+            id,
+            {
+                $set: { 'participant.$[elem].status': true }
+            },
+            { arrayFilters: [{ 'elem.userId': req.user.id, }], new: true },
+            { new: true }
+        ).populate("creatorId").populate("locationId").populate("tagId")
+
+        return res.json(quest);
+    }
+    catch (error) {
+        next(error);
     }
 }
