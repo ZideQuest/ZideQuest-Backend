@@ -340,9 +340,16 @@ export const getUncompleteCreatorQuest = async (req, res, next) => {
 
 export const getQuestQr = async (req, res, next) => {
     try{
-        return
+        const qrCodeDataUrl = await qr.toDataURL("");
+        const qrPath = await cloudinaryUploadImg(qrCodeDataUrl);
+        const quest = await Quest.findById(id);
+
+        return res.json({
+            questName: quest.questName,
+            picturePath: qrPath
+        });
     }
     catch (error) {
-        next(error)
+        next(error);
     }
 }
