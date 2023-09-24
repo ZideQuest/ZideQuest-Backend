@@ -337,3 +337,12 @@ export const getUncompleteCreatorQuest = async (req, res, next) => {
         next(error)
     }
 }
+
+export const getQuestQr = async (req, res, next) => {
+    try{
+        return
+    }
+    catch (error) {
+        next(error)
+    }
+}
