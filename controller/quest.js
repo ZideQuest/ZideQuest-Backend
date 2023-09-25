@@ -143,6 +143,11 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         const { id } = req.params;
         let quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) return next(createError(400, "Quest not found"));
+
+        if (quest.status) {
+            return next(createError(444, "fulled"))
+        }
+
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
 
         // leave quest
