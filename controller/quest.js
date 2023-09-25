@@ -345,9 +345,9 @@ export const getUncompleteCreatorQuest = async (req, res, next) => {
 }
 
 export const getQuestQr = async (req, res, next) => {
-    try{
+    try {
         const { id } = await req.params
-        const qrCodeDataUrl = await toDataURL(`/v1/quests/${id}/attend`);
+        const qrCodeDataUrl = await toDataURL(`/quests/${id}/attend`);
         const qrPath = await cloudinaryUploadImg(qrCodeDataUrl);
         const quest = await Quest.findById(id);
 
@@ -362,7 +362,7 @@ export const getQuestQr = async (req, res, next) => {
 }
 
 export const userAttend = async (req, res, next) => {
-    try{
+    try {
         const { id } = req.params;
 
         let quest = await Quest.findByIdAndUpdate(
