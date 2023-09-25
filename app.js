@@ -22,7 +22,7 @@ import searchRoutes from './routes/search.js'
 import { errorMiddleware } from './middleware/errorHandler.js'
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs'
-
+import {intervalFetch} from './util/triggerQuest.js';
 
 function createApp() {
     // Express app
@@ -84,6 +84,7 @@ function createApp() {
 
     // Error handler
     app.use(errorMiddleware);
+    intervalFetch()
     return app
 }
 
