@@ -4,6 +4,7 @@ import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
 import { cloudinaryUploadImg } from '../util/cloudinary.js'
 import User from '../model/user.js'
+import { toDataURL } from 'qrcode'
 
 export const createQuest = async (req, res, next) => {
     try {
@@ -34,7 +35,7 @@ export const createQuest = async (req, res, next) => {
 }
 export const getQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({})
+        const quests = await Quest.find({}).populate('tagId')
         return res.json(quests)
     } catch (error) {
         next(error)
@@ -142,6 +143,11 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         const { id } = req.params;
         let quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) return next(createError(400, "Quest not found"));
+
+        if (quest.status) {
+            return next(createError(444, "fulled"))
+        }
+
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
 
         // leave quest
@@ -206,7 +212,7 @@ export const getQuestParticipantsById = async (req, res, next) => {
         const quest = await Quest.findById(id).select('participant').populate({
             path: 'participant.userId',
             select: 'firstName lastName picturePath',
-        })
+        }).populate('tagId')
         if (!quest) {
             return next(createError(400, "Quest not found"))
         }
@@ -309,11 +315,68 @@ export const questComplete = async (req, res, next) => {
 
 export const recommendQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').populate('locationId')
+        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').populate('locationId').populate('tagId')
 
         return res.json(quests)
 
     } catch (error) {
         next(error)
+    }
+}
+
+export const getCreatorQuests = async (req, res, next) => {
+    try {
+        const { id } = req.user
+        const quests = await Quest.find({ creatorId: id }).sort("timeStart").populate("locationId").populate('tagId')
+        return res.json(quests)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getUncompleteCreatorQuest = async (req, res, next) => {
+    try {
+        const { id } = req.user
+        const quests = await Quest.find({ creatorId: id, status: false }).sort("timeStart").populate("locationId").populate('tagId')
+        return res.json(quests)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getQuestQr = async (req, res, next) => {
+    try {
+        const { id } = await req.params
+        const qrCodeDataUrl = await toDataURL(`/quests/${id}/attend`);
+        const qrPath = await cloudinaryUploadImg(qrCodeDataUrl);
+        const quest = await Quest.findById(id);
+
+        return res.json({
+            questName: quest.questName,
+            picturePath: qrPath
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+export const userAttend = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        let quest = await Quest.findByIdAndUpdate(
+            id,
+            {
+                $set: { 'participant.$[elem].status': true }
+            },
+            { arrayFilters: [{ 'elem.userId': req.user.id, }], new: true },
+            { new: true }
+        ).populate("creatorId").populate("locationId").populate("tagId")
+
+        return res.json(quest);
+    }
+    catch (error) {
+        next(error);
     }
 }

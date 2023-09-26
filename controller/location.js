@@ -33,6 +33,7 @@ export const createLocation = async (req, res, next) => {
             next(error);
         }
     } catch (error) {
+        console.log(error)
         next(error);
     }
 }
@@ -52,7 +53,7 @@ export const getLocationById = async (req, res, next) => {
     try {
         const location = await Location.findById({ _id: id });
         if (!location) { return next(createError(400, "location not found")); }
-        const quests = await Quest.find({ locationId: id })
+        const quests = await Quest.find({ locationId: id }).sort([["status", 1]]).populate("tagId")
         return res.json({
             location,
             quests
@@ -93,7 +94,7 @@ export const updateLocationById = async (req, res, next) => {
         }
 
         return res.json({
-            locaiton: location,
+            location: location,
             status: "success"
         });
     } catch (error) {
