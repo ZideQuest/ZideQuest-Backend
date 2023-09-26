@@ -8,6 +8,9 @@
     "pretest": "docker compose rm test-db -s -f -v && docker compose up test-db -d ",
     "dev": "nodemon index.js",
     "test": "jest __test__"
+    "dev": "npm i && nodemon index.js",
+    "test": "jest --detectOpenHandles __test__"
+
   },
   "repository": {
     "type": "git",
