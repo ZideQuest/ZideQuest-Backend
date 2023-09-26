@@ -145,6 +145,10 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         if (!quest) return next(createError(400, "Quest not found"));
 
         if (quest.status) {
+            return next(createError(428, "ended"))
+        }
+
+        if (quest.participant.length >= quest.maxParticipant) {
             return next(createError(444, "fulled"))
         }
 
