@@ -145,6 +145,10 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         if (!quest) return next(createError(400, "Quest not found"));
 
         if (quest.status) {
+            return next(createError(428, "ended"))
+        }
+
+        if (quest.participant.length >= quest.maxParticipant) {
             return next(createError(444, "fulled"))
         }
 
@@ -364,8 +368,30 @@ export const getQuestQr = async (req, res, next) => {
 export const userAttend = async (req, res, next) => {
     try {
         const { id } = req.params;
+        let quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
+        if (!quest) return next(createError(400, "Quest not found"));
 
-        let quest = await Quest.findByIdAndUpdate(
+        if (quest.status) {
+            return next(createError(444, "fulled"))
+        }
+
+        const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
+        if (!alreadyJoin) {
+            if (quest.participant.length >= quest.maxParticipant) {
+                return next(createError(444, "fulled"))
+            }
+            quest = await Quest.findByIdAndUpdate(
+                id,
+                { $push: { participant: { userId: req.user.id, status: false } } },
+                { new: true }
+            );
+            await User.findByIdAndUpdate(req.user.id,
+                { $push: { joinedQuest: id } },
+                { new: true }
+            )           
+        }
+
+        quest = await Quest.findByIdAndUpdate(
             id,
             {
                 $set: { 'participant.$[elem].status': true }
