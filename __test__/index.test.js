@@ -276,5 +276,18 @@ describe('Test', () => {
         })
 
     })
+
+    describe("auto complete", () => {
+        it('status should be true', async () => {
+            const { body } = await pactum
+                .spec()
+                .get('/quests/$S{quest1Id}/find')
+                .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+                .expectJsonMatch({ status: true })
+                .expectStatus(200)
+
+            console.log(body)
+        })
+    })
 })
 
