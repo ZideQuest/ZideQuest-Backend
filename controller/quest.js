@@ -54,11 +54,15 @@ export const getQuestById = async (req, res, next) => {
         const userId = req.user?.id
 
         let isJoin = false
+        let isCheckIn = false
         quest.participant.forEach((user) => {
             if (user.userId == userId) {
                 isJoin = true
+                isCheckIn = user.status
             }
         })
+
+        console.log(quest.participant)
 
         const questDetail = {
             questName: quest.questName,
@@ -73,7 +77,8 @@ export const getQuestById = async (req, res, next) => {
             tag: tagNames,
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
-            isJoin
+            isJoin,
+            isCheckIn
         }
         return res.json(questDetail)
     } catch (error) {
