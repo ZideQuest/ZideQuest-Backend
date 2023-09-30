@@ -62,13 +62,12 @@ export const getQuestById = async (req, res, next) => {
             }
         })
 
-        console.log(quest.participant)
-
         const questDetail = {
             questName: quest.questName,
             creatorName: quest.creatorId.organizeName,
             creatorPic: quest.creatorId?.picturePath,
             locationName: quest.locationId.locationName,
+            locationId: quest.locationId._id,
             picturePath: quest.picturePath,
             timeStart: quest.timeStart,
             timeEnd: quest.timeEnd,
@@ -393,7 +392,7 @@ export const userAttend = async (req, res, next) => {
             await User.findByIdAndUpdate(req.user.id,
                 { $push: { joinedQuest: id } },
                 { new: true }
-            )           
+            )
         }
 
         quest = await Quest.findByIdAndUpdate(
