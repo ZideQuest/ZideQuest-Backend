@@ -49,11 +49,45 @@ export const getAllLocation = async (req, res, next) => {
 
 export const getLocationById = async (req, res, next) => {
     const { id } = req.params;
-
+    const userId = req.user?.id;
     try {
         const location = await Location.findById({ _id: id });
         if (!location) { return next(createError(400, "location not found")); }
-        const quests = await Quest.find({ locationId: id }).sort([["status", 1]]).populate("tagId")
+
+        let quests = await Quest.find({ locationId: id }).sort([["status", 1]]).populate("tagId")
+        if (userId) {
+            quests = quests.map(quest => {
+                let isJoin = false
+                let isCheckIn = false
+                quest.participant.forEach((user) => {
+                    if (user.userId == userId) {
+                        isJoin = true
+                        isCheckIn = user.status
+                    }
+                })
+                return {
+                    activityHour: quest.activityHour,
+                    _id: quest._id,
+                    questName: quest.questName,
+                    creatorId: quest.creatorId,
+                    locationId: quest.locationId,
+                    timeStart: quest.timeStart,
+                    timeEnd: quest.timeEnd,
+                    description: quest.description,
+                    status: quest.status,
+                    picturePath: quest.picturePath,
+                    tagId: quest.tagId,
+                    countParticipant: quest.countParticipant,
+                    maxParticipant: quest.maxParticipant,
+                    autoComplete: quest.autoComplete,
+                    participant: quest.participant,
+                    createdAt: quest.createdAt,
+                    updatedAt: quest.updatedAt,
+                    isJoin,
+                    isCheckIn
+                }
+            })
+        }
         return res.json({
             location,
             quests
