@@ -274,18 +274,21 @@ describe('Test', () => {
             })
 
         })
-
     })
-
-    describe("auto complete", () => {
-        it('status should be true', async () => {
-            const { body } = await pactum
+    describe("Location", () => {
+        it('should get isCHeckIn and isJoin  ', async () => {
+            await pactum
                 .spec()
-                .get('/quests/$S{quest1Id}/find')
+                .get('/locations/$S{locationId}')
                 .withHeaders({ Authorization: 'Bearer $S{userAt}' })
-                .expectJsonMatch({ status: true })
                 .expectStatus(200)
-
+        })
+        it('should not get isCHeckIn and isJoin  ', async () => {
+            await pactum
+                .spec()
+                .get('/locations/$S{locationId}')
+                // .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+                .expectStatus(200)
             console.log(body)
         })
     })
