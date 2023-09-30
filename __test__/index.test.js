@@ -289,7 +289,6 @@ describe('Test', () => {
                 .get('/locations/$S{locationId}')
                 // .withHeaders({ Authorization: 'Bearer $S{userAt}' })
                 .expectStatus(200)
-            console.log(body)
         })
     })
 })
