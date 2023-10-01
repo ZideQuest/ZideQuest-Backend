@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-    title: ZideQuest Copy
+    title: ZideQuest
     version: 1.0.0
 servers:
     - url: https://3764-171-99-154-163.ngrok-free.app/api
