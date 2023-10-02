@@ -291,5 +291,20 @@ describe('Test', () => {
                 .expectStatus(200)
         })
     })
+    describe("Tag", () => {
+        it('should create tag', async () => {
+            await pactum
+                .spec()
+                .post('/tags')
+                .withHeaders({
+                    Authorization: 'Bearer $S{adminAt}',
+                })
+                .withBody({
+                    tagName: "tag1"
+                })
+                .expectStatus(200)
+        })
+    })
 })
+// })
 
