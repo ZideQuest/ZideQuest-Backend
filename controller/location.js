@@ -84,9 +84,9 @@ export const getAllLocation = async (req, res, next) => {
             })
         }
 
-        return res.json({
-            locations: locationsData,
-        });
+        return res.json(
+            [...locationsData],
+        );
     } catch (error) {
         console.error(error)
         next(error);
