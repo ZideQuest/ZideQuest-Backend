@@ -50,14 +50,6 @@ export const getAllLocation = async (req, res, next) => {
                 'as': 'result'
               }
             }, {
-                '$match': {
-                    'result': {
-                        '$elemMatch': {
-                            'status': false
-                        }
-                    }
-                }
-            }, {
                 '$project': {
                     'locationName': 1,
                     'latitude': 1,
