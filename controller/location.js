@@ -76,6 +76,7 @@ export const getAllLocation = async (req, res, next) => {
                 }
             }
             locationsData.push({
+                _id: location._id,
                 locationName: location.locationName,
                 latitude: location.latitude,
                 longitude: location.longitude,
