@@ -129,7 +129,7 @@ export const getUserInfo = async (req, res, next) => {
             const level_now = Math.floor(Math.pow(Math.floor(user.level), 1.45) * 856)
             const level_next = Math.floor(Math.pow(Math.floor(user.level+1), 1.45) * 856)
             const maxXp = level_next-level_now
-            const xpNow = user.exp-level_now
+            let xpNow = user.exp-level_now
             if (xpNow < 0) {
                 xpNow = 0
             }
