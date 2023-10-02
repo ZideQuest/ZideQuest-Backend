@@ -126,9 +126,18 @@ export const getUserInfo = async (req, res, next) => {
                     path: 'locationId'
                 }
             })
-            return res.json(user)
+            const level_now = Math.floor(Math.pow(Math.floor(user.level), 1.45) * 856)
+            const level_next = Math.floor(Math.pow(Math.floor(user.level+1), 1.45) * 856)
+
+            return res.json({
+                ...user.toObject(),
+                maxXp: level_next-level_now,
+                xpNow: user.exp-level_now,
+                xpPercentage: (user.exp-level_now)/(level_next-level_now)
+            })
         }
         const user = await Admin.findById(id)
+
         return res.json(user)
     } catch (error) {
         next(error)
