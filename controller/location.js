@@ -40,9 +40,54 @@ export const createLocation = async (req, res, next) => {
 
 export const getAllLocation = async (req, res, next) => {
     try {
-        const locations = await Location.find({});
-        return res.json(locations);
+        let locationsData = [];
+        const pipeline = [
+            {
+              '$lookup': {
+                'from': 'quests', 
+                'localField': '_id', 
+                'foreignField': 'locationId', 
+                'as': 'result'
+              }
+            }, {
+                '$match': {
+                    'result': {
+                        '$elemMatch': {
+                            'status': false
+                        }
+                    }
+                }
+            }, {
+                '$project': {
+                    'locationName': 1,
+                    'latitude': 1,
+                    'longitude': 1,
+                    'result': 1
+                }
+            }
+        ]
+        const result = await Location.aggregate(pipeline);
+
+        for (let location of result) {
+            let countQuest = 0
+            for (let quest of location.result) {
+                if (!quest.status) {
+                    countQuest += 1
+                }
+            }
+            locationsData.push({
+                locationName: location.locationName,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                count: countQuest
+            })
+        }
+
+        return res.json({
+            locations: locationsData,
+        });
     } catch (error) {
+        console.error(error)
         next(error);
     }
 }
