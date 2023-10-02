@@ -152,12 +152,11 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             return next(createError(428, "ended"))
         }
 
-        if (quest.participant.length >= quest.maxParticipant) {
+        if (quest.participant.length >= quest.maxParticipant && quest.maxParticipant != null) {
             return next(createError(444, "fulled"))
         }
 
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
-
         // leave quest
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
         if (alreadyJoin) {
@@ -208,8 +207,10 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             maxParticipant: quest.maxParticipant,
             isjoin: !alreadyJoin
         }
+        console.log("bug")
         return res.json({ questDetail });
     } catch (error) {
+        console.log(error)
         next(error);
     }
 };
