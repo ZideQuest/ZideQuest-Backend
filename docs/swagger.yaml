@@ -3,7 +3,7 @@ info:
     title: ZideQuest
     version: 1.0.0
 servers:
-    - url: https://1d17-2001-fb1-1d-3f09-fe34-97ff-fea7-ade2.ngrok-free.app/api
+    - url: https://b8a8-2001-fb1-1e-4b50-fe34-97ff-fea7-ade2.ngrok-free.app/api
     - url: http://localhost:3000/api
 components:
     securitySchemes:
