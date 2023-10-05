@@ -272,10 +272,37 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectBodyContains('$S{userId}')
             })
+            it('status of user should be false', async () => {
+                await pactum
+                    .spec()
+                    .get('/quests/$S{quest1Id}/participants')
+                    .expectStatus(200)
+                    .expectBodyContains(false)
+            })
+            it('creator shoud check user ', async () => {
+                await pactum
+                    .spec()
+                    .patch('/quests/$S{quest1Id}/check-user')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .withBody({
+                        users: ['$S{userId}']
+                    })
+                    .expectStatus(200)
+            })
+            it('status of user should be true', async () => {
+                await pactum
+                    .spec()
+                    .get('/quests/$S{quest1Id}/participants')
+                    .expectStatus(200)
+                    .expectBodyContains(true)
+            })
             it('creator remove user from quest', async () => {
                 await pactum
                     .spec()
-                    .patch('/quests/$S{quest1Id}/remove-user/$S{userId}')
+                    .patch('/quests/$S{quest1Id}/remove-user')
+                    .withBody({
+                        users: ['$S{userId}']
+                    })
                     .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
                     .expectStatus(200)
             })
@@ -286,6 +313,8 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectJsonMatch('participant', [])
             })
+
+
             it('user shoud has no quest ', async () => {
                 await pactum
                     .spec()
@@ -294,10 +323,11 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectJsonMatch('joinedQuest', [])
             })
+
         })
     })
     describe("Location", () => {
-        it('should get isCHeckIn and isJoin  ', async () => {
+        it('should get is CheckIn and isJoin  ', async () => {
             await pactum
                 .spec()
                 .get('/locations/$S{locationId}')

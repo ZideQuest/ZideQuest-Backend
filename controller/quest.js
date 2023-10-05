@@ -414,7 +414,7 @@ export const userAttend = async (req, res, next) => {
 
 export const creatorRemoveUser = async (req, res, next) => {
     try {
-        const { questId, userId } = req.params;
+        const { questId } = req.params;
         const quest = await Quest.findById(questId);
         if (!quest) { return next(createError(400, "Quest not found")); }
 
@@ -430,28 +430,78 @@ export const creatorRemoveUser = async (req, res, next) => {
         if (quest.status == true) {
             return next(createError(301, "This quest is already complete"))
         }
-        // check that user is in quest
-        const alreadyJoin = quest.participant.find((user) => user.userId == userId);
 
-        if (!alreadyJoin) {
-            return next(createError(400, "User not in quest"))
+        // check that user is in quest
+        const { users } = req.body;
+        users.forEach(async (userId, index) => {
+            const alreadyJoin = quest.participant.find((user) => user.userId == userId);
+
+            if (!alreadyJoin) {
+                return next(createError(400, `User ${userId} not in quest`))
+            }
+
+            await Quest.findByIdAndUpdate(
+                questId,
+                {
+                    $pull: { participant: { userId: userId } }
+                },
+                { new: true }
+            )
+
+            // pull quest from user.joinedQuest
+            await User.findByIdAndUpdate(userId,
+                { $pull: { joinedQuest: questId } },
+                { new: true }
+            )
+        })
+
+        return res.json({ msg: `user: ${users} remove from quest: ${questId} successfully` });
+    } catch (error) {
+        next(error)
+    }
+}
+export const creatorCheckUser = async (req, res, next) => {
+    try {
+        const { questId } = req.params;
+        const quest = await Quest.findById(questId);
+        if (!quest) { return next(createError(400, "Quest not found")); }
+
+        // validate creator or admin
+        if (req.user.role === "creator") {
+            const currentOrganizeName = (await Admin.findById(req.user.id)).organizeName;
+            const creatorOrganizeName = (await Admin.findById(quest.creatorId)).organizeName;
+            if (currentOrganizeName !== creatorOrganizeName) {
+                return next(createError(401, "You are not allowed to manage this quest"));
+            }
         }
 
-        await Quest.findByIdAndUpdate(
-            questId,
-            {
-                $pull: { participant: { userId: userId } }
-            },
-            { new: true }
-        )
+        if (quest.status == true) {
+            return next(createError(301, "This quest is already complete"))
+        }
 
-        // pull quest from user.joinedQuest
-        await User.findByIdAndUpdate(userId,
-            { $pull: { joinedQuest: questId } },
-            { new: true }
-        )
+        // check that user is in quest
+        const { users } = req.body;
+        users.forEach(async (userId, index) => {
+            const alreadyJoin = quest.participant.find((user) => user.userId == userId);
 
-        return res.json({ msg: `user: ${userId} remove from quest: ${questId} successfully` });
+            if (!alreadyJoin) {
+                return next(createError(400, `User ${userId} not in quest`))
+            }
+
+            await Quest.findByIdAndUpdate(
+                questId,
+                {
+                    $set: { 'participant.$[elem].status': true }
+                },
+                {
+                    arrayFilters: [{ 'elem.userId': userId, }], new: true
+                },
+                {
+                    new: true
+                }
+            )
+        })
+        return res.json({ msg: `user: ${users} has been check with quest: ${questId} successfully` });
     } catch (error) {
         next(error)
     }
