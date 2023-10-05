@@ -445,6 +445,12 @@ export const creatorRemoveUser = async (req, res, next) => {
             { new: true }
         )
 
+        // pull quest from user.joinedQuest
+        await User.findByIdAndUpdate(userId,
+            { $pull: { joinedQuest: questId } },
+            { new: true }
+        )
+
         return res.json({ msg: `user: ${userId} remove from quest: ${questId} successfully` });
     } catch (error) {
         next(error)

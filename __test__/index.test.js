@@ -286,7 +286,14 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectJsonMatch('participant', [])
             })
-
+            it('user shoud has no quest ', async () => {
+                await pactum
+                    .spec()
+                    .get('/users/info')
+                    .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+                    .expectStatus(200)
+                    .expectJsonMatch('joinedQuest', [])
+            })
         })
     })
     describe("Location", () => {
