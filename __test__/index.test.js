@@ -272,6 +272,20 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectBodyContains('$S{userId}')
             })
+            it('creator remove user from quest', async () => {
+                await pactum
+                    .spec()
+                    .patch('/quests/$S{quest1Id}/remove-user/$S{userId}')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .expectStatus(200)
+            })
+            it('quest should has no user ', async () => {
+                await pactum
+                    .spec()
+                    .get('/quests/$S{quest1Id}/participants')
+                    .expectStatus(200)
+                    .expectJsonMatch('participant', [])
+            })
 
         })
     })
