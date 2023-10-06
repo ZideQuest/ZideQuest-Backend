@@ -236,7 +236,7 @@ paths:
         patch:
             parameters:
                 - in: path
-                  name: questId, userId
+                  name: questId
                   required: true
                   schema:
                       type: string
@@ -261,7 +261,7 @@ paths:
         patch:
             parameters:
                 - in: path
-                  name: questId, userId
+                  name: questId
                   required: true
                   schema:
                       type: string
