@@ -64,6 +64,7 @@ export const getQuestById = async (req, res, next) => {
 
         const questDetail = {
             questName: quest.questName,
+            creatorId: quest.creatorId._id,
             creatorName: quest.creatorId.organizeName,
             creatorPic: quest.creatorId?.picturePath,
             locationName: quest.locationId.locationName,
