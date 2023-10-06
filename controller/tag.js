@@ -1,6 +1,6 @@
 import Tag from "../model/tag.js"
 import { createError } from "../util/createError.js"
-
+import { generateColor } from "../util/generateTagColor.js"
 export const createTag = async (req, res, next) => {
     try {
         const { tagName } = req.body
@@ -50,6 +50,19 @@ export const updateTagById = async (req, res, next) => {
         if (!tag) return next(createError(400, "Tag not found"))
 
         return res.json({ msg: `Update Tag: ${tag.tagName} successfully` })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getTagColor = async (req, res, next) => {
+    try {
+        const tag = await Tag.find({})
+        tag.forEach(async (item) => {
+            item.tagColor = generateColor()
+            await item.save()
+        })
+        return res.json(tag)
     } catch (error) {
         next(error)
     }
