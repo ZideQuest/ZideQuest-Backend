@@ -420,10 +420,16 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /v1/quests:
+    /v1/quests/{id}:
         put:
             tags:
                 - quest
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
             summary: update quest
             requestBody:
                 content:
