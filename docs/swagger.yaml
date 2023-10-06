@@ -444,7 +444,6 @@ paths:
                     description: Successful response
                     content:
                         application/json: {}
-    /v1/quests/{id}:
         delete:
             parameters:
                 - in: path
