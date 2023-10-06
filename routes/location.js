@@ -5,7 +5,7 @@ import { upload } from "../middleware/uploadImg.js";
 const router = Router();
 
 router.post("/", verifyCreator, upload.single('img'), createLocation);
-router.get("/", getAllLocation);
+router.get("/", verify, getAllLocation);
 router.get("/:id", verify, getLocationById);
 router.put("/:id", verifyCreator, upload.single('img'), updateLocationById);
 router.delete("/:id", verifyCreator, deleteLocaitonById);

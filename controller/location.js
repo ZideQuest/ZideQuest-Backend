@@ -40,15 +40,17 @@ export const createLocation = async (req, res, next) => {
 
 export const getAllLocation = async (req, res, next) => {
     try {
+        const userId = req.user?.id;
+
         let locationsData = [];
         const pipeline = [
             {
-              '$lookup': {
-                'from': 'quests', 
-                'localField': '_id', 
-                'foreignField': 'locationId', 
-                'as': 'result'
-              }
+                '$lookup': {
+                    'from': 'quests',
+                    'localField': '_id',
+                    'foreignField': 'locationId',
+                    'as': 'result'
+                }
             }, {
                 '$project': {
                     'locationName': 1,
@@ -58,13 +60,32 @@ export const getAllLocation = async (req, res, next) => {
                 }
             }
         ]
+
         const result = await Location.aggregate(pipeline);
+
 
         for (let location of result) {
             let countQuest = 0
-            for (let quest of location.result) {
-                if (!quest.status) {
-                    countQuest += 1
+            let pinMode = false
+
+            if (userId) {
+                for (let quest of location.result) {
+                    if (!quest.status) {
+                        countQuest += 1
+                    }
+                    quest.participant.forEach((user) => {
+                        if (user.userId == userId) {
+                            if (user.status == false) {
+                                pinMode = true
+                            }
+                        }
+                    })
+                }
+            } else {
+                for (let quest of location.result) {
+                    if (!quest.status) {
+                        countQuest += 1
+                    }
                 }
             }
             locationsData.push({
@@ -72,7 +93,8 @@ export const getAllLocation = async (req, res, next) => {
                 locationName: location.locationName,
                 latitude: location.latitude,
                 longitude: location.longitude,
-                count: countQuest
+                count: countQuest,
+                pinMode: pinMode
             })
         }
 
