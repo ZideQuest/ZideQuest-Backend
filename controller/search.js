@@ -1,5 +1,4 @@
 import Quest from '../model/quest.js'
-import Location from '../model/location.js'
 import { createError } from "../util/createError.js"
 
 export const getSearch = async (req, res, next) => {
@@ -8,10 +7,7 @@ export const getSearch = async (req, res, next) => {
 
         const query = {};
         if (Name) {
-            query.$or = [
-                { questName: { $regex: Name, $options: "i" } },
-                { locationName: { $regex: Name, $options: "i" } }
-            ];
+            query.questName = { $regex: Name, $options: "i" } ;
         }
 
         if (timeStart) {
@@ -23,15 +19,15 @@ export const getSearch = async (req, res, next) => {
         }
 
         if (tagId) {
-            query.tagId = tagId;
-        }        
-
-        const quests = await Quest.find(query).populate('locationId');
-        let locations = await Location.find(query);
-        const locationFromQuest = quests.map(quest => quest.locationId);
-        locations = locations.concat(locationFromQuest);
-        locations = locations.filter((item, index, arr) => arr.indexOf(item) === index);
-        return res.json({quests, locations});
+            if (Array.isArray(tagId)) {
+                query.tagId = { $in: tagId };
+            } else {
+                query.tagId = tagId;
+            }
+        }
+        const quests = await Quest.find(query);
+        const filteredQuests = quests.filter(quest => quest.status === false);
+        return res.json(filteredQuests);
     } catch (error) {
         next(error)
     }
