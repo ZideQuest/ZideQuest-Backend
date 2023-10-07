@@ -511,34 +511,30 @@ export const creatorCheckUser = async (req, res, next) => {
 
 export const cancelQuest = async (req, res, next) => {
     try {
-        const { questId } = await req.params
-        const message = await req.body.message
+        const { questId } = req.params
+        const { message } = req.body
 
         const notification = await Notification.create({
             questId: questId,
             message: message
         })
 
-        const users = await Quest.find({
-            _id: questId
-        }).participant
+        const quest = await Quest.findByIdAndUpdate(questId, {
+            isCancel: true,
+            $push: { notifications: notification._id }
+        }, { new: true })
+
+        const { participant } = quest
 
         await User.updateMany(
-            { _id: { $in: users } },
-            { $push: {notifications: [message]} },
-        )
-
-        await Quest.updateOne(
-            {_id: questId},
-            {
-                isCancel: true,
-                notifications: [notification._id]
-            }
+            { _id: { $in: participant } },
+            { $push: { notifications: notification._id } },
         )
 
         return res.json(notification);
     }
     catch (error) {
+        console.log(error)
         next(error);
     }
 }
