@@ -16,7 +16,7 @@ export const createTag = async (req, res, next) => {
 
 export const getTag = async (req, res, next) => {
     try {
-        const tag = await Tag.find({}).select('tagName').select('_id')
+        const tag = await Tag.find({}).select('tagName').select('_id').select('tagColor')
         return res.json(tag)
     } catch (error) {
         next(error)
