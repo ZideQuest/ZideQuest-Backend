@@ -4,6 +4,8 @@ import Admin from "../model/admin.js"
 import Location from "../model/location.js"
 
 import { createError } from "../util/createError.js"
+import { ObjectId } from "mongoose/index.js"
+import mongoose from "mongoose"
 export const createUser = async (req, res, next) => {
     try {
         const { username, password, ...userInfo } = req.body
@@ -153,3 +155,27 @@ export const getUserInfo = async (req, res, next) => {
         next(error)
     }
 } 
+
+export const deleteUserNoti = async (req, res, next) => {
+    try {
+        const { id } = req.user
+        const { notiId } = req.params
+
+        console.log(`${id} ${notiId}`)
+
+        const user = await User.findOneAndUpdate(
+            new mongoose.Types.ObjectId(id),
+            {
+                $pull: {
+                    notifications: notiId
+                }
+            },
+            {new: true}
+        )
+
+        return res.json(user)
+
+    } catch (error) {
+        next(error)
+    }
+}
