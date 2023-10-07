@@ -69,11 +69,10 @@ const questSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
-    notification: {
+    notifications: [{
         type: mongoose.Types.ObjectId,
         ref: "Notification",
-        default: null
-    },
+    }],
     isCancel: {
         type: Boolean,
         default: false

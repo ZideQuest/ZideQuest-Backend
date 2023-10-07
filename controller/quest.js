@@ -4,6 +4,7 @@ import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
 import { cloudinaryUploadImg } from '../util/cloudinary.js'
 import User from '../model/user.js'
+import Notification from '../model/notification.js'
 import { toDataURL } from 'qrcode'
 
 export const createQuest = async (req, res, next) => {
@@ -511,22 +512,29 @@ export const creatorCheckUser = async (req, res, next) => {
 export const cancelQuest = async (req, res, next) => {
     try {
         const { questId } = await req.params
-        const { message } = await req.body
+        const message = await req.body.message
 
-        const notification = Notification.create({
+        const notification = await Notification.create({
             questId: questId,
             message: message
         })
 
-        const pipeline = [
+        const users = await Quest.find({
+            _id: questId
+        }).participant
+
+        await User.updateMany(
+            { _id: { $in: users } },
+            { $push: {notifications: [message]} },
+        )
+
+        await Quest.updateOne(
+            {_id: questId},
             {
-                '$addFields': {
-                    'notifications': []
-                }
+                isCancel: true,
+                notifications: [notification._id]
             }
-        ]
-        
-        await User.aggregate(pipeline);
+        )
 
         return res.json(notification);
     }
