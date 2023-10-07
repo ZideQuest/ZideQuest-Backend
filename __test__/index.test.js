@@ -342,6 +342,44 @@ describe('Test', () => {
                 .expectStatus(200)
         })
     })
+    describe("Quest Cancle", () => {
+        it('user join quest', async () => {
+            const { body } = await pactum
+                .spec()
+                .patch('/quests/$S{quest3Id}/join-leave')
+                .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+                .expectStatus(200)
+        })
+        it('should get user info with notification', async () => {
+            await pactum
+                .spec()
+                .get('/users/info')
+                .withBearerToken('$S{userAt}')
+                .expectStatus(200)
+                .expectJsonMatch('notifications', [])
+        })
+        it('should cancle quest', async () => {
+            await pactum
+                .spec()
+                .patch('/quests/$S{quest3Id}/cancel')
+                .withHeaders({
+                    Authorization: 'Bearer $S{adminAt}',
+                })
+                .withBody({
+                    message: "unavailable"
+                })
+                .expectStatus(200)
+                .stores('notification1Id', '_id')
+        })
+        it('should get user info with notification', async () => {
+            await pactum
+                .spec()
+                .get('/users/info')
+                .withBearerToken('$S{userAt}')
+                .expectStatus(200)
+                .expectBodyContains('$S{notification1Id}')
+        })
+    })
     describe("Tag", () => {
         it('should create tag', async () => {
             await pactum
