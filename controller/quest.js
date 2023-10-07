@@ -514,7 +514,7 @@ export const cancelQuest = async (req, res, next) => {
         const { message } = await req.body
 
         const notification = Notification.create({
-            questId: id,
+            questId: questId,
             message: message
         })
 
