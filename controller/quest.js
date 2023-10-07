@@ -507,3 +507,20 @@ export const creatorCheckUser = async (req, res, next) => {
         next(error)
     }
 }
+
+export const cancelQuest = async (req, res, next) => {
+    try {
+        const { questId } = await req.params
+        const { message } = await req.body
+
+        const notification = Notification.create({
+            questId: id,
+            message: message
+        })
+
+        return res.json(notification);
+    }
+    catch (error) {
+        next(error);
+    }
+}
