@@ -518,6 +518,16 @@ export const cancelQuest = async (req, res, next) => {
             message: message
         })
 
+        const pipeline = [
+            {
+                '$addFields': {
+                    'notifications': []
+                }
+            }
+        ]
+        
+        await User.aggregate(pipeline);
+
         return res.json(notification);
     }
     catch (error) {
