@@ -4,6 +4,7 @@ import Location from '../model/location.js'
 import { createError } from '../util/createError.js'
 import { cloudinaryUploadImg } from '../util/cloudinary.js'
 import User from '../model/user.js'
+import Notification from '../model/notification.js'
 import { toDataURL } from 'qrcode'
 
 export const createQuest = async (req, res, next) => {
@@ -505,5 +506,35 @@ export const creatorCheckUser = async (req, res, next) => {
         return res.json({ msg: `user: ${users} has been check with quest: ${questId} successfully` });
     } catch (error) {
         next(error)
+    }
+}
+
+export const cancelQuest = async (req, res, next) => {
+    try {
+        const { questId } = req.params
+        const { message } = req.body
+
+        const notification = await Notification.create({
+            questId: questId,
+            message: message
+        })
+
+        const quest = await Quest.findByIdAndUpdate(questId, {
+            isCancel: true,
+            $push: { notifications: notification._id }
+        }, { new: true })
+
+        const { participant } = quest
+
+        await User.updateMany(
+            { _id: { $in: participant } },
+            { $push: { notifications: notification._id } },
+        )
+
+        return res.json(notification);
+    }
+    catch (error) {
+        console.log(error)
+        next(error);
     }
 }

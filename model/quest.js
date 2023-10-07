@@ -68,6 +68,14 @@ const questSchema = new mongoose.Schema({
     autoComplete: {
         type: Boolean,
         required: true,
+    },
+    notifications: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Notification",
+    }],
+    isCancel: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
