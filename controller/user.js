@@ -123,7 +123,12 @@ export const getUserInfo = async (req, res, next) => {
             const user = await User.findById(id).populate({
                 path: 'joinedQuest',
                 populate: {
-                    path: 'locationId'
+                    path: 'locationId',
+                }
+            }).populate({
+                path: 'notifications',
+                populate: {
+                    path: '_id'
                 }
             })
             const level_now = Math.floor(Math.pow(Math.floor(user.level), 1.45) * 856)
