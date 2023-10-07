@@ -787,13 +787,16 @@ paths:
         get:
             parameters:
                 - in: query
-                  name: questName
+                  name: Name
                 - in: query
                   name: timeStart
                 - in: query
                   name: timeEnd
                 - in: query
                   name: tagId
+                  schema:
+                    type: array
+                  collectionFormat: multi
             tags:
                 - search
             summanry: search/filter quest
