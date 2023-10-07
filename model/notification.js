@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema({
-    quetId: {
+    questId: {
         type: mongoose.Types.ObjectId,
         ref: "Quest"
     },
