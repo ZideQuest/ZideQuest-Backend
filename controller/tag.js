@@ -5,7 +5,8 @@ export const createTag = async (req, res, next) => {
     try {
         const { tagName } = req.body
         const newtag = await Tag.create({
-            tagName: tagName
+            tagName: tagName,
+            tagColor: generateColor()
         })
         return res.json(newtag)
     } catch (error) {
