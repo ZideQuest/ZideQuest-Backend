@@ -527,7 +527,7 @@ export const cancelQuest = async (req, res, next) => {
         const { participant } = quest
 
         await User.updateMany(
-            { _id: { $in: participant } },
+            { _id: { $in: participant.map(participant => participant.userId) } },
             { $push: { notifications: notification._id } },
         )
 
