@@ -99,6 +99,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Quest"
     }],
+    notifications: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Notification"
+    }],
     activityTranscript: {
         name: {
             type: String,
