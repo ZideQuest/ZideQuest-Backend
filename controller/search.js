@@ -28,7 +28,7 @@ export const getSearch = async (req, res, next) => {
         const quests = await Quest.find(query).populate('locationId');
         const filteredQuests = quests.filter(quest => quest.status === false);
         const locations = quests.map(quest => quest.locationId);
-        return res.json({filteredQuests,locations});
+        return res.json({quests:filteredQuests, locations});
     } catch (error) {
         next(error)
     }
