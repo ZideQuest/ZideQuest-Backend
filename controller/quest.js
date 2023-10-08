@@ -74,7 +74,7 @@ export const getQuestById = async (req, res, next) => {
             timeEnd: quest.timeEnd,
             description: quest.description,
             status: quest.status,
-            tag: quest.tagId.map(tag => ({ tagName: tag.tagName, tagColor: tag.tagColor, tagId: tag._id })),
+            tag: quest.tagId.map(tag => ({ tagName: tag.tagName, tagColor: tag.tagColor, _id: tag._id })),
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
             isJoin,
