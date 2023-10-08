@@ -26,7 +26,8 @@ export const getSearch = async (req, res, next) => {
             }
         }
         if (activityCat) {
-            query.activityHour.category = { $regex: activityCat, $options: "i" } ;
+            const category = 'activityHour.category';
+            query[category] = { $regex: activityCat, $options: "i" };
         }
 
         const quests = await Quest.find(query).populate('locationId');
