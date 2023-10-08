@@ -381,11 +381,14 @@ export const userAttend = async (req, res, next) => {
             return next(createError(444, "fulled"))
         }
 
+        // if already started: only alreadyJoin can check attendance
+        const currentDate = new Date();
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
-        if (!alreadyJoin) {
+        if (!alreadyJoin && currentDate < quest.timeStart) {
             if (quest.participant.length >= quest.maxParticipant) {
                 return next(createError(444, "fulled"))
             }
+            
             quest = await Quest.findByIdAndUpdate(
                 id,
                 { $push: { participant: { userId: req.user.id, status: false } } },
@@ -395,8 +398,16 @@ export const userAttend = async (req, res, next) => {
                 { $push: { joinedQuest: id } },
                 { new: true }
             )
-        }
 
+        }
+        if (alreadyJoin && currentDate >= quest.timeStart) {
+            quest = await Quest.findByIdAndUpdate(
+                id,
+                { $push: { participant: { userId: req.user.id, status: false } } },
+                { new: true }
+            );
+        }
+        
         quest = await Quest.findByIdAndUpdate(
             id,
             {
