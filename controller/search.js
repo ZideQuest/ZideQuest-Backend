@@ -3,7 +3,7 @@ import { createError } from "../util/createError.js"
 
 export const getSearch = async (req, res, next) => {
     try {
-        const { Name, timeStart, timeEnd, tagId} = req.query;
+        const { Name, timeStart, timeEnd, tagId, activityCat} = req.query;
 
         const query = {};
         if (Name) {
@@ -25,6 +25,10 @@ export const getSearch = async (req, res, next) => {
                 query.tagId = tagId;
             }
         }
+        if (activityCat) {
+            query.activityHour.category = { $regex: activityCat, $options: "i" } ;
+        }
+
         const quests = await Quest.find(query).populate('locationId');
         const filteredQuests = quests.filter(quest => quest.status === false);
         let locations = quests.map(quest => quest.locationId);
