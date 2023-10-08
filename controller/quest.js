@@ -51,7 +51,6 @@ export const getQuestById = async (req, res, next) => {
             return next(createError(400, "Quest not found"))
         }
 
-        const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
         const userId = req.user?.id
 
         let isJoin = false
@@ -75,7 +74,7 @@ export const getQuestById = async (req, res, next) => {
             timeEnd: quest.timeEnd,
             description: quest.description,
             status: quest.status,
-            tag: tagNames,
+            tag: quest.tagId.map(tag => ({ tagName: tag.tagName, tagColor: tag.tagColor, tagId: tag._id })),
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
             isJoin,
