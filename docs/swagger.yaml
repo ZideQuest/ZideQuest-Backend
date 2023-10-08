@@ -841,6 +841,8 @@ paths:
                   schema:
                     type: array
                   collectionFormat: multi
+                - in: query
+                  name: activityCat
             tags:
                 - search
             summanry: search/filter quest
