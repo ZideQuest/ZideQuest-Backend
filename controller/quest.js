@@ -77,6 +77,7 @@ export const getQuestById = async (req, res, next) => {
             tag: quest.tagId.map(tag => ({ tagName: tag.tagName, tagColor: tag.tagColor, _id: tag._id })),
             countParticipant: quest.countParticipant,
             maxParticipant: quest.maxParticipant,
+            activityHour: quest.activityHour,
             isJoin,
             isCheckIn
         }
@@ -388,7 +389,7 @@ export const userAttend = async (req, res, next) => {
             if (quest.participant.length >= quest.maxParticipant) {
                 return next(createError(444, "fulled"))
             }
-            
+
             quest = await Quest.findByIdAndUpdate(
                 id,
                 { $push: { participant: { userId: req.user.id, status: false } } },
@@ -407,7 +408,7 @@ export const userAttend = async (req, res, next) => {
                 { new: true }
             );
         }
-        
+
         quest = await Quest.findByIdAndUpdate(
             id,
             {
