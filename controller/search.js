@@ -25,9 +25,10 @@ export const getSearch = async (req, res, next) => {
                 query.tagId = tagId;
             }
         }
-        const quests = await Quest.find(query);
+        const quests = await Quest.find(query).populate('locationId');
         const filteredQuests = quests.filter(quest => quest.status === false);
-        return res.json(filteredQuests);
+        const locations = quests.map(quest => quest.locationId);
+        return res.json({filteredQuests,locations});
     } catch (error) {
         next(error)
     }
