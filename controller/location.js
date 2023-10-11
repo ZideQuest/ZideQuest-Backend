@@ -73,11 +73,12 @@ export const getAllLocation = async (req, res, next) => {
                     if (!quest.status) {
                         countQuest += 1
                     }
+                    if (quest.status == true) {
+                        continue
+                    }
                     quest.participant.forEach((user) => {
                         if (user.userId == userId) {
-                            if (user.status == false) {
-                                pinMode = true
-                            }
+                            pinMode = true
                         }
                     })
                 }
