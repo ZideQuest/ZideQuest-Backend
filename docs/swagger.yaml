@@ -537,6 +537,8 @@ paths:
             tags:
                 - location
             summary: getAllLocation
+            security:
+                - bearerAuth: []
             responses:
                 "200":
                     description: Successful response
