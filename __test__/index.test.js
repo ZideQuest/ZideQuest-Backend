@@ -296,6 +296,23 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectBodyContains(true)
             })
+            it('creator shoud un-check user ', async () => {
+                await pactum
+                    .spec()
+                    .patch('/quests/$S{quest1Id}/uncheck-user')
+                    .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                    .withBody({
+                        users: ['$S{userId}']
+                    })
+                    .expectStatus(200)
+            })
+            it('status of user should be false', async () => {
+                await pactum
+                    .spec()
+                    .get('/quests/$S{quest1Id}/participants')
+                    .expectStatus(200)
+                    .expectBodyContains(false)
+            })
             it('creator remove user from quest', async () => {
                 await pactum
                     .spec()
