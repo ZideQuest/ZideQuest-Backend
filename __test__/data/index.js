@@ -33,6 +33,49 @@ export const userInfo = {
     }
 }
 
+export const userInfo2 = {
+    "username": "ratchanon",
+    "password": "123123",
+    "firstName": "Ratchanon",
+    "lastName": "Thaweepongsatorn",
+    "nisitId": "6410504268",
+    "email": "ratchanon.tha@ku.th",
+    "faculty": "E",
+    "activityTranscript": {
+        "category": {
+            "university": {
+                "count": 2,
+                "hour": 12
+            },
+            "empowerment": {
+                "category": {
+                    "morality": {
+                        "count": 1,
+                        "hour": 2
+                    },
+                    "relation": {
+                        "count": 3,
+                        "hour": 12
+                    },
+                    "thingking": {
+                        "count": 4,
+                        "hour": 16
+                    },
+                    "health": {
+                        "count": 1,
+                        "hour": 6
+                    }
+                }
+            },
+            "society": {
+                "count": 0,
+                "hour": 0
+            }
+
+        }
+    }
+}
+
 export const adminInfo = {
     username: "zidequest",
     "password": "123",
