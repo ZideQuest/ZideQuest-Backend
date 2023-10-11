@@ -428,7 +428,7 @@ export const userAttend = async (req, res, next) => {
 export const creatorRemoveUser = async (req, res, next) => {
     try {
         const { questId } = req.params;
-        const quest = await Quest.findById(questId);
+        let quest = await Quest.findById(questId);
         if (!quest) { return next(createError(400, "Quest not found")); }
 
         // validate creator or admin
@@ -446,28 +446,27 @@ export const creatorRemoveUser = async (req, res, next) => {
 
         // check that user is in quest
         const { users } = req.body;
-        users.forEach(async (userId, index) => {
-            const alreadyJoin = quest.participant.find((user) => user.userId == userId);
+        for (const userId of users) {
+            const participantIndex = quest.participant.findIndex((user) => user.userId == userId);
 
-            if (!alreadyJoin) {
-                return next(createError(400, `User ${userId} not in quest`))
+            if (participantIndex === -1) {
+                return next(createError(400, `User ${userId} not in quest`));
             }
 
-            await Quest.findByIdAndUpdate(
-                questId,
-                {
-                    $pull: { participant: { userId: userId } }
-                },
-                { new: true }
-            )
+            // Remove user from the participant array
+            quest.participant.splice(participantIndex, 1);
 
-            // pull quest from user.joinedQuest
-            await User.findByIdAndUpdate(userId,
+            // Remove the quest from the user's joinedQuest array
+            await User.findByIdAndUpdate(
+                userId,
                 { $pull: { joinedQuest: questId } },
                 { new: true }
-            )
-        })
+            );
+        }
 
+        // Update the quest's countParticipant
+        quest.countParticipant = quest.participant.length;
+        await quest.save();
         return res.json({ msg: `user: ${users} remove from quest: ${questId} successfully` });
     } catch (error) {
         next(error)
