@@ -1,5 +1,5 @@
 import { Router } from "express";;
-import { createQuest, deleteQuestById, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById, getQuestQr, userAttend, creatorRemoveUser, creatorCheckUser, cancelQuest } from "../controller/quest.js";
+import { createQuest, deleteQuestById, getCreatorQuests, getQuest, getQuestById, getQuestParticipantsById, getUncompleteCreatorQuest, joinOrLeaveQuest, questComplete, recommendQuest, updateQuestById, getQuestQr, userAttend, creatorRemoveUser, creatorCheckUser, cancelQuest, creatorUnCheckUser } from "../controller/quest.js";
 import { verifyCreator, verifyUser } from "../middleware/auth.js";
 import { upload } from "../middleware/uploadImg.js";
 
@@ -22,6 +22,7 @@ router.patch("/:id/join-leave", verifyUser, joinOrLeaveQuest)
 router.patch("/:id/attend", verifyUser, userAttend)
 router.patch("/:questId/remove-user", verifyCreator, creatorRemoveUser)
 router.patch("/:questId/check-user", verifyCreator, creatorCheckUser)
+router.patch("/:questId/uncheck-user", verifyCreator, creatorUnCheckUser)
 router.patch("/:questId/cancel", verifyCreator, cancelQuest)
 
 router.delete("/:id", verifyCreator, deleteQuestById)
