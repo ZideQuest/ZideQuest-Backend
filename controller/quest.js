@@ -390,7 +390,7 @@ export const userAttend = async (req, res, next) => {
                 return next(createError(444, "fulled"))
             }
 
-            quest = await Quest.findByIdAndUpdate(
+            await Quest.findByIdAndUpdate(
                 id,
                 { $push: { participant: { userId: req.user.id, status: false } } },
                 { new: true }
@@ -401,7 +401,7 @@ export const userAttend = async (req, res, next) => {
             )
 
         }
-        if (alreadyJoin && currentDate >= quest.timeStart) {
+        if (alreadyJoin) {
             quest = await Quest.findByIdAndUpdate(
                 id,
                 { $push: { participant: { userId: req.user.id, status: false } } },
@@ -417,6 +417,9 @@ export const userAttend = async (req, res, next) => {
             { arrayFilters: [{ 'elem.userId': req.user.id, }], new: true },
             { new: true }
         ).populate("creatorId").populate("locationId").populate("tagId")
+
+        quest.countParticipant = quest.participant.length
+        await quest.save()
 
         return res.json(quest);
     }
