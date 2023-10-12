@@ -398,13 +398,6 @@ export const userAttend = async (req, res, next) => {
                 req.user.id,
                 { $push: { joinedQuest: id } },
             )
-
-        }
-        if (alreadyJoin) {
-            quest = await Quest.findByIdAndUpdate(
-                id,
-                { participant: { userId: req.user.id, status: false } },
-            );
         }
 
         quest = await Quest.findByIdAndUpdate(
