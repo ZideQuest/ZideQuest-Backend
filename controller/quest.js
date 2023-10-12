@@ -154,8 +154,9 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             return next(createError(428, "ended"))
         }
 
-        if (quest.participant.length >= quest.maxParticipant && quest.maxParticipant != null) {
-            return next(createError(444, "fulled"))
+        const currentDate = new Date();
+        if (currentDate > quest.timeStart) {
+            return next(createError(430, "started"))
         }
 
         const tagNames = quest.tagId.map(tag => ({ tagName: tag.tagName }));
@@ -179,6 +180,9 @@ export const joinOrLeaveQuest = async (req, res, next) => {
 
         // join quest
         else {
+            if (quest.participant.length >= quest.maxParticipant && quest.maxParticipant != null) {
+                return next(createError(444, "fulled"))
+            }
             // push user to quest.participants
             quest = await Quest.findByIdAndUpdate(
                 id,
