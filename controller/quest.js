@@ -378,10 +378,6 @@ export const userAttend = async (req, res, next) => {
         let quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) return next(createError(400, "Quest not found"));
 
-        if (quest.maxParticipant <= quest.countParticipant) {
-            return next(createError(444, "Fulled"))
-        }
-
         if (quest.status) {
             return next(createError(456, "Ended"))
         }
@@ -389,27 +385,25 @@ export const userAttend = async (req, res, next) => {
         // if already started: only alreadyJoin can check attendance
         const currentDate = new Date();
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
-        if (!alreadyJoin && currentDate < quest.timeStart) {
-            if (quest.participant.length >= quest.maxParticipant) {
+        if ((!alreadyJoin) && currentDate < quest.timeStart) {
+            if (quest.countParticipant >= quest.maxParticipant) {
                 return next(createError(444, "fulled"))
             }
 
             await Quest.findByIdAndUpdate(
                 id,
                 { $push: { participant: { userId: req.user.id, status: false } } },
-                { new: true }
             );
-            await User.findByIdAndUpdate(req.user.id,
+            await User.findByIdAndUpdate(
+                req.user.id,
                 { $push: { joinedQuest: id } },
-                { new: true }
             )
 
         }
         if (alreadyJoin) {
             quest = await Quest.findByIdAndUpdate(
                 id,
-                { $push: { participant: { userId: req.user.id, status: false } } },
-                { new: true }
+                { participant: { userId: req.user.id, status: false } },
             );
         }
 
