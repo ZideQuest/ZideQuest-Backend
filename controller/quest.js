@@ -378,8 +378,12 @@ export const userAttend = async (req, res, next) => {
         let quest = await Quest.findById(id).populate("creatorId").populate("locationId").populate("tagId")
         if (!quest) return next(createError(400, "Quest not found"));
 
+        if (quest.maxParticipant <= quest.countParticipant) {
+            return next(createError(444, "Fulled"))
+        }
+
         if (quest.status) {
-            return next(createError(444, "fulled"))
+            return next(createError(456, "Ended"))
         }
 
         // if already started: only alreadyJoin can check attendance
