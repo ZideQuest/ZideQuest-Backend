@@ -155,7 +155,7 @@ export const joinOrLeaveQuest = async (req, res, next) => {
         }
 
         const currentDate = new Date();
-        if (currentDate > quest.timeStart) {
+        if (currentDate > quest.timeStart && quest.autoComplete) {
             return next(createError(430, "started"))
         }
 
@@ -394,7 +394,7 @@ export const userAttend = async (req, res, next) => {
             }
 
             const currentDate = new Date();
-            if (currentDate > quest.timeStart) {
+            if (currentDate > quest.timeStart && quest.autoComplete) {
                 return next(createError(430, "started"))
             }
 
