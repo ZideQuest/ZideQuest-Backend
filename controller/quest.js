@@ -387,11 +387,15 @@ export const userAttend = async (req, res, next) => {
         }
 
         // if already started: only alreadyJoin can check attendance
-        const currentDate = new Date();
         const alreadyJoin = quest.participant.find((user) => user.userId == req.user.id);
-        if ((!alreadyJoin) && currentDate < quest.timeStart) {
+        if (!alreadyJoin) {
             if (quest.countParticipant >= quest.maxParticipant) {
                 return next(createError(444, "fulled"))
+            }
+
+            const currentDate = new Date();
+            if (currentDate > quest.timeStart) {
+                return next(createError(430, "started"))
             }
 
             await Quest.findByIdAndUpdate(
