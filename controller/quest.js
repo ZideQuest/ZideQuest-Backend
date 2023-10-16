@@ -352,7 +352,7 @@ export const getCreatorQuests = async (req, res, next) => {
 export const getUncompleteCreatorQuest = async (req, res, next) => {
     try {
         const { id } = req.user
-        const quests = await Quest.find({ creatorId: id, status: false }).sort("timeStart").populate("locationId").populate('tagId')
+        const quests = await Quest.find({ creatorId: id, status: false, isCancel: false }).sort("timeStart").populate("locationId").populate('tagId')
         return res.json(quests)
     } catch (error) {
         next(error)
