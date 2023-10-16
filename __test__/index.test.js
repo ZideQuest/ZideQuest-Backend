@@ -395,7 +395,6 @@ describe('Test', () => {
                     .expectStatus(200)
                     .expectJsonMatch('joinedQuest', [])
             })
-
         })
     })
     describe("Location", () => {
@@ -488,5 +487,4 @@ describe('Test', () => {
         })
     })
 })
-// })
 

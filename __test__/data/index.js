@@ -95,8 +95,8 @@ export const locationInfo = {
 
 export const quest1Info = {
     questName: "sleep marathon",
-    timeStart: "2023-07-24T00:19:54.519Z",
-    timeEnd: "2023-07-24T03:19:54.519Z",
+    timeStart: "2023-10-18T00:19:54.519Z",
+    timeEnd: "2023-10-28T03:19:54.519Z",
     description: "boring",
     activityHour: {
         category: 3,
@@ -108,8 +108,8 @@ export const quest1Info = {
 
 export const quest2Info = {
     questName: "running",
-    timeStart: "2023-05-24T00:19:54.519Z",
-    timeEnd: "2023-05-24T03:19:54.519Z",
+    timeStart: "2023-10-24T00:19:54.519Z",
+    timeEnd: "2023-10-24T03:19:54.519Z",
     description: "for fun",
     activityHour: {
         category: 3,
@@ -121,8 +121,8 @@ export const quest2Info = {
 
 export const quest3Info = {
     questName: "jumping",
-    timeStart: "2023-06-24T00:19:54.519Z",
-    timeEnd: "2023-06-24T03:19:54.519Z",
+    timeStart: "2023-10-24T00:19:54.519Z",
+    timeEnd: "2023-10-24T03:19:54.519Z",
     description: "for fun",
     activityHour: {
         category: 3,
