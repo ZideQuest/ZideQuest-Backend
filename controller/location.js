@@ -115,7 +115,7 @@ export const getLocationById = async (req, res, next) => {
         const location = await Location.findById({ _id: id });
         if (!location) { return next(createError(400, "location not found")); }
 
-        let quests = await Quest.find({ locationId: id }).sort([["status", 1]]).populate("tagId")
+        let quests = await Quest.find({ locationId: id, isCancel: false }).sort([["status", 1]]).populate("tagId")
         if (userId) {
             quests = quests.map(quest => {
                 let isJoin = false

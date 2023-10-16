@@ -98,7 +98,7 @@ export const getUserQuest = async (req, res, next) => {
         // seperate a type of quest
         for (const quest of joinedQuest) {
             const location = await Location.findById(quest.locationId)
-            if (quest.status !== true)
+            if (quest.status !== true && quest.isCancel !== true)
                 currentQuest.push({ quest, location })
             else
                 successQuest.push({ quest, location })
@@ -134,9 +134,9 @@ export const getUserInfo = async (req, res, next) => {
                 }
             })
             const level_now = Math.floor(Math.pow(Math.floor(user.level), 1.45) * 856)
-            const level_next = Math.floor(Math.pow(Math.floor(user.level+1), 1.45) * 856)
-            const maxXp = level_next-level_now
-            let xpNow = user.exp-level_now
+            const level_next = Math.floor(Math.pow(Math.floor(user.level + 1), 1.45) * 856)
+            const maxXp = level_next - level_now
+            let xpNow = user.exp - level_now
             if (xpNow < 0) {
                 xpNow = 0
             }
@@ -145,7 +145,7 @@ export const getUserInfo = async (req, res, next) => {
                 ...user.toObject(),
                 maxXp: maxXp,
                 xpNow: xpNow,
-                xpPercentage: (xpNow)/(maxXp)
+                xpPercentage: (xpNow) / (maxXp)
             })
         }
         const user = await Admin.findById(id)
@@ -154,7 +154,7 @@ export const getUserInfo = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-} 
+}
 
 export const deleteUserNoti = async (req, res, next) => {
     try {
@@ -170,7 +170,7 @@ export const deleteUserNoti = async (req, res, next) => {
                     notifications: notiId
                 }
             },
-            {new: true}
+            { new: true }
         )
 
         return res.json(user)

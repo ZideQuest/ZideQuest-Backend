@@ -466,6 +466,27 @@ describe('Test', () => {
                 .expectStatus(200)
         })
     })
+    describe('Location', () => {
+        it('shoud get this location ', async () => {
+            const { body } = await pactum
+                .spec()
+                .get('/locations/$S{locationId}')
+                .expectStatus(200)
+                .expectBodyContains('$S{locationId}')
+            console.log(body)
+        })
+        it('shoud get this location with userid ', async () => {
+            const { body } = await pactum
+                .spec()
+                .get('/locations/$S{locationId}')
+                .withHeaders({
+                    Authorization: 'Bearer $S{userAt}',
+                })
+                .expectStatus(200)
+                .expectBodyContains('$S{locationId}')
+            console.log(body)
+        })
+    })
 })
 // })
 
