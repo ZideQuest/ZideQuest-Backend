@@ -70,12 +70,10 @@ export const getAllLocation = async (req, res, next) => {
 
             if (userId) {
                 for (let quest of location.result) {
-                    if (!quest.status) {
-                        countQuest += 1
-                    }
-                    if (quest.status == true) {
+                    if (quest.status || quest.isCancel) {
                         continue
                     }
+                    countQuest += 1
                     quest.participant.forEach((user) => {
                         if (user.userId == userId) {
                             pinMode = true
