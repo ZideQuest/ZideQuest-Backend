@@ -330,7 +330,7 @@ export const questComplete = async (req, res, next) => {
 
 export const recommendQuest = async (req, res, next) => {
     try {
-        const quests = await Quest.find({ status: false }).limit(4).populate('creatorId').populate('locationId').populate('tagId')
+        const quests = await Quest.find({ status: false, isCancel: false }).limit(4).populate('creatorId').populate('locationId').populate('tagId')
 
         return res.json(quests)
 
