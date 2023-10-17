@@ -210,7 +210,6 @@ describe('Test', () => {
                     .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
                     .expectStatus(200)
                     .expectBodyContains('$S{quest1Id}')
-                console.log(body)
             })
 
 
@@ -383,7 +382,6 @@ describe('Test', () => {
                     .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
                     .expectStatus(200)
                     .expectJsonMatch('countParticipant', 0)
-                console.log(body)
             })
 
 
@@ -473,7 +471,6 @@ describe('Test', () => {
                 .get('/locations/$S{locationId}')
                 .expectStatus(200)
                 .expectBodyContains('$S{locationId}')
-            console.log(body)
         })
         it('shoud get this location with userid ', async () => {
             const { body } = await pactum
@@ -484,7 +481,6 @@ describe('Test', () => {
                 })
                 .expectStatus(200)
                 .expectBodyContains('$S{locationId}')
-            console.log(body)
         })
     })
 })
