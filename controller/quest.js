@@ -343,7 +343,11 @@ export const getCreatorQuests = async (req, res, next) => {
     try {
         const { id } = req.user
         const quests = await Quest.find({ creatorId: id, isCancel: false }).sort("timeStart").populate("locationId").populate('tagId')
-        return res.json(quests)
+        const questsWithCountCheckin = quests.map((quest) => {
+            const countCheckIn = quest.participant.filter((user) => user.status).length
+            return { ...quest._doc, countCheckIn }
+        })
+        return res.json(questsWithCountCheckin)
     } catch (error) {
         next(error)
     }
@@ -353,7 +357,12 @@ export const getUncompleteCreatorQuest = async (req, res, next) => {
     try {
         const { id } = req.user
         const quests = await Quest.find({ creatorId: id, status: false, isCancel: false }).sort("timeStart").populate("locationId").populate('tagId')
-        return res.json(quests)
+        const questsWithCountCheckin = quests.map((quest) => {
+            const countCheckIn = quest.participant.filter((user) => user.status).length
+            return { ...quest._doc, countCheckIn }
+        })
+        return res.json(questsWithCountCheckin)
+        // return res.json(quests)
     } catch (error) {
         next(error)
     }

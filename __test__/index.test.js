@@ -201,6 +201,7 @@ describe('Test', () => {
                     .spec()
                     .get('/quests/creator-all')
                     .expectStatus(401)
+
             })
             it('should get creator quest', async () => {
                 const { body } = await pactum
@@ -209,7 +210,7 @@ describe('Test', () => {
                     .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
                     .expectStatus(200)
                     .expectBodyContains('$S{quest1Id}')
-                // console.log(body)
+                console.log(body)
             })
 
 
