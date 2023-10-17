@@ -12,7 +12,10 @@ export const login = async (req, res, next) => {
         let user;
         // this account is user or admin ? 
         if (account.role === "user") { // this account is user
-            user = await User.findOne({ accountId: account._id })
+            user = await User.findOne({ accountId: account._id }).populate('notifications').populate('joinedQuest')
+            user.joinedQuest = user.joinedQuest.filter((quest) => {
+                return quest.status === false && quest.isCancel === false
+            })
         } else { // this account is admin
             user = await Admin.findOne({ accountId: account._id })
         }

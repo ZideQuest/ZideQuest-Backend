@@ -133,6 +133,9 @@ export const getUserInfo = async (req, res, next) => {
                     path: '_id'
                 }
             })
+            user.joinedQuest = user.joinedQuest.filter((quest) => {
+                return quest.status === false && quest.isCancel === false
+            })
             const level_now = Math.floor(Math.pow(Math.floor(user.level), 1.45) * 856)
             const level_next = Math.floor(Math.pow(Math.floor(user.level + 1), 1.45) * 856)
             const maxXp = level_next - level_now
