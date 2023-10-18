@@ -342,7 +342,7 @@ export const recommendQuest = async (req, res, next) => {
 export const getCreatorQuests = async (req, res, next) => {
     try {
         const { id } = req.user
-        const quests = await Quest.find({ creatorId: id, isCancel: false }).sort("timeStart").populate("locationId").populate('tagId')
+        const quests = await Quest.find({ creatorId: id, isCancel: false }).sort("createdAt").populate("locationId").populate('tagId')
         const questsWithCountCheckin = quests.map((quest) => {
             const countCheckIn = quest.participant.filter((user) => user.status).length
             return { ...quest._doc, countCheckIn }
