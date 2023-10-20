@@ -86,6 +86,9 @@ export const adminInfo = {
 // locationInfo.append("locationName", "My Home")
 // locationInfo.append("latitude", 5.1241)
 // locationInfo.append("longitude", 5.5251)
+export const tag1Info = {
+    tagName: "knowledge",
+}
 
 export const locationInfo = {
     "locationName": "my house",
@@ -95,8 +98,8 @@ export const locationInfo = {
 
 export const quest1Info = {
     questName: "sleep marathon",
-    timeStart: "2023-10-20T00:19:54.519Z",
-    timeEnd: "2023-10-28T03:19:54.519Z",
+    timeStart: "2024-10-20T00:19:54.519Z",
+    timeEnd: "2024-10-28T03:19:54.519Z",
     description: "boring",
     activityHour: {
         category: 3,
@@ -105,11 +108,22 @@ export const quest1Info = {
     maxParticipant: 30,
     autoComplete: true,
 }
+export const quest1InfoNew = {
+    questName: "sleep marathon",
+    timeStart: "2024-10-29T00:19:54.519Z",
+    timeEnd: "2024-10-31T03:19:54.519Z",
+    // activityHour: {
+    //     category: 1,
+    //     hour: 20
+    // },
+    maxParticipant: 10,
+    autoComplete: true,
+}
 
 export const quest2Info = {
     questName: "running",
-    timeStart: "2023-10-29T00:19:54.519Z",
-    timeEnd: "2023-10-31T03:19:54.519Z",
+    timeStart: "2024-10-29T00:19:54.519Z",
+    timeEnd: "2024-10-31T03:19:54.519Z",
     description: "for fun",
     activityHour: {
         category: 3,
@@ -121,8 +135,8 @@ export const quest2Info = {
 
 export const quest3Info = {
     questName: "jumping",
-    timeStart: "2023-10-24T00:19:54.519Z",
-    timeEnd: "2023-10-24T03:19:54.519Z",
+    timeStart: "2024-10-24T00:19:54.519Z",
+    timeEnd: "2024-10-24T03:19:54.519Z",
     description: "for fun",
     activityHour: {
         category: 3,
