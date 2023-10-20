@@ -221,7 +221,6 @@ export const joinOrLeaveQuest = async (req, res, next) => {
             maxParticipant: quest.maxParticipant,
             isjoin: !alreadyJoin
         }
-        console.log("bug")
         return res.json({ questDetail });
     } catch (error) {
         console.log(error)
