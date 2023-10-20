@@ -3,10 +3,10 @@ import { createError } from "../util/createError.js"
 import { generateColor } from "../util/generateTagColor.js"
 export const createTag = async (req, res, next) => {
     try {
-        const { tagName } = req.body
+        const { tagName, tagColor } = req.body
         const newtag = await Tag.create({
             tagName: tagName,
-            tagColor: generateColor()
+            tagColor: tagColor ? tagColor : generateColor()
         })
         return res.json(newtag)
     } catch (error) {
