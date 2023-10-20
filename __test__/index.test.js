@@ -167,6 +167,13 @@ describe('Test', () => {
                 })
                 .stores('tag1Id', '_id')
         })
+        it('should get single tag', async () => {
+            const { body } = await pactum
+                .spec()
+                .get('/tags/$S{tag1Id}')
+                .expectStatus(200)
+                .expectJsonMatch('tagColor', tag1Info.tagColor)
+        })
     })
     describe('Quest', () => {
         it('should get zero quest', async () => {
@@ -215,8 +222,6 @@ describe('Test', () => {
                 .get('/quests')
                 .expectStatus(200)
                 .expectJsonMatch('tagId', [])
-
-            console.log(body[0])
         })
         describe("Get Creator Quest", () => {
             it('should error creator quest', async () => {
