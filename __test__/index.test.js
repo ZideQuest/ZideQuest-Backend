@@ -3,7 +3,7 @@ import * as pactum from 'pactum'
 import { connectDb } from "../util/connectDb"
 import dotenv from 'dotenv'
 import { logger } from "../util/logger"
-import { adminInfo, locationInfo, quest1Info, quest2Info, quest3Info, userInfo, userInfo2 } from "./data"
+import { adminInfo, locationInfo, quest1Info, quest1InfoNew, quest2Info, quest3Info, tag1Info, userInfo, userInfo2 } from "./data"
 
 
 describe('Test', () => {
@@ -155,6 +155,26 @@ describe('Test', () => {
         })
     })
 
+    describe('Tags', () => {
+        it('should create tag', async () => {
+            await pactum
+                .spec()
+                .post('/tags')
+                .withBody(tag1Info)
+                .expectStatus(200)
+                .withHeaders({
+                    Authorization: 'Bearer $S{adminAt}',
+                })
+                .stores('tag1Id', '_id')
+        })
+        it('should get single tag', async () => {
+            const { body } = await pactum
+                .spec()
+                .get('/tags/$S{tag1Id}')
+                .expectStatus(200)
+                .expectJsonMatch('tagColor', tag1Info.tagColor)
+        })
+    })
     describe('Quest', () => {
         it('should get zero quest', async () => {
             await pactum
@@ -175,25 +195,33 @@ describe('Test', () => {
                 .spec()
                 .post('/quests/locations/$S{locationId}')
                 .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
-                .withBody(quest1Info)
+                .withBody({ ...quest1Info, tagId: ['$S{tag1Id}'] })
                 .stores('quest1Id', '_id')
                 .expectJsonMatch('questName', quest1Info.questName)
                 .expectStatus(200)
         })
         it('should get single quest', async () => {
-            await pactum
+            const { body } = await pactum
                 .spec()
                 .get('/quests')
                 .expectStatus(200)
                 .expectBodyContains('$S{quest1Id}')
         })
 
-        it('should ', async () => {
+        it('should update quest 1', async () => {
             return await pactum
+                .spec()
+                .put('/quests/$S{quest1Id}')
+                .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
+                .withBody({ ...quest1InfoNew })
+                .expectStatus(200)
+        })
+        it('quest should updated (tagId is gone) ', async () => {
+            const { body } = await pactum
                 .spec()
                 .get('/quests')
                 .expectStatus(200)
-                .expectBodyContains('$S{quest1Id}')
+                .expectJsonMatch('tagId', [])
         })
         describe("Get Creator Quest", () => {
             it('should error creator quest', async () => {
@@ -262,7 +290,6 @@ describe('Test', () => {
                     .expectBodyContains('$S{quest2Id}')
                     .expectBodyContains('$S{quest3Id}')
                 expect(body.length).toBe(3)
-                console.log(body)
 
             })
 
