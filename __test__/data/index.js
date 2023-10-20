@@ -88,6 +88,7 @@ export const adminInfo = {
 // locationInfo.append("longitude", 5.5251)
 export const tag1Info = {
     tagName: "knowledge",
+    tagColor: "#FF0000"
 }
 
 export const locationInfo = {
