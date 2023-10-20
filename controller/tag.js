@@ -25,7 +25,7 @@ export const getTag = async (req, res, next) => {
 
 export const getTagById = async (req, res, next) => {
     try {
-        const tag = await Tag.findById(req.params.id).select('tagName').select('_id')
+        const tag = await Tag.findById(req.params.id).select('tagName').select('_id').select('tagColor')
         if (!tag) return next(createError(400, "Tag not found"))
 
         return res.json(tag)
