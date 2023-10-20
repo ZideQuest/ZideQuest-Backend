@@ -111,6 +111,14 @@ export const updateQuestById = async (req, res, next) => {
             updatedQuest.picturePath = picturePath
             await updatedQuest.save()
         }
+        if (!req.body.tagId || req.body.tagId.length === 0) {
+            updatedQuest.tagId = []
+            await updatedQuest.save()
+        }
+        if (!req.body.activityHour) {
+            updatedQuest.activityHour = undefined
+            await updatedQuest.save()
+        }
 
         return res.json(updatedQuest)
     } catch (error) {
