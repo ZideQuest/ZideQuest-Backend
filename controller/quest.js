@@ -61,6 +61,8 @@ export const getQuestById = async (req, res, next) => {
                 isCheckIn = user.status
             }
         })
+        const actualQuestTime = (quest.timeEnd - quest.timeStart) / (1000 * 60 * 60)
+        const xpGiven = Math.floor(actualQuestTime * 1237.6)
 
         const questDetail = {
             questName: quest.questName,
@@ -79,7 +81,8 @@ export const getQuestById = async (req, res, next) => {
             maxParticipant: quest.maxParticipant,
             activityHour: quest.activityHour,
             isJoin,
-            isCheckIn
+            isCheckIn,
+            xpGiven
         }
         return res.json(questDetail)
     } catch (error) {
