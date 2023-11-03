@@ -132,6 +132,12 @@ export const getUserInfo = async (req, res, next) => {
                 populate: {
                     path: '_id'
                 }
+            }).populate({
+                path: 'notifications',
+                populate: {
+                    path: 'questId',
+                    select: "questName"
+                },
             })
             user.joinedQuest = user.joinedQuest.filter((quest) => {
                 return quest.status === false && quest.isCancel === false
