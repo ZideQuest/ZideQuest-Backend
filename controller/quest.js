@@ -20,8 +20,6 @@ export const createQuest = async (req, res, next) => {
             const newPath = await cloudinaryUploadImg(req.file.path)
             picturePath = newPath.url
         }
-
-        // create quest
         const quest = await Quest.create({
             ...req.body,
             creatorId: id,
@@ -29,6 +27,7 @@ export const createQuest = async (req, res, next) => {
             picturePath
         }
         )
+        console.log(quest)
         return res.json(quest)
     } catch (error) {
         next(error)
@@ -122,6 +121,10 @@ export const updateQuestById = async (req, res, next) => {
             updatedQuest.activityHour = undefined
             await updatedQuest.save()
         }
+        if (!req.body.maxParticipant) {
+            updatedQuest.maxParticipant = 0
+            await updatedQuest.save()
+        }
 
         return res.json(updatedQuest)
     } catch (error) {
@@ -191,7 +194,7 @@ export const joinOrLeaveQuest = async (req, res, next) => {
 
         // join quest
         else {
-            if (quest.participant.length >= quest.maxParticipant && quest.maxParticipant != null) {
+            if (quest.participant.length >= quest.maxParticipant && quest.maxParticipant != 0) {
                 return next(createError(444, "fulled"))
             }
             // push user to quest.participants

@@ -106,7 +106,7 @@ export const quest1Info = {
         category: 3,
         hour: 3
     },
-    maxParticipant: 30,
+    // maxParticipant: 30,
     autoComplete: true,
 }
 export const quest1InfoNew = {
@@ -117,7 +117,7 @@ export const quest1InfoNew = {
     //     category: 1,
     //     hour: 20
     // },
-    maxParticipant: 10,
+    // maxParticipant: 10,
     autoComplete: true,
 }
 
@@ -130,7 +130,7 @@ export const quest2Info = {
         category: 3,
         hour: 3
     },
-    maxParticipant: 30,
+    // maxParticipant: 30,
     autoComplete: true,
 }
 

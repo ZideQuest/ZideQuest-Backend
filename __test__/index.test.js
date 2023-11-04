@@ -191,7 +191,7 @@ describe('Test', () => {
                 .expectStatus(401)
         })
         it('create quest', async () => {
-            await pactum
+            const { body } = await pactum
                 .spec()
                 .post('/quests/locations/$S{locationId}')
                 .withHeaders({ Authorization: 'Bearer $S{adminAt}' })
@@ -199,6 +199,7 @@ describe('Test', () => {
                 .stores('quest1Id', '_id')
                 .expectJsonMatch('questName', quest1Info.questName)
                 .expectStatus(200)
+            console.log(body)
         })
         it('should get single quest', async () => {
             const { body } = await pactum
@@ -448,7 +449,14 @@ describe('Test', () => {
                 .withHeaders({ Authorization: 'Bearer $S{userAt}' })
                 .expectStatus(200)
         })
-        it('should get user info with notification', async () => {
+        it('user2 join quest', async () => {
+            const { body } = await pactum
+                .spec()
+                .patch('/quests/$S{quest3Id}/join-leave')
+                .withHeaders({ Authorization: 'Bearer $S{userAt2}' })
+                .expectStatus(200)
+        })
+        it('should get user info without notification', async () => {
             await pactum
                 .spec()
                 .get('/users/info')
@@ -456,6 +464,7 @@ describe('Test', () => {
                 .expectStatus(200)
                 .expectJsonMatch('notifications', [])
         })
+
         it('should cancle quest', async () => {
             await pactum
                 .spec()
@@ -477,6 +486,47 @@ describe('Test', () => {
                 .expectStatus(200)
                 .expectBodyContains('$S{notification1Id}')
         })
+        it('should get user2 info with notification', async () => {
+            await pactum
+                .spec()
+                .get('/users/info')
+                .withBearerToken('$S{userAt2}')
+                .expectStatus(200)
+                .expectBodyContains('$S{notification1Id}')
+        })
+        it('should delete user info notification', async () => {
+            let res = await pactum
+                .spec()
+                .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+                .delete('/users/notification/$S{notification1Id}')
+                .expectStatus(200)
+            console.log(res.body)
+        })
+        it('should delete user info notification', async () => {
+            let res = await pactum
+                .spec()
+                .withHeaders({ Authorization: 'Bearer $S{userAt2}' })
+                .delete('/users/notification/$S{notification1Id}')
+                .expectStatus(200)
+            console.log(res.body)
+        })
+        it('should get user info without notification', async () => {
+            await pactum
+                .spec()
+                .get('/users/info')
+                .withBearerToken('$S{userAt}')
+                .expectStatus(200)
+                .expectJsonMatch('notifications', [])
+        })
+        it('should get user info without notification', async () => {
+            await pactum
+                .spec()
+                .get('/users/info')
+                .withBearerToken('$S{userAt2}')
+                .expectStatus(200)
+                .expectJsonMatch('notifications', [])
+        })
+
     })
     describe("Tag", () => {
         it('should create tag', async () => {
