@@ -170,10 +170,8 @@ export const deleteUserNoti = async (req, res, next) => {
         const { id } = req.user
         const { notiId } = req.params
 
-        console.log(`${id} ${notiId}`)
-
-        const user = await User.findOneAndUpdate(
-            new mongoose.Types.ObjectId(id),
+        const user = await User.findByIdAndUpdate(
+            id,
             {
                 $pull: {
                     notifications: notiId
@@ -181,6 +179,8 @@ export const deleteUserNoti = async (req, res, next) => {
             },
             { new: true }
         )
+
+        console.log(user.notifications)
 
         return res.json(user)
 
